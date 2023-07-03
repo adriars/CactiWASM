@@ -13,7 +13,7 @@ INCS = -lm
 
 ifeq ($(TAG),dbg)
   DBG = -Wall 
-  OPT = -ggdb -g -O0 -DNTHREADS=1  -gstabs+
+  OPT = -ggdb -g -O0 -DNTHREADS=1
 else
   DBG = 
   OPT = -g  -msse2 -mfpmath=sse -DNTHREADS=$(NTHREADS)
@@ -21,8 +21,8 @@ endif
 
 #CXXFLAGS = -Wall -Wno-unknown-pragmas -Winline $(DBG) $(OPT) 
 CXXFLAGS = -Wno-unknown-pragmas $(DBG) $(OPT) 
-CXX = g++ -m64
-CC  = gcc -m64
+CXX = em++
+CC  = emcc
 
 SRCS  = area.cc bank.cc mat.cc main.cc Ucache.cc io.cc technology.cc basic_circuit.cc parameter.cc \
 		decoder.cc component.cc uca.cc subarray.cc wire.cc htree2.cc extio.cc extio_technology.cc \
@@ -36,10 +36,9 @@ PYTHONLIB_OBJS = $(patsubst %.cc,%.o,$(PYTHONLIB_SRCS))
 INCLUDES       = -I /usr/include/python2.4 -I /usr/lib/python2.4/config
 
 all: obj_$(TAG)/$(TARGET)
-	cp -f obj_$(TAG)/$(TARGET) $(TARGET)
 
 obj_$(TAG)/$(TARGET) : $(OBJS)
-	$(CXX) $(OBJS) -o $@ $(INCS) $(CXXFLAGS) $(LIBS) -pthread
+	$(CXX) $(OBJS) -o $@.html $(INCS) $(CXXFLAGS) $(LIBS) -pthread --embed-file tech_params/ --pre-js pre_js.js --shell-file template.html -s ALLOW_MEMORY_GROWTH=1 -s PTHREAD_POOL_SIZE=8 -s STACK_SIZE=131072
 
 #obj_$(TAG)/%.o : %.cc
 #	$(CXX) -c $(CXXFLAGS) $(INCS) -o $@ $<

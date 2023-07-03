@@ -44,10 +44,6 @@
 
 #include "Ucache.h"
 
-#ifdef __EMSCRIPTEN__
-    #include <emscripten.h>
-#endif
-
 using namespace std;
 
 
@@ -71,10 +67,10 @@ int main(int argc,char *argv[])
     }
     if (infile_specified == false)
     {
-      cout << " Invalid arguments -- how to use CACTI:" << endl;
-      cout << "  1) cacti -infile <input file name>" << endl;
-      cout << "  2) cacti arg1 ... arg52 -- please refer to the README file" << endl;
-      cout << " No. of arguments input - " << argc << endl;
+      cerr << " Invalid arguments -- how to use CACTI:" << endl;
+      cerr << "  1) cacti -infile <input file name>" << endl;
+      cerr << "  2) cacti arg1 ... arg52 -- please refer to the README file" << endl;
+      cerr << " No. of arguments input - " << argc << endl;
       exit(1);
     }
     else

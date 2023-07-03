@@ -52,7 +52,7 @@
 
 using namespace std;
 
-const uint32_t nthreads = 1;
+const uint32_t nthreads = NTHREADS;
 
 
 void min_values_t::update_min_values(const min_values_t * val)
