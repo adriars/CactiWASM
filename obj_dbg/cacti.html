@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>CACTI WASAM</title>
+    <title>CACTI 7.0</title>
     <style>
       .spinner {
         height: 50px;
@@ -13,12 +13,12 @@
         -moz-animation: rotation .8s linear infinite;
         -o-animation: rotation .8s linear infinite;
         animation: rotation 0.8s linear infinite;
-        border-left: 10px solid rgb(0,150,240);
-        border-right: 10px solid rgb(0,150,240);
-        border-bottom: 10px solid rgb(0,150,240);
-        border-top: 10px solid rgb(100,0,200);
+        border-left: 10px solid rgb(0, 0, 0);
+        border-right: 10px solid rgb(0, 0, 0);
+        border-bottom: 10px solid rgb(0, 0, 0);
+        border-top: 10px solid rgb(255, 255, 255);
         border-radius: 100%;
-        background-color: rgb(200,100,250);
+        background-color: rgb(255, 255, 255);
       }
       @-webkit-keyframes rotation {
         from {-webkit-transform: rotate(0deg);}
@@ -39,33 +39,37 @@
     </style>
   </head>
   <body>
-    <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><strong>emscripten</strong></center></figure>
-    <div class="emscripten" id="status">Downloading...</div>
-    <div class="emscripten">
-      <progress value="0" max="100" id="progress" hidden=1></progress>  
-    </div>
+    <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><h1>LOADING CACTI 7.0</h1></center></figure>
+    <div id="cacti_app" hidden>
     <div style="align-items: center; justify-content: center; display: flex; height: 100vh; flex-direction: column;">
         <form>
-            <label for="cache_size">Cache size</label>
-            <input type="number" id="cache_size" value="64" oninput="set_cache_size(this.value)">
-            <label for="block_size">Block size</label>
-            <input type="number" id="block_size" value="131072">
+          <h1 style="text-align: center;">Basic configuration</h1>
+            <label for="cache_size">Cache size (bytes)</label>
+            <input type="number" id="cache_size" value="131072" oninput="(() => {cache_cfg.cache_size.value = parseInt(this.value);})();">
+            <label for="block_size">Block size (bytes)</label>
+            <input type="number" id="block_size" value="64" oninput="(() => {cache_cfg.block_size.value = parseInt(this.value);})();">
             <label for="associativity">Associativity</label>
-            <input type="number" id="associativity" value="2">
-            <label for="technology">Technology</label>
-            <input type="radio" name="technology" id="technology_0.022" value="0.022">
+            <input type="number" id="associativity" value="2" oninput="(() => {cache_cfg.associativity.value = parseInt(this.value);})();">
+            <label for="technology">Technology (u)</label>
+            <input type="radio" name="technology" id="technology_0.022" value="0.022" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
             <label for="technology_0.022">0.022</label>
-            <input type="radio" name="technology" id="technology_0.032" value="0.032">
+            <input type="radio" name="technology" id="technology_0.032" value="0.032" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
             <label for="technology_0.032">0.032</label>
-            <input type="radio" name="technology" id="technology_0.045" value="0.045">
+            <input type="radio" name="technology" id="technology_0.045" value="0.045" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
             <label for="technology_0.045">0.045</label>
-            <input type="radio" name="technology" id="technology_0.065" value="0.065">
+            <input type="radio" name="technology" id="technology_0.065" value="0.065" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
             <label for="technology_0.065">0.065</label>
-            <input type="radio" name="technology" id="technology_0.090" value="0.090">
+            <input type="radio" name="technology" id="technology_0.090" value="0.090" checked oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
             <label for="technology_0.090">0.090</label>
-            <input type="radio" name="technology" id="technology_0.180" value="0.180">
+            <input type="radio" name="technology" id="technology_0.180" value="0.180" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
             <label for="technology_0.180">0.180</label>
+            <label for="UCA_bank_count">UCA bank count</label>
+            <input type="number" id="UCA_bank_count" value="1" oninput="(() => {cache_cfg.UCA_bank_count.value = parseInt(this.value);})();">
+            <label for="read_write_port">Read-write port</label>
+            <input type="number" id="read_write_port" value="1" oninput="(() => {cache_cfg.read_write_port.value = parseInt(this.value);})();">
+            <h1 style="text-align: center;">Advanced configuration</h1>
         </form>
+        <button onclick="parse_cacti_output()">Test html form</button>
         <textarea id="cachecfg" style="width: 90vw; height: 90vh;">
 //# Cache size
 //-size (bytes) 2048
@@ -373,65 +377,232 @@
         <textarea id="output" style="width: 90vw; height: 90vh;"></textarea>
     </div>
     <div>
-      <canvas id="myChart"></canvas>
+      <canvas id="acces_time_cache_size_chart"></canvas>
+      <canvas id="acces_time_block_size_chart"></canvas>
+      <canvas id="acces_time_associativity_chart"></canvas>
+      <canvas id="acces_time_technology_chart"></canvas>
     </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
  
     <script type='text/javascript'>
-      var statusElement = document.getElementById('status');
-      var progressElement = document.getElementById('progress');
       var spinnerElement = document.getElementById('spinner');
       var outputElement = document.getElementById('output');
 
+      // Default values of the cache configuration
       var cache_cfg = {
-        cache_size: 131072,
-        block_size: 64,
-        associativity: 2,
-        technology: 0.022
+        cache_size: {parameter: '-size (bytes)', value: 131072},
+        block_size: {parameter: '-block size (bytes)', value: 64},
+        associativity: {parameter: '-associativity', value: 2},
+        technology: {parameter: '-technology (u)', value: 0.090},
       };
 
-      outputElement.oninput = function () {
-  
-      }
+      var parsed_cacti_output = {
+        acces_time: 0,
+        cycle_time: 0,
+        total_dynamic_read_energy_per_access: 0,
+        total_dynamic_write_energy_per_access: 0,
+        total_leakage_power_of_a_bank: 0,
+        total_gate_leakage_power_of_a_bank: 0,
+        cache_area: 0,
+        data_side_htree_input_delay: 0,
+        data_side_decoder_wordline_delay: 0,
+        data_side_bitline_delay: 0,
+        data_side_sense_amplifier_delay: 0,
+        data_side_htree_output_delay: 0,
+        tag_side_htree_input_delay: 0,
+        tag_side_decoder_wordline_delay: 0,
+        tag_side_bitline_delay: 0,
+        tag_side_sense_amplifier_delay: 0,
+        tag_side_comparator_delay: 0,
+        tag_side_htree_output_delay: 0
+      };
 
-      function set_cache_size(value) {
-        cache_cfg.cache_size = value;
-        console.log(cache_cfg);
-      }
-
-    function run_cacti() {
-        FS.writeFile('cache.cfg', document.getElementById('cachecfg').value, {flags: 'w+'});
-        callMain(arguments_);
-        generate_results();
-    }
-
-    function generate_results() {
-        var element = document.getElementById('output');
-
-        var test_value = element.value.substring(element.value.indexOf('Access time (ns):') + 18, element.value.indexOf('Access time (ns):') + 24)
-
-        console.log(element.value.substring(element.value.indexOf('Access time (ns):') + 18, element.value.indexOf('Access time (ns):') + 24))
-        
-        const ctx = document.getElementById('myChart');
-
-        var chart = new Chart(ctx, {
-            type: 'bar',
+      var acces_time_cache_size_chart = new Chart(document.getElementById('acces_time_cache_size_chart'), {
+            type: 'line',
             data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: [],
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, parseFloat(test_value), 5, 2, 3],
+                label: 'Acces time by cache size',
+                data: [],
                 borderWidth: 1
             }]
             },
-            options: {
-            scales: {
-                y: {
-                beginAtZero: true
-                }
-            }
-            }
         });
+
+      var acces_time_block_size_chart = new Chart(document.getElementById('acces_time_block_size_chart'), {
+            type: 'line',
+            data: {
+            labels: [],
+            datasets: [{
+                label: 'Acces time by block size',
+                data: [],
+                borderWidth: 1
+            }]
+            },
+        });
+
+      var acces_time_associativity_chart = new Chart(document.getElementById('acces_time_associativity_chart'), {
+            type: 'line',
+            data: {
+            labels: [],
+            datasets: [{
+                label: 'Acces time by associativity',
+                data: [],
+                borderWidth: 1
+            }]
+            },
+        });
+
+        var acces_time_technology_chart = new Chart(document.getElementById('acces_time_technology_chart'), {
+            type: 'line',
+            options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Technology node'
+      },
+    },
+    scales: {
+      x: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Technology node'
+        }
+      },
+      y: {
+        display: true,
+        title: {
+          display: true,
+          text: 'Technology node'
+        }
+      }
+    }
+    },
+            data: {
+            labels: [1,2,3,4,5],
+            datasets: [{
+                label: 'Acces time by technology node',
+                data: [1,2,3,4,5],
+                borderWidth: 1,
+                borderColor: "red",
+                backgroundColor: "red"
+            },
+            {
+                label: 'Acces time by technology node 2',
+                data: [10,20,30,40],
+                borderWidth: 1,
+                borderColor: "green",
+                backgroundColor: "green"
+            }]
+            },
+        });
+
+      function create_config_file_from_form() {
+
+        console.log(
+`${cache_cfg.cache_size.parameter} ${cache_cfg.cache_size.value}
+${cache_cfg.block_size.parameter} ${cache_cfg.block_size.value}
+${cache_cfg.associativity.parameter} ${cache_cfg.associativity.value}
+${cache_cfg.technology.parameter} ${cache_cfg.technology.value}`
+        );
+        
+      }
+
+      function parse_cacti_output() {
+
+        const cacti_output = document.getElementById('output');
+
+        const basic_output = cacti_output.value.match(/Access time.+\n.+\n.+\n.+\n.+\n.+\n.+/)[0];
+        const basic_output_numbers = basic_output.match(/(\d+\.\d+)|(\d+)/g);
+        const data_side_output = cacti_output.value.match(/Data side .+\n.+\n.+\n.+\n.+\n.+/)[0];
+        const data_side_output_numbers = data_side_output.match(/(\d+\.\d+)|(\d+)/g);
+        const tag_side_output = cacti_output.value.match(/Tag side .+\n.+\n.+\n.+\n.+\n.+\n.+/)[0];
+        const tag_side_output_numbers = tag_side_output.match(/(\d+\.\d+)|(\d+)/g);
+
+        parsed_cacti_output.acces_time = parseFloat(basic_output_numbers[0]);
+        parsed_cacti_output.cycle_time = parseFloat(basic_output_numbers[1]);
+        parsed_cacti_output.total_dynamic_read_energy_per_access = parseFloat(basic_output_numbers[2]);
+        parsed_cacti_output.total_dynamic_write_energy_per_access = parseFloat(basic_output_numbers[3]);
+        parsed_cacti_output.total_leakage_power_of_a_bank = parseFloat(basic_output_numbers[4]);
+        parsed_cacti_output.total_gate_leakage_power_of_a_bank = parseFloat(basic_output_numbers[5]);
+        parsed_cacti_output.cache_area = parseFloat(basic_output_numbers[6]) * parseFloat(basic_output_numbers[7]);
+
+        parsed_cacti_output.data_side_htree_input_delay = parseFloat(data_side_output_numbers[1]);
+        parsed_cacti_output.data_side_decoder_wordline_delay = parseFloat(data_side_output_numbers[2]);
+        parsed_cacti_output.data_side_bitline_delay = parseFloat(data_side_output_numbers[3]);
+        parsed_cacti_output.data_side_sense_amplifier_delay = parseFloat(data_side_output_numbers[4]);
+        parsed_cacti_output.data_side_htree_output_delay = parseFloat(data_side_output_numbers[5]);
+
+        parsed_cacti_output.tag_side_htree_input_delay = parseFloat(tag_side_output_numbers[1]);
+        parsed_cacti_output.tag_side_decoder_wordline_delay = parseFloat(tag_side_output_numbers[2]);
+        parsed_cacti_output.tag_side_bitline_delay = parseFloat(tag_side_output_numbers[3]);
+        parsed_cacti_output.tag_side_sense_amplifier_delay = parseFloat(tag_side_output_numbers[4]);
+        parsed_cacti_output.tag_side_comparator_delay = parseFloat(tag_side_output_numbers[5]);
+        parsed_cacti_output.tag_side_htree_output_delay = parseFloat(tag_side_output_numbers[6]);
+
+      }
+
+      function update_acces_time_cache_size_chart() {
+        var element = document.getElementById('output');
+
+        var acces_time = element.value.substring(element.value.indexOf('Access time (ns):') + 18, element.value.indexOf('Access time (ns):') + 24)
+
+        acces_time_cache_size_chart.data.labels.push(cache_cfg.cache_size.value);
+        acces_time_cache_size_chart.data.datasets[0].data.push(acces_time);
+
+        acces_time_cache_size_chart.update();
+      }
+
+      function update_acces_time_block_size_chart() {
+        var element = document.getElementById('output');
+        
+        var acces_time = element.value.substring(element.value.indexOf('Access time (ns):') + 18, element.value.indexOf('Access time (ns):') + 24)
+
+        acces_time_block_size_chart.data.labels.push(cache_cfg.block_size.value);
+        acces_time_block_size_chart.data.datasets[0].data.push(acces_time);
+
+        acces_time_block_size_chart.update();
+      }
+
+      function update_acces_time_associativity_chart() {
+        var element = document.getElementById('output');
+        
+        var acces_time = element.value.substring(element.value.indexOf('Access time (ns):') + 18, element.value.indexOf('Access time (ns):') + 24)
+
+        acces_time_associativity_chart.data.labels.push(cache_cfg.associativity.value);
+        acces_time_associativity_chart.data.datasets[0].data.push(acces_time);
+
+        acces_time_associativity_chart.update();
+      }
+
+      function update_acces_time_technology_chart() {
+        var element = document.getElementById('output');
+        
+        var acces_time = element.value.substring(element.value.indexOf('Access time (ns):') + 18, element.value.indexOf('Access time (ns):') + 24)
+
+        acces_time_technology_chart.data.labels.push(cache_cfg.technology.value);
+        acces_time_technology_chart.data.datasets[0].data.push(acces_time);
+
+        acces_time_technology_chart.update();
+      }
+
+    function run_cacti() {
+      var element = document.getElementById('output');
+      element.value = "";
+
+        FS.writeFile('cache.cfg', document.getElementById('cachecfg').value, {flags: 'w+'});
+
+        callMain(arguments_);
+
+        parse_cacti_output();
+
+        update_acces_time_cache_size_chart();
+        update_acces_time_block_size_chart();
+        update_acces_time_associativity_chart();
+        update_acces_time_technology_chart();
     }
 
       var Module = {
@@ -464,22 +635,18 @@
           Module.setStatus.last.text = text;
           if (m) {
             text = m[1];
-            progressElement.value = parseInt(m[2])*100;
-            progressElement.max = parseInt(m[4])*100;
-            progressElement.hidden = false;
             spinnerElement.hidden = false;
           } else {
-            progressElement.value = null;
-            progressElement.max = null;
-            progressElement.hidden = true;
             if (!text) spinnerElement.hidden = true;
           }
-          statusElement.innerHTML = text;
         },
         totalDependencies: 0,
         monitorRunDependencies: function(left) {
           this.totalDependencies = Math.max(this.totalDependencies, left);
           Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        },
+        onRuntimeInitialized: function () {
+          document.getElementById("cacti_app").removeAttribute("hidden");
         }
       };
       Module.setStatus('Downloading...');

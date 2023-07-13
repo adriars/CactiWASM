@@ -2855,7 +2855,7 @@ void output_UCA(uca_org_t *fr)
     g_ip->F_sz_nm << endl << endl;
 
   cout << "    Access time (ns): " << fr->access_time*1e9 << endl;
-  cout << "    Cycle time (ns):  " << fr->cycle_time*1e9 << endl;
+  cout << "    Cycle time (ns): " << fr->cycle_time*1e9 << endl;
   if (g_ip->data_arr_ram_cell_tech_type >= 4) {
     cout << "    Precharge Delay (ns): " << fr->data_array2->precharge_delay*1e9 << endl;
     cout << "    Activate Energy (nJ): " << fr->data_array2->activate_energy*1e9 << endl;
