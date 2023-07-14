@@ -41,13 +41,14 @@
   <body>
     <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><h1>LOADING CACTI 7.0</h1></center></figure>
     <div id="cacti_app" hidden>
-    <div style="align-items: center; justify-content: center; display: flex; height: 100vh; flex-direction: column;">
+    <div style="align-items: center; justify-content: center; display: flex; flex-direction: column;">
         <form>
           <h1 style="text-align: center;">Basic configuration</h1>
+
             <label for="cache_size">Cache size (bytes)</label>
             <input type="number" id="cache_size" value="131072" oninput="(() => {cache_cfg.cache_size.value = parseInt(this.value);})();">
             <label for="block_size">Block size (bytes)</label>
-            <input type="number" id="block_size" value="64" oninput="(() => {cache_cfg.block_size.value = parseInt(this.value);})();">
+            <input type="number" id="block_size" value="64" oninput="(() => {if (this.value < 64) this.value = 64;cache_cfg.block_size.value = parseInt(this.value);})();">
             <label for="associativity">Associativity</label>
             <input type="number" id="associativity" value="2" oninput="(() => {cache_cfg.associativity.value = parseInt(this.value);})();">
             <label for="technology">Technology (u)</label>
@@ -63,13 +64,313 @@
             <label for="technology_0.090">0.090</label>
             <input type="radio" name="technology" id="technology_0.180" value="0.180" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
             <label for="technology_0.180">0.180</label>
-            <label for="UCA_bank_count">UCA bank count</label>
-            <input type="number" id="UCA_bank_count" value="1" oninput="(() => {cache_cfg.UCA_bank_count.value = parseInt(this.value);})();">
+            
+            <h1 style="text-align: center;">Advanced configuration</h1>
+
+            <h2 style="text-align: center;">Power gating</h2>
+            <input type="checkbox" id="array_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.array_power_gating.value = 'true' : cache_cfg.array_power_gating.value = 'false'})();"></input>
+            <label for="array_power_gating">Array Power Gating</label>
+            <input type="checkbox" id="wl_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.wl_power_gating.value = 'true' : cache_cfg.wl_power_gating.value = 'false'})();"></input>
+            <label for="wl_power_gating">WL Power Gating</label>
+            <input type="checkbox" id="cl_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.cl_power_gating.value = 'true' : cache_cfg.cl_power_gating.value = 'false'})();"></input>
+            <label for="cl_power_gating">CL Power Gating</label>
+            <input type="checkbox" id="bitline_floating" value="false" oninput="(() => {this.checked ? cache_cfg.bitline_floating.value = 'true' : cache_cfg.bitline_floating.value = 'false'})();"></input>
+            <label for="bitline_floating">Bitline floating</label>
+            <input type="checkbox" id="interconnect_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.interconnect_power_gating.value = 'true' : cache_cfg.interconnect_power_gating.value = 'false'})();"></input>
+            <label for="interconnect_power_gating">Interconnect Power Gating</label>
+            <label for="power_gating_performance_loss">Power Gating Performance Loss</label>
+            <input type="number" id="power_gating_performance_loss" value="0.01" oninput="(() => {cache_cfg.power_gating_performance_loss.value = parseFloat(this.value);})();"></input>
+
+            <h2 style="text-align: center;">Read-write ports</h2>
             <label for="read_write_port">Read-write port</label>
             <input type="number" id="read_write_port" value="1" oninput="(() => {cache_cfg.read_write_port.value = parseInt(this.value);})();">
-            <h1 style="text-align: center;">Advanced configuration</h1>
+            <label for="exclusive_read_port">exclusive read port</label>
+            <input type="number" id="exclusive_read_port" value="0" oninput="(() => {cache_cfg.exclusive_read_port.value = parseInt(this.value);})();"></input>
+            <label for="exclusive_write_port">exclusive write port</label>
+            <input type="number" id="exclusive_write_port" value="0" oninput="(() => {cache_cfg.exclusive_write_port.value = parseInt(this.value);})();"></input>
+            <label for="single_ended_read_ports">single ended read ports</label>
+            <input type="number" id="single_ended_read_ports" value="0" oninput="(() => {cache_cfg.single_ended_read_ports.value = parseInt(this.value);})();"></input>
+
+            <h2 style="text-align: center;">Main memories</h2>
+            <label for="page_size">page size (bits)</label>
+            <input type="number" id="page_size" value="8192" oninput="(() => {cache_cfg.page_size.value = parseInt(this.value);})();"></input>
+            <label for="burst_length">burst length</label>
+            <input type="number" id="burst_length" value="8" oninput="(() => {cache_cfg.burst_length.value = parseInt(this.value);})();"></input>
+            <label for="internal_prefetch_width">internal prefetch width</label>
+            <input type="number" id="internal_prefetch_width" value="8" oninput="(() => {cache_cfg.internal_prefetch_width.value = parseInt(this.value);})();"></input>
+
+            <h2 style="text-align: center;">Data</h2>
+            <label for="data_array_cell_type">Data array cell type</label>
+            <input type="radio" name="data_array_cell_type" id="data_array_cell_type_itrs-hp" value="itrs-hp" checked oninput="(() => {cache_cfg.data_array_cell_type.value = this.value;})();"></input>
+            <label for="data_array_cell_type_itrs-hp">itrs-hp</label>
+            <input type="radio" name="data_array_cell_type" id="data_array_cell_type_itrs-lstp" value="itrs-lstp" oninput="(() => {cache_cfg.data_array_cell_type.value = this.value;})();"></input>
+            <label for="data_array_cell_type_itrs-lstp">itrs-lstp</label>
+            <input type="radio" name="data_array_cell_type" id="data_array_cell_type_itrs-lop" value="itrs-lop" oninput="(() => {cache_cfg.data_array_cell_type.value = this.value;})();"></input>
+            <label for="data_array_cell_type_itrs-lop">itrs-lop</label>
+            <input type="radio" name="data_array_cell_type" id="data_array_cell_type_lp-dram" value="lp-dram" oninput="(() => {cache_cfg.data_array_cell_type.value = this.value;})();"></input>
+            <label for="data_array_cell_type_lp-dram">lp-dram</label>
+            <input type="radio" name="data_array_cell_type" id="data_array_cell_type_comm-dram" value="comm-dram" oninput="(() => {cache_cfg.data_array_cell_type.value = this.value;})();"></input>
+            <label for="data_array_cell_type_comm-dram">comm-dram</label>
+            <label for="data_array_peripheral_type">Data array peripheral type</label>
+            <input type="radio" name="data_array_peripheral_type" id="data_array_peripheral_type_itrs-hp" value="itrs-hp" checked oninput="(() => {cache_cfg.data_array_peripheral_type.value = this.value;})();"></input>
+            <label for="data_array_peripheral_type_itrs-hp">itrs-hp</label>
+            <input type="radio" name="data_array_peripheral_type" id="data_array_peripheral_type_itrs-lstp" value="itrs-lstp" oninput="(() => {cache_cfg.data_array_peripheral_type.value = this.value;})();"></input>
+            <label for="data_array_peripheral_type_itrs-lstp">itrs-lstp</label>
+            <input type="radio" name="data_array_peripheral_type" id="data_array_peripheral_type_itrs-lop" value="itrs-lop" oninput="(() => {cache_cfg.data_array_peripheral_type.value = this.value;})();"></input>
+            <label for="data_array_peripheral_type_itrs-lop">itrs-lop</label>
+
+            <h2 style="text-align: center;">Tag</h2>
+            <label for="tag_size">tag size (b)</label>
+            <input type="number" id="tag_size" value="0" oninput="(() => {this.value == 0 ? cache_cfg.tag_size.value = 'default' : cache_cfg.tag_size.value = parseInt(this.value);})();"></input>
+            <label for="tag_array_cell_type">Tag array cell type</label>
+            <input type="radio" name="tag_array_cell_type" id="tag_array_cell_type_itrs-hp" value="itrs-hp" checked oninput="(() => {cache_cfg.tag_array_cell_type.value = this.value;})();"></input>
+            <label for="tag_array_cell_type_itrs-hp">itrs-hp</label>
+            <input type="radio" name="tag_array_cell_type" id="tag_array_cell_type_itrs-lstp" value="itrs-lstp" oninput="(() => {cache_cfg.tag_array_cell_type.value = this.value;})();"></input>
+            <label for="tag_array_cell_type_itrs-lstp">itrs-lstp</label>
+            <input type="radio" name="tag_array_cell_type" id="tag_array_cell_type_itrs-lop" value="itrs-lop" oninput="(() => {cache_cfg.tag_array_cell_type.value = this.value;})();"></input>
+            <label for="tag_array_cell_type_itrs-lop">itrs-lop</label>
+            <input type="radio" name="tag_array_cell_type" id="tag_array_cell_type_lp-dram" value="lp-dram" oninput="(() => {cache_cfg.tag_array_cell_type.value = this.value;})();"></input>
+            <label for="tag_array_cell_type_lp-dram">lp-dram</label>
+            <input type="radio" name="tag_array_cell_type" id="tag_array_cell_type_comm-dram" value="comm-dram" oninput="(() => {cache_cfg.tag_array_cell_type.value = this.value;})();"></input>
+            <label for="tag_array_cell_type_comm-dram">comm-dram</label>
+            <label for="tag_array_peripheral_type">Tag array peripheral type</label>
+            <input type="radio" name="tag_array_peripheral_type" id="tag_array_peripheral_type_itrs-hp" value="itrs-hp" checked oninput="(() => {cache_cfg.tag_array_peripheral_type.value = this.value;})();"></input>
+            <label for="tag_array_peripheral_type_itrs-hp">itrs-hp</label>
+            <input type="radio" name="tag_array_peripheral_type" id="tag_array_peripheral_type_itrs-lstp" value="itrs-lstp" oninput="(() => {cache_cfg.tag_array_peripheral_type.value = this.value;})();"></input>
+            <label for="tag_array_peripheral_type_itrs-lstp">itrs-lstp</label>
+            <input type="radio" name="tag_array_peripheral_type" id="tag_array_peripheral_type_itrs-lop" value="itrs-lop" oninput="(() => {cache_cfg.tag_array_peripheral_type.value = this.value;})();"></input>
+            <label for="tag_array_peripheral_type_itrs-lop">itrs-lop</label>
+
+            <h2 style="text-align: center;">Wires</h2>
+            <label for="wire_signaling">Wire signaling</label>
+            <input type="radio" name="wire_signaling" id="wire_signaling_global" value="Global" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+            <label for="wire_signaling_global">global</label>
+            <input type="radio" name="wire_signaling" id="wire_signaling_global_5" value="Global_5" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+            <label for="wire_signaling_global_5">global 5</label>
+            <input type="radio" name="wire_signaling" id="wire_signaling_global_10" value="Global_10" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+            <label for="wire_signaling_global_10">global 10</label>
+            <input type="radio" name="wire_signaling" id="wire_signaling_global_20" value="Global_20" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+            <label for="wire_signaling_global_20">global 20</label>
+            <input type="radio" name="wire_signaling" id="wire_signaling_global_30" value="Global_30" checked oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+            <label for="wire_signaling_global_30">global 30</label>
+            <input type="radio" name="wire_signaling" id="wire_signaling_fullswing" value="fullswing" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+            <label for="wire_signaling_fullswing">fullswing</label>
+            <input type="radio" name="wire_signaling" id="wire_signaling_lowswing" value="lowswing" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+            <label for="wire_signaling_lowswing">lowswing</label>
+            <label for="wire_inside_mat">Wire inside mat</label>
+            <input type="radio" name="wire_inside_mat" id="wire_inside_mat_global" value="global" oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
+            <label for="wire_inside_mat_global">global</label>
+            <input type="radio" name="wire_inside_mat" id="wire_inside_mat_semi-global" value="semi-global" checked oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
+            <label for="wire_inside_mat_semi-global">semi-global</label>
+            <input type="radio" name="wire_inside_mat" id="wire_inside_mat_local" value="local" oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
+            <label for="wire_inside_mat_local">local</label>
+            <label for="wire_outside_mat">Wire outside mat</label>
+            <input type="radio" name="wire_outside_mat" id="wire_outside_mat_global" value="global" oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
+            <label for="wire_outside_mat_global">global</label>
+            <input type="radio" name="wire_outside_mat" id="wire_outside_mat_semi-global" value="semi-global" checked oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
+            <label for="wire_outside_mat_semi-global">semi-global</label>
+            <input type="radio" name="wire_outside_mat" id="wire_outside_mat_local" value="local" oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
+            <label for="wire_outside_mat_local">local</label>
+
+            <h2 style="text-align: center;">Design objectives UCA</h2>
+            <label for="uca_bank_count">UCA bank count</label>
+            <input type="number" id="uca_bank_count" value="1" oninput="(() => {cache_cfg.uca_bank_count.value = parseInt(this.value);})();"></input>
+            <label for="design_objective_weight_delay">UCA weight delay</label>
+            <input type="number" id="design_objective_weight_delay" value="0" oninput="(() => {cache_cfg.design_objective.value[0] = parseInt(this.value);})();"></input>
+            <label for="design_objective_dynamic_power">UCA dynamic power</label>
+            <input type="number" id="design_objective_dynamic_power" value="0" oninput="(() => {cache_cfg.design_objective.value[1] = parseInt(this.value);})();"></input>
+            <label for="design_objective_leakage_power">UCA leakage power</label>
+            <input type="number" id="design_objective_leakage_power" value="0" oninput="(() => {cache_cfg.design_objective.value[2] = parseInt(this.value);})();"></input>
+            <label for="design_objective_cycle_time">UCA cycle time</label>
+            <input type="number" id="design_objective_cycle_time" value="100" oninput="(() => {cache_cfg.design_objective.value[3] = parseInt(this.value);})();"></input>
+            <label for="design_objective_area">UCA area</label>
+            <input type="number" id="design_objective_area" value="0" oninput="(() => {cache_cfg.design_objective.value[4] = parseInt(this.value);})();"></input>
+            <label for="deviate_weight_delay">UCA deviate weight delay</label>
+            <input type="number" id="deviate_weight_delay" value="20" oninput="(() => {cache_cfg.deviate.value[0] = parseInt(this.value);})();"></input>
+            <label for="deviate_dynamic_power">UCA deviate dynamic power</label>
+            <input type="number" id="deviate_dynamic_power" value="100000" oninput="(() => {cache_cfg.deviate.value[1] = parseInt(this.value);})();"></input>
+            <label for="deviate_leakage_power">UCA deviate leakage power</label>
+            <input type="number" id="deviate_leakage_power" value="100000" oninput="(() => {cache_cfg.deviate.value[2] = parseInt(this.value);})();"></input>
+            <label for="deviate_cycle_time">UCA deviate cycle time</label>
+            <input type="number" id="deviate_cycle_time" value="100000" oninput="(() => {cache_cfg.deviate.value[3] = parseInt(this.value);})();"></input>
+            <label for="deviate_area">UCA deviate area</label>
+            <input type="number" id="deviate_area" value="100000" oninput="(() => {cache_cfg.deviate.value[4] = parseInt(this.value);})();"></input>
+            <h2 style="text-align: center;">Design objectives NUCA</h2>
+            <label for="nuca_bank_count">NUCA bank count</label>
+            <input type="number" id="nuca_bank_count" value="0" oninput="(() => {cache_cfg.nuca_bank_count.value = parseInt(this.value);})();"></input>
+            <label for="nucadesign_objective_weight_delay">NUCA weight delay</label>
+            <input type="number" id="nucadesign_objective_weight_delay" value="100" oninput="(() => {cache_cfg.nucadesign_objective.value[0] = parseInt(this.value);})();"></input>
+            <label for="nucadesign_objective_dynamic_power">NUCA dynamic power</label>
+            <input type="number" id="nucadesign_objective_dynamic_power" value="100" oninput="(() => {cache_cfg.nucadesign_objective.value[1] = parseInt(this.value);})();"></input>
+            <label for="nucadesign_objective_leakage_power">NUCA leakage power</label>
+            <input type="number" id="nucadesign_objective_leakage_power" value="0" oninput="(() => {cache_cfg.nucadesign_objective.value[2] = parseInt(this.value);})();"></input>
+            <label for="nucadesign_objective_cycle_time">NUCA cycle time</label>
+            <input type="number" id="nucadesign_objective_cycle_time" value="0" oninput="(() => {cache_cfg.nucadesign_objective.value[3] = parseInt(this.value);})();"></input>
+            <label for="nucadesign_objective_area">NUCA area</label>
+            <input type="number" id="nucadesign_objective_area" value="100" oninput="(() => {cache_cfg.nucadesign_objective.value[4] = parseInt(this.value);})();"></input>
+            <label for="nucadeviate_weight_delay">NUCA deviate weight delay</label>
+            <input type="number" id="nucadeviate_weight_delay" value="10" oninput="(() => {cache_cfg.nucadeviate.value[0] = parseInt(this.value);})();"></input>
+            <label for="nucadeviate_dynamic_power">NUCA deviate dynamic power</label>
+            <input type="number" id="nucadeviate_dynamic_power" value="10000" oninput="(() => {cache_cfg.nucadeviate.value[1] = parseInt(this.value);})();"></input>
+            <label for="nucadeviate_leakage_power">NUCA deviate leakage power</label>
+            <input type="number" id="nucadeviate_leakage_power" value="10000" oninput="(() => {cache_cfg.nucadeviate.value[2] = parseInt(this.value);})();"></input>
+            <label for="nucadeviate_cycle_time">NUCA deviate cycle time</label>
+            <input type="number" id="nucadeviate_cycle_time" value="10000" oninput="(() => {cache_cfg.nucadeviate.value[3] = parseInt(this.value);})();"></input>
+            <label for="nucadeviate_area">NUCA deviate area</label>
+            <input type="number" id="nucadeviate_area" value="10000" oninput="(() => {cache_cfg.nucadeviate.value[4] = parseInt(this.value);})();"></input>
+
+            <h2 style="text-align: center;">Metrics design points</h2>
+            <label for="first_metrics_design_points">first metric</label>
+            <input type="radio" name="first_metrics_design_points" id="first_metrics_design_points_cost" value="Cost" checked oninput="(() => {cache_cfg.first_metric.value = this.value})();"></input>
+            <label for="first_metrics_design_points_cost">cost</label>
+            <input type="radio" name="first_metrics_design_points" id="first_metrics_design_points_bandwidth" value="Bandwidth" oninput="(() => {cache_cfg.first_metric.value = this.value})();"></input>
+            <label for="first_metrics_design_points_bandwidth">bandwith</label>
+            <input type="radio" name="first_metrics_design_points" id="first_metrics_design_points_energy" value="Energy" oninput="(() => {cache_cfg.first_metric.value = this.value})();"></input>
+            <label for="first_metrics_design_points_energy">energy</label>
+            <label for="second_metrics_design_points">second metric</label>
+            <input type="radio" name="second_metrics_design_points" id="second_metrics_design_points_cost" value="Cost" oninput="(() => {cache_cfg.second_metric.value = this.value})();"></input>
+            <label for="second_metrics_design_points_cost">cost</label>
+            <input type="radio" name="second_metrics_design_points" id="second_metrics_design_points_bandwidth" value="Bandwidth" checked oninput="(() => {cache_cfg.second_metric.value = this.value})();"></input>
+            <label for="second_metrics_design_points_bandwidth">bandwith</label>
+            <input type="radio" name="second_metrics_design_points" id="second_metrics_design_points_energy" value="Energy" oninput="(() => {cache_cfg.second_metric.value = this.value})();"></input>
+            <label for="second_metrics_design_points_energy">energy</label>
+            <label for="third_metrics_design_points">third metric</label>
+            <input type="radio" name="third_metrics_design_points" id="third_metrics_design_points_cost" value="Cost" oninput="(() => {cache_cfg.third_metric.value = this.value})();"></input>
+            <label for="third_metrics_design_points_cost">cost</label>
+            <input type="radio" name="third_metrics_design_points" id="third_metrics_design_points_bandwidth" value="Bandwidth" oninput="(() => {cache_cfg.third_metric.value = this.value})();"></input>
+            <label for="third_metrics_design_points_bandwidth">bandwith</label>
+            <input type="radio" name="third_metrics_design_points" id="third_metrics_design_points_energy" value="Energy" checked oninput="(() => {cache_cfg.third_metric.value = this.value})();"></input>
+            <label for="third_metrics_design_points_energy">energy</label>
+
+            <h2 style="text-align: center;">Cache</h2>
+            <label for="cache_type">cache type</label>
+            <input type="radio" name="cache_type" id="cache_type_cache" value="cache" checked oninput="(() => {cache_cfg.cache_type.value = this.value})();"></input>
+            <label for="cache_type_cache">cache</label>
+            <input type="radio" name="cache_type" id="cache_type_main_memory" value="main memory" oninput="(() => {cache_cfg.cache_type.value = this.value})();"></input>
+            <label for="cache_type_main_memory">main memory</label>
+            <input type="radio" name="cache_type" id="cache_type_3D_memory" value="3D memory or 2D main memory" oninput="(() => {cache_cfg.cache_type.value = this.value})();"></input>
+            <label for="cache_type_3D_memory">3D memory or 2D main memory</label>
+            <input type="radio" name="cache_type" id="cache_type_ram" value="ram" oninput="(() => {cache_cfg.cache_type.value = this.value})();"></input>
+            <label for="cache_type_ram">ram</label>
+            <input type="radio" name="cache_type" id="cache_type_cam" value="cam" oninput="(() => {cache_cfg.cache_type.value = this.value})();"></input>
+            <label for="cache_type_cam">cam</label>
+            <label for="access_mode">access mode</label>
+            <input type="radio" name="access_mode" id="access_mode_normal" value="normal" checked oninput="(() => {cache_cfg.access_mode.value = this.value})();"></input>
+            <label for="access_mode_normal">normal</label>
+            <input type="radio" name="access_mode" id="access_mode_sequential" value="sequential" oninput="(() => {cache_cfg.access_mode.value = this.value})();"></input>
+            <label for="access_mode_sequential">sequential</label>
+            <input type="radio" name="access_mode" id="access_mode_fast" value="fast" oninput="(() => {cache_cfg.access_mode.value = this.value})();"></input>
+            <label for="access_mode_fast">fast</label>
+            <label for="optimize_ed">Optimize ED or ED^2</label>
+            <input type="radio" name="optimize_ed" id="optimize_ed_ed" value="ED" oninput="(() => {cache_cfg.optimize_ed.value = this.value})();"></input>
+            <label for="optimize_ed_ed">ED</label>
+            <input type="radio" name="optimize_ed" id="optimize_ed_ed2" value="ED^2" checked oninput="(() => {cache_cfg.optimize_ed.value = this.value})();"></input>
+            <label for="optimize_ed_ed2">ED^2</label>
+            <input type="radio" name="optimize_ed" id="optimize_ed_none" value="NONE" oninput="(() => {cache_cfg.optimize_ed.value = this.value})();"></input>
+            <label for="optimize_ed_none">none</label>
+            <label for="cache_model">Cache model</label>
+            <input type="radio" name="cache_model" id="cache_model_uca" value="UCA" checked oninput="(() => {cache_cfg.cache_model.value = this.value})();"></input>
+            <label for="cache_model_uca">UCA</label>
+            <input type="radio" name="cache_model" id="cache_model_nuca" value="NUCA" oninput="(() => {cache_cfg.cache_model.value = this.value})();"></input>
+            <label for="cache_model_nuca">NUCA</label>
+            <label for="cache_level">Cache level</label>
+            <input type="radio" name="cache_level" id="cache_level_l3" value="L3" checked oninput="(() => {cache_cfg.cache_level.value = this.value})();"></input>
+            <label for="cache_level_l3">L3</label>
+            <input type="radio" name="cache_level" id="cache_level_l2" value="L2" oninput="(() => {cache_cfg.cache_level.value = this.value})();"></input>
+            <label for="cache_level_l2">L2</label>
+            <label for="core_count">Core count</label>
+            <input type="radio" name="core_count" id="core_count_4" value="4" oninput="(() => {cache_cfg.core_count.value = parseInt(this.value);})();"></input>
+            <label for="core_count_4">4</label>
+            <input type="radio" name="core_count" id="core_count_8" value="8" checked oninput="(() => {cache_cfg.core_count.value = parseInt(this.value);})();"></input>
+            <label for="core_count_8">8</label>
+            <input type="radio" name="core_count" id="core_count_16" value="16" oninput="(() => {cache_cfg.core_count.value = parseInt(this.value);})();"></input>
+            <label for="core_count_16">16</label>
+
+            <h2 style="text-align: center;">Error correction</h2>
+            <input type="checkbox" id="add_ecc" value="true" checked oninput="(() => {this.checked ? cache_cfg.add_ecc.value  = 'true' : cache_cfg.add_ecc.value  = 'false'})();"></input>
+            <label for="add_ecc">Add ECC</label>
+
+            <h2 style="text-align: center;">Temperature</h2>
+            <label id="operating_temperature_label" for="operating_temperature">operating temperature 360 (K)</label>
+            <input type="range" id="operating_temperature" min="300" max="400" value="360" step="10" oninput="(() => {cache_cfg.operating_temperature.value = parseInt(this.value); document.getElementById('operating_temperature_label').innerText = `operating temperature ${this.value} (K)`})();"></input>
+
+            <h2 style="text-align: center;">Bus</h2>
+            <label for="output_input_bus_width">output/input bus width</label>
+            <input type="number" id="output_input_bus_width" value="512" oninput="(() => {cache_cfg.output_input_bus_width.value = parseInt(this.value);})();"></input>
+
+            <h2 style="text-align: center;">Debug</h2>
+            <label for="print_level">Print level</label>
+            <input type="radio" name="print_level" id="print_level_detailed" value="DETAILED" checked oninput="(() => {cache_cfg.print_level.value = this.value})();"></input>
+            <label for="print_level_detailed">DETAILED</label>
+            <input type="radio" name="print_level" id="print_level_concise" value="CONCISE" oninput="(() => {cache_cfg.print_level.value = this.value})();"></input>
+            <label for="print_level_concise">CONCISE</label>
+            <input type="checkbox" id="print_input_parameters" value="true" checked oninput="(() => {this.checked ? cache_cfg.print_input_parameters.value = 'true' : cache_cfg.print_input_parameters.value = 'false'})();"></input>
+            <label for="print_input_parameters">Print input parameters</label>
+            <input type="checkbox" id="verbose" value="F" oninput="(() => {this.checked ? cache_cfg.verbose.value = 'T' : cache_cfg.verbose.value = 'F'})();"></input>
+            <label for="verbose">verbose</label>
+
+            <h2 style="text-align: center;">Others</h2>
+
+            <label for="interconnect_projection">Interconnect projection</label>
+            <input type="number" id="interconnect_projection" value="conservative" oninput="(() => {cache_cfg.interconnect_projection.value = parseInt(this.value);})();"></input>
+            <label for="force_cache_config">Force cache config</label>
+            <input type="number" id="force_cache_config" value="false" oninput="(() => {cache_cfg.force_cache_config.value = parseInt(this.value);})();"></input>
+            <label for="ndwl">Ndwl</label>
+            <input type="number" id="ndwl" value="1" oninput="(() => {cache_cfg.ndwl.value = parseInt(this.value);})();"></input>
+            <label for="ndbl">Ndbl</label>
+            <input type="number" id="ndbl" value="1" oninput="(() => {cache_cfg.ndbl.value = parseInt(this.value);})();"></input>
+            <label for="nspd">Nspd</label>
+            <input type="number" id="nspd" value="0" oninput="(() => {cache_cfg.nspd.value = parseInt(this.value);})();"></input>
+            <label for="ndcm">Ndcm</label>
+            <input type="number" id="ndcm" value="1" oninput="(() => {cache_cfg.ndcm.value = parseInt(this.value);})();"></input>
+            <label for="ndsam1">Ndsam1</label>
+            <input type="number" id="ndsam1" value="0" oninput="(() => {cache_cfg.ndsam1.value = parseInt(this.value);})();"></input>
+            <label for="ndsam2">Ndsam2</label>
+            <input type="number" id="ndsam2" value="0" oninput="(() => {cache_cfg.ndsam2.value = parseInt(this.value);})();"></input>
+            <label for="dram_type">dram_type</label>
+            <input type="number" id="dram_type" value="DDR3" oninput="(() => {cache_cfg.dram_type.value = parseInt(this.value);})();"></input>
+            <label for="io_state">io state</label>
+            <input type="number" id="io_state" value="WRITE" oninput="(() => {cache_cfg.io_state.value = parseInt(this.value);})();"></input>
+            <label for="addr_timing">addr_timing</label>
+            <input type="number" id="addr_timing" value="1.0" oninput="(() => {cache_cfg.addr_timing.value = parseInt(this.value);})();"></input>
+            <label for="mem_density">mem_density</label>
+            <input type="number" id="mem_density" value="4" oninput="(() => {cache_cfg.mem_density.value = parseInt(this.value);})();"></input>
+            <label for="bus_freq">bus_freq</label>
+            <input type="number" id="bus_freq" value="800" oninput="(() => {cache_cfg.bus_freq.value = parseInt(this.value);})();"></input>
+            <label for="duty_cycle">duty_cycle</label>
+            <input type="number" id="duty_cycle" value="1.0" oninput="(() => {cache_cfg.duty_cycle.value = parseInt(this.value);})();"></input>
+            <label for="activity_dq">activity_dq</label>
+            <input type="number" id="activity_dq" value="1.0" oninput="(() => {cache_cfg.activity_dq.value = parseInt(this.value);})();"></input>
+            <label for="activity_ca">activity_ca</label>
+            <input type="number" id="activity_ca" value="0.5" oninput="(() => {cache_cfg.activity_ca.value = parseInt(this.value);})();"></input>
+            <label for="num_dq">num_dq</label>
+            <input type="number" id="num_dq" value="72" oninput="(() => {cache_cfg.num_dq.value = parseInt(this.value);})();"></input>
+            <label for="num_dqs">num_dqs</label>
+            <input type="number" id="num_dqs" value="18" oninput="(() => {cache_cfg.num_dqs.value = parseInt(this.value);})();"></input>
+            <label for="num_ca">num_ca</label>
+            <input type="number" id="num_ca" value="25" oninput="(() => {cache_cfg.num_ca.value = parseInt(this.value);})();"></input>
+            <label for="num_clk">num_clk</label>
+            <input type="number" id="num_clk" value="2" oninput="(() => {cache_cfg.num_clk.value = parseInt(this.value);})();"></input>
+            <label for="num_mem_dq">num_mem_dq</label>
+            <input type="number" id="num_mem_dq" value="2" oninput="(() => {cache_cfg.num_mem_dq.value = parseInt(this.value);})();"></input>
+            <label for="mem_data_width">mem_data_width</label>
+            <input type="number" id="mem_data_width" value="8" oninput="(() => {cache_cfg.mem_data_width.value = parseInt(this.value);})();"></input>
+            <label for="rtt_value">rtt_value</label>
+            <input type="number" id="rtt_value" value="10000" oninput="(() => {cache_cfg.rtt_value.value = parseInt(this.value);})();"></input>
+            <label for="ron_value">ron_value</label>
+            <input type="number" id="ron_value" value="34" oninput="(() => {cache_cfg.ron_value.value = parseInt(this.value);})();"></input>
+            <label for="num_bobs">num_bobs</label>
+            <input type="number" id="num_bobs" value="1" oninput="(() => {cache_cfg.num_bobs.value = parseInt(this.value);})();"></input>
+            <label for="capacity">capacity</label>
+            <input type="number" id="capacity" value="80" oninput="(() => {cache_cfg.capacity.value = parseInt(this.value);})();"></input>
+            <label for="num_channels_per_bob">num_channels_per_bob</label>
+            <input type="number" id="num_channels_per_bob" value="1" oninput="(() => {cache_cfg.num_channels_per_bob.value = parseInt(this.value);})();"></input>
+            <label for="dimm_model">DIMM model</label>
+            <input type="number" id="dimm_model" value="ALL" oninput="(() => {cache_cfg.dimm_model.value = parseInt(this.value);})();"></input>
+            <label for="mirror_in_bob">mirror_in_bob</label>
+            <input type="number" id="mirror_in_bob" value="F" oninput="(() => {cache_cfg.mirror_in_bob.value = parseInt(this.value);})();"></input>
         </form>
-        <button onclick="parse_cacti_output()">Test html form</button>
+        <button onclick="(() => {console.log(cache_cfg);})();">Test html form</button>
         <textarea id="cachecfg" style="width: 90vw; height: 90vh;">
 //# Cache size
 //-size (bytes) 2048
@@ -392,33 +693,82 @@
 
       // Default values of the cache configuration
       var cache_cfg = {
-        cache_size: {parameter: '-size (bytes)', value: 131072},
-        block_size: {parameter: '-block size (bytes)', value: 64},
-        associativity: {parameter: '-associativity', value: 2},
-        technology: {parameter: '-technology (u)', value: 0.090},
-        read_write_port: {parameter: '-read-write port', value: 1},
-        uca_bank_count: {parameter: '-UCA bank count', value: 1},
 
+        cache_size: {parameter: '-size (bytes)', value: 131072},
         array_power_gating: {parameter: '-Array Power Gating', value: "false"},
         wl_power_gating: {parameter: '-WL Power Gating', value: "false"},
         cl_power_gating: {parameter: '-CL Power Gating', value: "false"},
         bitline_floating: {parameter: '-Bitline floating', value: "false"},
         interconnect_power_gating: {parameter: '-Interconnect Power Gating', value: "false"},
-        power_gating_performance_los: {parameter: '-Power Gating Performance Loss', value: 0.01},
+        power_gating_performance_loss: {parameter: '-Power Gating Performance Loss', value: 0.01},
+        block_size: {parameter: '-block size (bytes)', value: 64},
+        associativity: {parameter: '-associativity', value: 2},
+        read_write_port: {parameter: '-read-write port', value: 1},
         exclusive_read_port: {parameter: '-exclusive read port', value: 0},
         exclusive_write_port: {parameter: '-exclusive write port', value: 0},
         single_ended_read_ports: {parameter: '-single ended read ports', value: 0},
+        uca_bank_count: {parameter: '-UCA bank count', value: 1},
+        technology: {parameter: '-technology (u)', value: 0.090},
         page_size: {parameter: '-page size (bits)', value: 8192},
         burst_length: {parameter: '-burst length', value: 8},
         internal_prefetch_width: {parameter: '-internal prefetch width', value: 8},
         data_array_cell_type: {parameter: '-Data array cell type', value: "itrs-hp"},
-        data_array_peripheral_type: {parameter: 'Data array peripheral type', value: "itrs-hp"},
-        tag_array_cell_type: {parameter: '-Tag aray cell type', value: "itrs-hp"},
+        data_array_peripheral_type: {parameter: '-Data array peripheral type', value: "itrs-hp"},
+        tag_array_cell_type: {parameter: '-Tag array cell type', value: "itrs-hp"},
         tag_array_peripheral_type: {parameter: '-Tag array peripheral type', value: "itrs-hp"},
-
-        
-
-        aaa: {parameter: 'bbb', value: ccc},
+        output_input_bus_width: {parameter: '-output/input bus width', value: 512},
+        operating_temperature: {parameter: '-operating temperature (K)', value: 360},
+        cache_type: {parameter: '-cache type', value: "cache"},
+        tag_size: {parameter: '-tag size (b)', value: "default"},
+        access_mode: {parameter: '-access mode (normal, sequential, fast)', value: "normal"},
+        design_objective: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: [0,0,0,100,0]},
+        deviate: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: [20,100000,100000,100000,100000]},
+        nucadesign_objective: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: [100,100,0,0,100]},
+        nucadeviate: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: [10,10000,10000,10000,10000]},
+        optimize_ed: {parameter: '-Optimize ED or ED^2 (ED, ED^2, NONE):', value: "ED^2"},
+        cache_model: {parameter: '-Cache model (NUCA, UCA) ', value: "UCA"},
+        nuca_bank_count: {parameter: '-NUCA bank count', value: 0},
+        wire_signaling: {parameter: '-Wire signaling (fullswing, lowswing, default)', value: "Global_30"},
+        wire_inside_mat: {parameter: '-Wire inside mat', value: "semi-global"},
+        wire_outside_mat: {parameter: '-Wire outside mat', value: "semi-global"},
+        interconnect_projection: {parameter: '-Interconnect projection', value: "conservative"},
+        core_count: {parameter: '-Core count', value: 8},
+        cache_level: {parameter: '-Cache level (L2/L3)', value: "L3"},
+        add_ecc: {parameter: '-Add ECC', value: "true"},
+        print_level: {parameter: '-Print level (DETAILED, CONCISE)', value: "DETAILED"},
+        print_input_parameters: {parameter: '-Print input parameters', value: "true"},
+        force_cache_config: {parameter: '-Force cache config', value: "false"},
+        ndwl: {parameter: '-Ndwl', value: 1},
+        ndbl: {parameter: '-Ndbl', value: 1},
+        nspd: {parameter: '-Nspd', value: 0},
+        ndcm: {parameter: '-Ndcm', value: 1},
+        ndsam1: {parameter: '-Ndsam1', value: 0},
+        ndsam2: {parameter: '-Ndsam2', value: 0},
+        dram_type: {parameter: '-dram_type', value: "DDR3"},
+        io_state: {parameter: '-io state', value: "WRITE"},
+        addr_timing: {parameter: '-addr_timing', value: 1.0},
+        mem_density: {parameter: '-mem_density', value: 4},
+        bus_freq: {parameter: '-bus_freq', value: 800},
+        duty_cycle: {parameter: '-duty_cycle', value: 1.0},
+        activity_dq: {parameter: '-activity_dq', value: 1.0},
+        activity_ca: {parameter: '-activity_ca', value: 0.5},
+        num_dq: {parameter: '-num_dq', value: 72},
+        num_dqs: {parameter: '-num_dqs', value: 18},
+        num_ca: {parameter: '-num_ca', value: 25},
+        num_clk: {parameter: '-num_clk', value: 2},
+        num_mem_dq: {parameter: '-num_mem_dq', value: 2},
+        mem_data_width: {parameter: '-mem_data_width', value: 8},
+        rtt_value: {parameter: '-rtt_value', value: 10000},
+        ron_value: {parameter: '-ron_value', value: 34},
+        num_bobs: {parameter: '-num_bobs', value: 1},
+        capacity: {parameter: '-capacity', value: 80	},
+        num_channels_per_bob: {parameter: '-num_channels_per_bob', value: 1	},
+        first_metric: {parameter: '-first metric', value: "Cost"},
+        second_metric: {parameter: '-second metric', value: "Bandwidth"},
+        third_metric: {parameter: '-third metric', value: "Energy"	},
+        dimm_model: {parameter: '-DIMM model', value: "ALL"},
+        mirror_in_bob: {parameter: '-mirror_in_bob', value: "F"},
+        verbose: {parameter: '-verbose', value: "F"}
       };
 
       var parsed_cacti_output = {
@@ -650,6 +1000,23 @@ ${cache_cfg.technology.parameter} ${cache_cfg.technology.value}`
             }
           };
         })(),
+        printErr: (function() {
+          var element = document.getElementById('output');
+          if (element) element.value = ''; // clear browser cache
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            // These replacements are necessary if you render to raw HTML
+            //text = text.replace(/&/g, "&amp;");
+            //text = text.replace(/</g, "&lt;");
+            //text = text.replace(/>/g, "&gt;");
+            //text = text.replace('\n', '<br>', 'g');
+            //console.log(text);
+            if (element) {
+              element.value += "Error: " + text + "\n";
+              //element.scrollTop = element.scrollHeight; // focus on bottom
+            }
+          };
+        })(),
         setStatus: function(text) {
           if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
           if (text === Module.setStatus.last.text) return;
@@ -680,6 +1047,7 @@ ${cache_cfg.technology.parameter} ${cache_cfg.technology.value}`
         spinnerElement.style.display = 'none';
         Module.setStatus = function(text) {
           if (text) console.error('[post-exception status] ' + text);
+          if (text) document.getElementById('output').value = '[post-exception status] ' + text;
         };
       };
     </script>
