@@ -41,8 +41,15 @@
   <body>
     <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><h1>LOADING CACTI 7.0</h1></center></figure>
     <div id="cacti_app" hidden>
-    <div style="align-items: center; justify-content: center; display: flex; flex-direction: column;">
-        <form style="width: 90vw;">
+    <div style="align-items: center; justify-content: center; display: flex; flex-direction: column; width: 90vw;">
+      <form>
+        <label for="configuration_method">Configuration method</label>
+        <input type="radio" name="configuration_method" id="configuration_method_form" value="form" checked oninput="(() => {document.getElementById('form_method').style = 'display: default;';document.getElementById('cachecfg').style = 'display: none;';})();">
+        <label for="configuration_method_form">Form</label>
+        <input type="radio" name="configuration_method" id="configuration_method_file" value="file" oninput="(() => {document.getElementById('form_method').style = 'display: none;';document.getElementById('cachecfg').style = 'display: default;';})();">
+        <label for="configuration_method_file">File</label>
+      </form>
+        <form id="form_method">
           <h1 style="text-align: center;">Basic configuration</h1>
 
           <div style="display: grid; grid-template-columns: auto auto auto; row-gap: 2vh; text-align: center;">
@@ -581,98 +588,294 @@
                   </div>
                 </div>
 
-                <div>
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
 
-                  <h2 style="text-align: center;">Bus</h2>
-                  <label for="output_input_bus_width">output/input bus width</label>
-                  <input type="number" id="output_input_bus_width" value="512" oninput="(() => {cache_cfg.output_input_bus_width.value = parseInt(this.value);})();"></input>
-                  <label for="addr_timing">addr_timing</label>
-                  <input type="number" id="addr_timing" value="1.0" oninput="(() => {cache_cfg.addr_timing.value = parseFloat(this.value);})();"></input>
-                  <label for="bus_freq">bus_freq</label>
-                  <input type="number" id="bus_freq" value="800" oninput="(() => {cache_cfg.bus_freq.value = parseFloat(this.value);})();"></input>
+                  <div>
+                    <h2 style="text-align: center;">Bus</h2>
+
+                  </div>
+                  <div>
+                    <label for="output_input_bus_width">output/input bus width</label>
+                    <input type="number" id="output_input_bus_width" value="512" oninput="(() => {cache_cfg.output_input_bus_width.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="addr_timing">addr_timing</label>
+                    <input type="number" id="addr_timing" value="1.0" oninput="(() => {cache_cfg.addr_timing.value = parseFloat(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="bus_freq">bus_freq</label>
+                    <input type="number" id="bus_freq" value="800" oninput="(() => {cache_cfg.bus_freq.value = parseFloat(this.value);})();"></input>
+
+                  </div>
                 </div>
 
-                <div>
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
 
-                  <h2 style="text-align: center;">Debug</h2>
-                  <label for="print_level">Print level</label>
-                  <input type="radio" name="print_level" id="print_level_detailed" value="DETAILED" checked oninput="(() => {cache_cfg.print_level.value = this.value})();"></input>
-                  <label for="print_level_detailed">DETAILED</label>
-                  <input type="radio" name="print_level" id="print_level_concise" value="CONCISE" oninput="(() => {cache_cfg.print_level.value = this.value})();"></input>
-                  <label for="print_level_concise">CONCISE</label>
-                  <input type="checkbox" id="print_input_parameters" value="true" checked oninput="(() => {this.checked ? cache_cfg.print_input_parameters.value = 'true' : cache_cfg.print_input_parameters.value = 'false'})();"></input>
-                  <label for="print_input_parameters">Print input parameters</label>
-                  <input type="checkbox" id="verbose" value="F" oninput="(() => {this.checked ? cache_cfg.verbose.value = 'T' : cache_cfg.verbose.value = 'F'})();"></input>
-                  <label for="verbose">verbose</label>
+                  <div>
+                    <h2 style="text-align: center;">Debug</h2>
+
+                  </div>
+                  <div>
+                    <label for="print_level">Print level</label>
+                    <input type="radio" name="print_level" id="print_level_detailed" value="DETAILED" checked oninput="(() => {cache_cfg.print_level.value = this.value})();"></input>
+                    <label for="print_level_detailed">DETAILED</label>
+                    <input type="radio" name="print_level" id="print_level_concise" value="CONCISE" oninput="(() => {cache_cfg.print_level.value = this.value})();"></input>
+                    <label for="print_level_concise">CONCISE</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="print_input_parameters" value="true" checked oninput="(() => {this.checked ? cache_cfg.print_input_parameters.value = 'true' : cache_cfg.print_input_parameters.value = 'false'})();"></input>
+                    <label for="print_input_parameters">Print input parameters</label>
+
+                  </div>
+                  <div>
+                    <input type="checkbox" id="verbose" value="F" oninput="(() => {this.checked ? cache_cfg.verbose.value = 'T' : cache_cfg.verbose.value = 'F'})();"></input>
+                    <label for="verbose">verbose</label>
+
+                  </div>
                 </div>
 
-                <div>
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
 
-                  <h2 style="text-align: center;">Force cache config</h2>
-                  <label for="force_cache_config">Force cache config</label>
-                  <input type="checkbox" id="force_cache_config" value="false" oninput="(() => {this.checked ? cache_cfg.force_cache_config.value  = 'true' : cache_cfg.force_cache_config.value  = 'false'})();"></input>
-                  <label for="ndwl">Ndwl</label>
-                  <input type="number" id="ndwl" value="1" oninput="(() => {cache_cfg.ndwl.value = parseInt(this.value);})();"></input>
-                  <label for="ndbl">Ndbl</label>
-                  <input type="number" id="ndbl" value="1" oninput="(() => {cache_cfg.ndbl.value = parseInt(this.value);})();"></input>
-                  <label for="nspd">Nspd</label>
-                  <input type="number" id="nspd" value="0" oninput="(() => {cache_cfg.nspd.value = parseInt(this.value);})();"></input>
-                  <label for="ndcm">Ndcm</label>
-                  <input type="number" id="ndcm" value="1" oninput="(() => {cache_cfg.ndcm.value = parseInt(this.value);})();"></input>
-                  <label for="ndsam1">Ndsam1</label>
-                  <input type="number" id="ndsam1" value="0" oninput="(() => {cache_cfg.ndsam1.value = parseInt(this.value);})();"></input>
-                  <label for="ndsam2">Ndsam2</label>
-                  <input type="number" id="ndsam2" value="0" oninput="(() => {cache_cfg.ndsam2.value = parseInt(this.value);})();"></input>
+                  <div style="grid-column: 1 / 3;">
+                    <h2 style="text-align: center;">Force cache config</h2>
+
+                  </div>
+                  <div>
+                    <label for="force_cache_config">Force cache config</label>
+                    <input type="checkbox" id="force_cache_config" value="false" oninput="(() => {this.checked ? cache_cfg.force_cache_config.value  = 'true' : cache_cfg.force_cache_config.value  = 'false'})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="ndwl">Ndwl</label>
+                    <input type="number" id="ndwl" value="1" oninput="(() => {cache_cfg.ndwl.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="ndbl">Ndbl</label>
+                    <input type="number" id="ndbl" value="1" oninput="(() => {cache_cfg.ndbl.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="nspd">Nspd</label>
+                    <input type="number" id="nspd" value="0" oninput="(() => {cache_cfg.nspd.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="ndcm">Ndcm</label>
+                    <input type="number" id="ndcm" value="1" oninput="(() => {cache_cfg.ndcm.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="ndsam1">Ndsam1</label>
+                    <input type="number" id="ndsam1" value="0" oninput="(() => {cache_cfg.ndsam1.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="ndsam2">Ndsam2</label>
+                    <input type="number" id="ndsam2" value="0" oninput="(() => {cache_cfg.ndsam2.value = parseInt(this.value);})();"></input>
+
+                  </div>
                 </div>
 
-                <div>
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
 
-                  <h2 style="text-align: center;">Others</h2>
-                  <label for="activity_dq">activity_dq</label>
-                  <input type="number" id="activity_dq" value="1.0" oninput="(() => {cache_cfg.activity_dq.value = parseFloat(this.value);})();"></input>
-                  <label for="activity_ca">activity_ca</label>
-                  <input type="number" id="activity_ca" value="0.5" oninput="(() => {cache_cfg.activity_ca.value = parseFloat(this.value);})();"></input>
-                  <label for="num_dq">num_dq</label>
-                  <input type="number" id="num_dq" value="72" oninput="(() => {cache_cfg.num_dq.value = parseInt(this.value);})();"></input>
-                  <label for="num_dqs">num_dqs</label>
-                  <input type="number" id="num_dqs" value="18" oninput="(() => {cache_cfg.num_dqs.value = parseInt(this.value);})();"></input>
-                  <label for="num_ca">num_ca</label>
-                  <input type="number" id="num_ca" value="25" oninput="(() => {cache_cfg.num_ca.value = parseInt(this.value);})();"></input>
-                  <label for="num_clk">num_clk</label>
-                  <input type="number" id="num_clk" value="2" oninput="(() => {cache_cfg.num_clk.value = parseInt(this.value);})();"></input>
-                  <label for="num_mem_dq">num_mem_dq</label>
-                  <input type="number" id="num_mem_dq" value="2" oninput="(() => {cache_cfg.num_mem_dq.value = parseInt(this.value);})();"></input>
-                  <label for="mem_data_width">mem_data_width</label>
-                  <input type="number" id="mem_data_width" value="8" oninput="(() => {cache_cfg.mem_data_width.value = parseInt(this.value);})();"></input>
-                  <label for="rtt_value">rtt_value</label>
-                  <input type="number" id="rtt_value" value="10000" oninput="(() => {cache_cfg.rtt_value.value = parseInt(this.value);})();"></input>
-                  <label for="ron_value">ron_value</label>
-                  <input type="number" id="ron_value" value="34" oninput="(() => {cache_cfg.ron_value.value = parseInt(this.value);})();"></input>
-                  <label for="num_bobs">num_bobs</label>
-                  <input type="number" id="num_bobs" value="1" oninput="(() => {cache_cfg.num_bobs.value = parseInt(this.value);})();"></input>
-                  <label for="capacity">capacity</label>
-                  <input type="number" id="capacity" value="80" oninput="(() => {cache_cfg.capacity.value = parseInt(this.value);})();"></input>
-                  <label for="num_channels_per_bob">num_channels_per_bob</label>
-                  <input type="number" id="num_channels_per_bob" value="1" oninput="(() => {cache_cfg.num_channels_per_bob.value = parseInt(this.value);})();"></input>
-                  <label for="dimm_model">DIMM model</label>
-                  <input type="radio" name="dimm_model" id="dimm_model_all" value="ALL" checked oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
-                  <label for="dimm_model_all">ALL</label>
-                  <input type="radio" name="dimm_model" id="dimm_model_udimm" value="JUST_UDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
-                  <label for="dimm_model_udimm">JUST_UDIMM</label>
-                  <input type="radio" name="dimm_model" id="dimm_model_rdimm" value="JUST_RDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
-                  <label for="dimm_model_rdimm">JUST_RDIMM</label>
-                  <input type="radio" name="dimm_model" id="dimm_model_lrdimm" value="JUST_LRDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
-                  <label for="dimm_model_lrdimm">JUST_LRDIMM</label>
-                  <input type="checkbox" id="mirror_in_bob" value="true" oninput="(() => {this.checked ? cache_cfg.mirror_in_bob.value = 'T' : cache_cfg.mirror_in_bob.value = 'F'})();"></input>
-                  <label for="mirror_in_bob">mirror_in_bob</label>
+                  <div style="grid-column: 1 / 3;">
+                    <h2 style="text-align: center;">Others</h2>
+
+                  </div>
+                  <div>
+                    <label for="activity_dq">activity_dq</label>
+                    <input type="number" id="activity_dq" value="1.0" oninput="(() => {cache_cfg.activity_dq.value = parseFloat(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="activity_ca">activity_ca</label>
+                    <input type="number" id="activity_ca" value="0.5" oninput="(() => {cache_cfg.activity_ca.value = parseFloat(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="num_dq">num_dq</label>
+                    <input type="number" id="num_dq" value="72" oninput="(() => {cache_cfg.num_dq.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="num_dqs">num_dqs</label>
+                    <input type="number" id="num_dqs" value="18" oninput="(() => {cache_cfg.num_dqs.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="num_ca">num_ca</label>
+                    <input type="number" id="num_ca" value="25" oninput="(() => {cache_cfg.num_ca.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="num_clk">num_clk</label>
+                    <input type="number" id="num_clk" value="2" oninput="(() => {cache_cfg.num_clk.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="num_mem_dq">num_mem_dq</label>
+                    <input type="number" id="num_mem_dq" value="2" oninput="(() => {cache_cfg.num_mem_dq.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="mem_data_width">mem_data_width</label>
+                    <input type="number" id="mem_data_width" value="8" oninput="(() => {cache_cfg.mem_data_width.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="rtt_value">rtt_value</label>
+                    <input type="number" id="rtt_value" value="10000" oninput="(() => {cache_cfg.rtt_value.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="ron_value">ron_value</label>
+                    <input type="number" id="ron_value" value="34" oninput="(() => {cache_cfg.ron_value.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="num_bobs">num_bobs</label>
+                    <input type="number" id="num_bobs" value="1" oninput="(() => {cache_cfg.num_bobs.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="capacity">capacity</label>
+                    <input type="number" id="capacity" value="80" oninput="(() => {cache_cfg.capacity.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="num_channels_per_bob">num_channels_per_bob</label>
+                    <input type="number" id="num_channels_per_bob" value="1" oninput="(() => {cache_cfg.num_channels_per_bob.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label for="dimm_model">DIMM model</label>
+                    <input type="radio" name="dimm_model" id="dimm_model_all" value="ALL" checked oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
+                    <label for="dimm_model_all">ALL</label>
+                    <input type="radio" name="dimm_model" id="dimm_model_udimm" value="JUST_UDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
+                    <label for="dimm_model_udimm">JUST_UDIMM</label>
+                    <input type="radio" name="dimm_model" id="dimm_model_rdimm" value="JUST_RDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
+                    <label for="dimm_model_rdimm">JUST_RDIMM</label>
+                    <input type="radio" name="dimm_model" id="dimm_model_lrdimm" value="JUST_LRDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
+                    <label for="dimm_model_lrdimm">JUST_LRDIMM</label>
+
+                  </div>
+                  <div>
+                    <input type="checkbox" id="mirror_in_bob" value="true" oninput="(() => {this.checked ? cache_cfg.mirror_in_bob.value = 'T' : cache_cfg.mirror_in_bob.value = 'F'})();"></input>
+                    <label for="mirror_in_bob">mirror_in_bob</label>
+
+                  </div>
+
+                  <div>
+                    <input type="checkbox" id="print_option" value="true" oninput="(() => {this.checked ? cache_cfg.print_option.value = 'debug detail' : cache_cfg.print_option.value = 'F'})();"></input>
+                    <label for="mirror_in_bob">debug detail</label>
+                  </div>
+
+                  <div>
+                    <label for="search_port">search port</label>
+                    <input type="number" id="search_port" value="0" oninput="(() => {cache_cfg.search_port.value = parseInt(this.value);})();"></input>
+                  </div>
+                  
+                  <div>
+                    <label for="burst_depth">burst depth</label>
+                    <input type="number" id="burst_depth" value="0" oninput="(() => {cache_cfg.burst_depth.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label for="IO_width">IO width</label>
+                    <input type="number" id="IO_width" value="0" oninput="(() => {cache_cfg.IO_width.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label for="system_frequency">system frequency</label>
+                    <input type="number" id="system_frequency" value="0" oninput="(() => {cache_cfg.system_frequency.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label for="stacked_die">stacked die</label>
+                    <input type="number" id="stacked_die" value="0" oninput="(() => {cache_cfg.stacked_die.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label for="partitioning_granularity">partitioning granularity</label>
+                    <input type="number" id="partitioning_granularity" value="0" oninput="(() => {cache_cfg.stacked_die.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label for="TSV_projection">TSV projection</label>
+                    <input type="number" id="TSV_projection" value="0" oninput="(() => {cache_cfg.stacked_die.value = parseInt(this.value);})();"></input>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="CLDriver_vertical" value="true" oninput="(() => {this.checked ? cache_cfg.CLDriver_vertical.value = 'true' : cache_cfg.CLDriver_vertical.value = 'false'})();"></input>
+                    <label for="CLDriver_vertical">CLDriver vertical</label>
+                  </div>
+
+                  <div>
+                    <label for="dram_ecc">dram ecc</label>
+                    <input type="radio" name="dram_ecc" id="dram_ecc_noecc" value="NO_ECC" checked oninput="(() => {cache_cfg.dram_ecc.value = this.value})();"></input>
+                    <label for="dram_ecc_noecc">NO_ECC</label>
+                    <input type="radio" name="dram_ecc" id="dram_ecc_secded" value="SECDED" oninput="(() => {cache_cfg.dram_ecc.value = this.value})();"></input>
+                    <label for="dram_ecc_secded">SECDED</label>
+                    <input type="radio" name="dram_ecc" id="dram_ecc_chipkill" value="CHIP_KILL" oninput="(() => {cache_cfg.dram_ecc.value = this.value})();"></input>
+                    <label for="dram_ecc_chipkill">CHIP_KILL</label>
+
+                  </div>
+
+                  <div>
+                    <label for="dram_dimm">dram dimm</label>
+                    <input type="radio" name="dram_dimm" id="dram_dimm_udim" value="UDIMM" checked oninput="(() => {cache_cfg.dram_dimm.value = this.value})();"></input>
+                    <label for="dram_dimm_udim">UDIMM</label>
+                    <input type="radio" name="dram_dimm" id="dram_dimm_rdim" value="RDIMM" oninput="(() => {cache_cfg.dram_dimm.value = this.value})();"></input>
+                    <label for="dram_dimm_rdim">RDIMM</label>
+                    <input type="radio" name="dram_dimm" id="dram_dimm_lrdimm" value="LRDIMM" oninput="(() => {cache_cfg.dram_dimm.value = this.value})();"></input>
+                    <label for="dram_dimm_lrdimm">LRDIMM</label>
+
+                  </div>
+
+                  <div>
+                    <label for="bus_bw">bus_bw</label>
+                    <input type="number" id="bus_bw" value="0" oninput="(() => {cache_cfg.bus_bw.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <input type="checkbox" id="Low_Power_Permitted" value="true" oninput="(() => {this.checked ? cache_cfg.Low_Power_Permitted.value = 'T' : cache_cfg.Low_Power_Permitted.value = 'F'})();"></input>
+                    <label for="Low_Power_Permitted">CLDriver vertical</label>
+                  </div>
+
+                  <div>
+                    <label for="load">load</label>
+                    <input type="number" id="load" value="0" oninput="(() => {cache_cfg.load.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label for="row_buffer_hit_rate">row_buffer_hit_rate</label>
+                    <input type="number" id="row_buffer_hit_rate" value="0" oninput="(() => {cache_cfg.row_buffer_hit_rate.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label for="rd_2_wr_ratio">rd_2_wr_ratio</label>
+                    <input type="number" id="rd_2_wr_ratio" value="0" oninput="(() => {cache_cfg.rd_2_wr_ratio.value = parseInt(this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <input type="checkbox" id="same_bw_in_bob" value="true" oninput="(() => {this.checked ? cache_cfg.same_bw_in_bob.value = 'T' : cache_cfg.same_bw_in_bob.value = 'F'})();"></input>
+                    <label for="same_bw_in_bob">same_bw_in_bob</label>
+                  </div>
+
+                  <div>
+                    <input type="checkbox" id="total_power" value="true" oninput="(() => {this.checked ? cache_cfg.total_power.value = 'T' : cache_cfg.total_power.value = 'F'})();"></input>
+                    <label for="total_power">total_power</label>
+                  </div>
+
                 </div>
-                
 
           </div>
 
         </form>
         <button onclick="create_config_file_from_form()">Test html form</button>
-        <textarea id="cachecfg" style="width: 90vw; height: 90vh;">
+        <textarea id="cachecfg">
 //# Cache size
 //-size (bytes) 2048
 //-size (bytes) 4096
@@ -842,6 +1045,9 @@
 //# for debugging
 -Print input parameters - "true"
 //-Print input parameters - "false"
+
+//-print option "debug detail"
+
 //# force CACTI to model the cache with the 
 //# following Ndbl, Ndwl, Nspd, Ndsam,
 //# and Ndcm values
@@ -974,6 +1180,25 @@
 //#if we want to see all channels/bobs/memory configurations explored	
 //#-verbose "T"
 //#-verbose "F"
+
+//-search port 0
+//-burst depth 0
+//-IO width 0
+//-system frequency 0
+//-stacked die 0
+//-partitioning granularity 0
+//-TSV projection 0
+//-CLDriver vertical "false"
+//-dram ecc "NO_ECC"
+//-dram dimm "UDIMM"
+//-bus_bw 0
+//-Low Power Permitted "F"
+//-load 0
+//-row_buffer_hit_rate 0
+//-rd_2_wr_ratio 0
+//-same_bw_in_bob "F"
+//-total_power "F"
+
         </textarea>
         <button onclick="(run_cacti())">run cacti</button>
         <textarea id="output" style="width: 90vw; height: 90vh;"></textarea>
@@ -1069,7 +1294,27 @@
         third_metric: {parameter: '-third metric', value: "Energy"	},
         dimm_model: {parameter: '-DIMM model', value: "ALL"},
         mirror_in_bob: {parameter: '-mirror_in_bob', value: "F"},
-        verbose: {parameter: '-verbose', value: "F"}
+        verbose: {parameter: '-verbose', value: "F"},
+        search_port: {parameter: '-search port', value: 0},
+        print_option: {parameter: '-print option', value: "false"},
+        burst_depth: {parameter: '-burst depth', value: 0},
+        IO_width: {parameter: '-IO width', value: 0},
+        
+
+        system_frequency: {parameter: '-system frequency', value: 0},
+        stacked_die: {parameter: '-stacked die', value: 0},
+        partitioning_granularity: {parameter: '-partitioning granularity', value: 0},
+        TSV_projection: {parameter: '-TSV projection', value: 0},
+        CLDriver_vertical: {parameter: '-CLDriver vertical', value: "false"},
+        dram_ecc: {parameter: '-dram ecc', value: "NO_ECC"},
+        dram_dimm: {parameter: '-dram dimm', value: "UDIMM"},
+        bus_bw: {parameter: '-bus_bw', value: 0},
+        Low_Power_Permitted: {parameter: '-Low Power Permitted', value: "F"},
+        load: {parameter: '-load', value: 0},
+        row_buffer_hit_rate: {parameter: '-row_buffer_hit_rate', value: 0},
+        rd_2_wr_ratio: {parameter: '-rd_2_wr_ratio', value: 0},
+        same_bw_in_bob: {parameter: '-same_bw_in_bob', value: "F"},
+        total_power: {parameter: '-total_power', value: "F"}
       };
 
       var parsed_cacti_output = {
@@ -1252,7 +1497,26 @@ ${cache_cfg.second_metric.parameter} "${cache_cfg.second_metric.value}"
 ${cache_cfg.third_metric.parameter} "${cache_cfg.third_metric.value}"
 ${cache_cfg.dimm_model.parameter} "${cache_cfg.dimm_model.value}"
 ${cache_cfg.mirror_in_bob.parameter} "${cache_cfg.mirror_in_bob.value}"
-${cache_cfg.verbose.parameter} "${cache_cfg.verbose.value}"`;        
+${cache_cfg.verbose.parameter} "${cache_cfg.verbose.value}"
+${cache_cfg.search_port.parameter} ${cache_cfg.search_port.value}
+${cache_cfg.print_option.parameter} "${cache_cfg.print_option.value}"
+${cache_cfg.burst_depth.parameter} ${cache_cfg.burst_depth.value}
+${cache_cfg.IO_width.parameter} ${cache_cfg.IO_width.value}
+${cache_cfg.system_frequency.parameter} ${cache_cfg.system_frequency.value}
+${cache_cfg.stacked_die.parameter} ${cache_cfg.stacked_die.value}
+${cache_cfg.partitioning_granularity.parameter} ${cache_cfg.partitioning_granularity.value}
+${cache_cfg.TSV_projection.parameter} ${cache_cfg.TSV_projection.value}
+${cache_cfg.CLDriver_vertical.parameter} "${cache_cfg.CLDriver_vertical.value}"
+${cache_cfg.dram_ecc.parameter} "${cache_cfg.dram_ecc.value}"
+${cache_cfg.dram_dimm.parameter} "${cache_cfg.dram_dimm.value}"
+${cache_cfg.bus_bw.parameter} ${cache_cfg.bus_bw.value}
+${cache_cfg.Low_Power_Permitted.parameter} "${cache_cfg.Low_Power_Permitted.value}"
+${cache_cfg.load.parameter} ${cache_cfg.load.value}
+${cache_cfg.row_buffer_hit_rate.parameter} ${cache_cfg.row_buffer_hit_rate.value}
+${cache_cfg.rd_2_wr_ratio.parameter} ${cache_cfg.rd_2_wr_ratio.value}
+${cache_cfg.same_bw_in_bob.parameter} "${cache_cfg.same_bw_in_bob.value}"
+${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
+
       }
 
       function parse_cacti_output() {
