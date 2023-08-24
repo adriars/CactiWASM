@@ -48,19 +48,19 @@
   <body>
     <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><h1>LOADING CACTI 7.0</h1></center></figure>
     <div id="cacti_app" hidden>
-    <div style="align-items: center; justify-content: center; display: flex; flex-direction: column; width: 90vw; margin: auto;">
+    <div style="align-items: center; justify-content: center; display: flex; flex-direction: column; width: 900px; margin: auto;">
       <h1>CACTI 7.0</h1>
       <form >
         <span title="Method of introducing input parameters for the simulator" style="font-weight: bold;">Interface</span>
-        <input title="Method of introducing input parameters for the simulator" type="radio" name="configuration_method" id="configuration_method_form" value="form" checked oninput="(() => {document.getElementById('form_method').style = 'display: default;';document.getElementById('cachecfg').style = 'display: none; width: 90vw; height: 90vh;';})();">
+        <input title="Method of introducing input parameters for the simulator" type="radio" name="configuration_method" id="configuration_method_form" value="form" checked oninput="(() => {document.getElementById('form_method').style = 'display: default;';document.getElementById('cachecfg').style = 'display: none; width: 900px; height: 900px;';})();">
         <label title="Method of introducing input parameters for the simulator" for="configuration_method_form">Form</label>
-        <input title="Method of introducing input parameters for the simulator" type="radio" name="configuration_method" id="configuration_method_file" value="file" oninput="(() => {document.getElementById('form_method').style = 'display: none;';document.getElementById('cachecfg').style = 'display: default; width: 90vw; height: 90vh;';})();">
+        <input title="Method of introducing input parameters for the simulator" type="radio" name="configuration_method" id="configuration_method_file" value="file" oninput="(() => {document.getElementById('form_method').style = 'display: none;';document.getElementById('cachecfg').style = 'display: default; width: 900px; height: 900px;';})();">
         <label title="Method of introducing input parameters for the simulator" for="configuration_method_file">File</label>
       </form>
         <form id="form_method">
           <h2 style="text-align: center;">Basic configuration</h2>
 
-          <div style="display: grid; grid-template-columns: auto auto auto; row-gap: 2vh; text-align: center;">
+          <div style="display: grid; grid-template-columns: auto auto auto auto; row-gap: 2vh; text-align: left; border: 1px; border-color: black; border-style: solid; padding: 10px;">
             <div>
               <label title="Cache size in bytes" style="font-weight: bold;"  for="cache_size">Cache size (bytes)</label>
               <input title="Cache size in bytes" type="number" id="cache_size" value="131072" oninput="(() => {cache_cfg.cache_size.value = parseInt(this.value);})();">
@@ -73,63 +73,63 @@
               <label title="Associativity of the cache, to model a fully associative cache, set associativity to 0" style="font-weight: bold;"  for="associativity">Associativity</label>
               <input title="Associativity of the cache, to model a fully associative cache, set associativity to 0" type="number" id="associativity" value="2" oninput="(() => {cache_cfg.associativity.value = parseInt(this.value);})();">
             </div>
-            <div style="grid-column: 1 / 4;">
-              <span title="Technology of integration" style="font-weight: bold;">Technology (u)</span>
-              <input title="Technology of integration" type="radio" name="technology" id="technology_0.022" value="0.022" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
-            <label title="Technology of integration" for="technology_0.022">0.022</label>
-            <input title="Technology of integration" type="radio" name="technology" id="technology_0.032" value="0.032" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
-            <label title="Technology of integration" for="technology_0.032">0.032</label>
-            <input title="Technology of integration" type="radio" name="technology" id="technology_0.045" value="0.045" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
-            <label title="Technology of integration" for="technology_0.045">0.045</label>
-            <input title="Technology of integration" type="radio" name="technology" id="technology_0.065" value="0.065" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
-            <label title="Technology of integration" for="technology_0.065">0.065</label>
-            <input title="Technology of integration" type="radio" name="technology" id="technology_0.090" value="0.090" checked oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
-            <label title="Technology of integration" for="technology_0.090">0.090</label>
+            <div>
+              <span title="Technology of integration in microns" style="font-weight: bold;">Technology (u)</span>
+              <input title="Technology of integration in microns" type="radio" name="technology" id="technology_0.022" value="0.022" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
+            <label title="Technology of integration in microns" for="technology_0.022">0.022</label>
+            <input title="Technology of integration in microns" type="radio" name="technology" id="technology_0.032" value="0.032" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
+            <label title="Technology of integration in microns" for="technology_0.032">0.032</label>
+            <input title="Technology of integration in microns" type="radio" name="technology" id="technology_0.045" value="0.045" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
+            <label title="Technology of integration in microns" for="technology_0.045">0.045</label>
+            <input title="Technology of integration in microns" type="radio" name="technology" id="technology_0.065" value="0.065" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
+            <label title="Technology of integration in microns" for="technology_0.065">0.065</label>
+            <input title="Technology of integration in microns" type="radio" name="technology" id="technology_0.090" value="0.090" checked oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
+            <label title="Technology of integration in microns" for="technology_0.090">0.090</label>
           </div>
           </div>
 
             <h2 style="text-align: center;">Advanced configuration</h2>
             
-            <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+            <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; column-gap: 2vw; text-align: center;">
 
-              <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+              <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
                 <div style="grid-column: 1 / 3;">
-                  <h3 style="text-align: center;">Power gating</h3>
+                  <h3 style="text-align: center;">Leakage power reduction</h3>
                   
                 </div>
                 <div>
-                  <input type="checkbox" id="array_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.array_power_gating.value = 'true' : cache_cfg.array_power_gating.value = 'false'})();"></input>
-                  <label style="font-weight: bold;"  for="array_power_gating">Array Power Gating</label>
+                  <input title="Technic that enables the capacity of disable or disconnect some parts of the cache memory to reduce the leakage of power and power consumption, it can be ture o false" type="checkbox" id="array_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.array_power_gating.value = 'true' : cache_cfg.array_power_gating.value = 'false'})();"></input>
+                  <label title="Technic that enables the capacity of disable or disconnect some parts of the cache memory to reduce the leakage of power and power consumption, it can be ture o false" style="font-weight: bold;"  for="array_power_gating">Array Power Gating</label>
                   
                 </div>
                 <div>
-                  <input type="checkbox" id="wl_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.wl_power_gating.value = 'true' : cache_cfg.wl_power_gating.value = 'false'})();"></input>
-                  <label style="font-weight: bold;"  for="wl_power_gating">WL Power Gating</label>
+                  <input title="Word line power gating, if true, it disables the entire cache line when array power gating is enabled to reduce the leakage of power and power consumption, it can be ture o false" type="checkbox" id="wl_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.wl_power_gating.value = 'true' : cache_cfg.wl_power_gating.value = 'false'})();"></input>
+                  <label title="Word line power gating, if true, it disables the entire cache line when array power gating is enabled to reduce the leakage of power and power consumption, it can be ture o false" style="font-weight: bold;"  for="wl_power_gating">WL Power Gating</label>
                   
                 </div>
                 <div>
-                  <input type="checkbox" id="cl_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.cl_power_gating.value = 'true' : cache_cfg.cl_power_gating.value = 'false'})();"></input>
-                  <label style="font-weight: bold;"  for="cl_power_gating">CL Power Gating</label>
+                  <input title="Cloumn line power gating, if true, it diables the entire cache column when array power gating is enabled to reduce the leakage of power and power consumption, it can be ture o false" type="checkbox" id="cl_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.cl_power_gating.value = 'true' : cache_cfg.cl_power_gating.value = 'false'})();"></input>
+                  <label title="Cloumn line power gating, if true, it diables the entire cache column when array power gating is enabled to reduce the leakage of power and power consumption, it can be ture o false" style="font-weight: bold;"  for="cl_power_gating">CL Power Gating</label>
                   
                 </div>
                 <div>
-                  <input type="checkbox" id="bitline_floating" value="false" oninput="(() => {this.checked ? cache_cfg.bitline_floating.value = 'true' : cache_cfg.bitline_floating.value = 'false'})();"></input>
-                  <label style="font-weight: bold;"  for="bitline_floating">Bitline floating</label>
+                  <input title="Bitline floating enables a technic which permits the value of a bit to not be forced to zero, instead the value can 'float' between small values which equals to zero, this reduces the leakage power, it can be true or false" type="checkbox" id="bitline_floating" value="false" oninput="(() => {this.checked ? cache_cfg.bitline_floating.value = 'true' : cache_cfg.bitline_floating.value = 'false'})();"></input>
+                  <label title="Bitline floating enables a technic which permits the value of a bit to not be forced to zero, instead the value can 'float' between small values which equals to zero, this reduces the leakage power, it can be true or false" style="font-weight: bold;"  for="bitline_floating">Bitline floating</label>
                   
                 </div>
                 <div>
-                  <input type="checkbox" id="interconnect_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.interconnect_power_gating.value = 'true' : cache_cfg.interconnect_power_gating.value = 'false'})();"></input>
-                  <label style="font-weight: bold;"  for="interconnect_power_gating">Interconnect Power Gating</label>
+                  <input title="Interconnect power gating consists on a technic which makes possible to disable some interconnections with the objective to reduce the leakage power, it can be true or false" type="checkbox" id="interconnect_power_gating" value="false" oninput="(() => {this.checked ? cache_cfg.interconnect_power_gating.value = 'true' : cache_cfg.interconnect_power_gating.value = 'false'})();"></input>
+                  <label title="Interconnect power gating consists on a technic which makes possible to disable some interconnections with the objective to reduce the leakage power, it can be true or false" style="font-weight: bold;"  for="interconnect_power_gating">Interconnect Power Gating</label>
                   
                 </div>
                 <div>
-                  <label style="font-weight: bold;"  for="power_gating_performance_loss">Power Gating Performance Loss</label>
-                  <input type="number" id="power_gating_performance_loss" value="0.01" oninput="(() => {cache_cfg.power_gating_performance_loss.value = parseFloat(this.value);})();"></input>
+                  <label title="This value indicates how much performace is lost when some or all of the above power reduction technics are enabled, it should be a value between 0 and 100" style="font-weight: bold;"  for="power_gating_performance_loss">Power Gating Performance Loss</label>
+                  <input title="This value indicates how much performace is lost when some or all of the above power reduction technics are enabled, it should be a value between 0 and 100" type="number" id="power_gating_performance_loss" value="0.01" oninput="(() => {cache_cfg.power_gating_performance_loss.value = parseFloat(this.value);})();"></input>
 
                 </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
                   <div style="grid-column: 1 / 3;">
                     <h3 style="text-align: center;">Read-write ports</h3>
                   </div>
@@ -155,7 +155,7 @@
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div style="grid-column: 1 / 3;">
 
@@ -165,6 +165,17 @@
                   <div>
                     <label title="Page size in bits, this parameter is only meaningful for main memories" style="font-weight: bold;"  for="page_size">page size (bits)</label>
                     <input title="Page size in bits, this parameter is only meaningful for main memories" type="number" id="page_size" value="8192" oninput="(() => {cache_cfg.page_size.value = parseInt(this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label title="Burst length, this parameter is only meaningful for main memories" style="font-weight: bold;"  for="burst_length">burst length</label>
+                    <input title="Burst length, this parameter is only meaningful for main memories" type="number" id="burst_length" value="8" oninput="(() => {cache_cfg.burst_length.value = parseInt(this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Internal prefetch width, this parameter is only meaningful for main memories" style="font-weight: bold;"  for="internal_prefetch_width">internal prefetch width</label>
+                    <input title="Internal prefetch width, this parameter is only meaningful for main memories" type="number" id="internal_prefetch_width" value="8" oninput="(() => {cache_cfg.internal_prefetch_width.value = parseInt(this.value);})();"></input>
 
                   </div>
 
@@ -189,23 +200,10 @@
                     <label title="DRAM Error Correction Code" for="dram_ecc_chipkill">CHIP_KILL</label>
 
                   </div>
-
-                  
-
-                  <div>
-                    <label title="Burst length, this parameter is only meaningful for main memories" style="font-weight: bold;"  for="burst_length">burst length</label>
-                    <input title="Burst length, this parameter is only meaningful for main memories" type="number" id="burst_length" value="8" oninput="(() => {cache_cfg.burst_length.value = parseInt(this.value);})();"></input>
-
-                  </div>
-                  <div>
-                    <label title="Internal prefetch width, this parameter is only meaningful for main memories" style="font-weight: bold;"  for="internal_prefetch_width">internal prefetch width</label>
-                    <input title="Internal prefetch width, this parameter is only meaningful for main memories" type="number" id="internal_prefetch_width" value="8" oninput="(() => {cache_cfg.internal_prefetch_width.value = parseInt(this.value);})();"></input>
-
-                  </div>
                   
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div style="grid-column: 1 / 3;">
 
@@ -244,7 +242,7 @@
                   
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div style="grid-column: 1 / 2;">
                     <h3 style="text-align: center;">Data</h3>
@@ -275,7 +273,7 @@
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div>
                     <h3 style="text-align: center;">Tag</h3>
@@ -312,61 +310,7 @@
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
-
-                  <div style="text-align: center;">
-                    <h3 style="text-align: center;">Wires</h3>
-
-                  </div>
-                  <div>
-                    <span title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." style="font-weight: bold;">Wire signaling</span>
-                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global" value="Global" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
-                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type."  for="wire_signaling_global">global</label>
-                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global_5" value="Global_5" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
-                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_global_5">global 5</label>
-                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global_10" value="Global_10" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
-                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_global_10">global 10</label>
-                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global_20" value="Global_20" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
-                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_global_20">global 20</label>
-                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global_30" value="Global_30" checked oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
-                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_global_30">global 30</label>
-                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_fullswing" value="fullswing" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
-                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_fullswing">fullswing</label>
-                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_lowswing" value="lowswing" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
-                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_lowswing">lowswing</label>
-                    
-                  </div>
-                  <div>
-                    <span title="Wire inside mat" style="font-weight: bold;">Wire inside mat</span>
-                    <input title="Wire inside mat" type="radio" name="wire_inside_mat" id="wire_inside_mat_global" value="global" oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
-                    <label title="Wire inside mat" for="wire_inside_mat_global">global</label>
-                    <input title="Wire inside mat" type="radio" name="wire_inside_mat" id="wire_inside_mat_semi-global" value="semi-global" checked oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
-                    <label title="Wire inside mat" for="wire_inside_mat_semi-global">semi-global</label>
-                    <input title="Wire inside mat" type="radio" name="wire_inside_mat" id="wire_inside_mat_local" value="local" oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
-                    <label title="Wire inside mat" for="wire_inside_mat_local">local</label>
-                    
-                  </div>
-                  <div>
-                    
-                    <span title="Wire outside mat" style="font-weight: bold;">Wire outside mat</span>
-                    <input title="Wire outside mat" type="radio" name="wire_outside_mat" id="wire_outside_mat_global" value="global" oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
-                    <label title="Wire outside mat" for="wire_outside_mat_global">global</label>
-                    <input title="Wire outside mat" type="radio" name="wire_outside_mat" id="wire_outside_mat_semi-global" value="semi-global" checked oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
-                    <label title="Wire outside mat" for="wire_outside_mat_semi-global">semi-global</label>
-                    <input title="Wire outside mat" type="radio" name="wire_outside_mat" id="wire_outside_mat_local" value="local" oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
-                    <label title="Wire outside mat" for="wire_outside_mat_local">local</label>
-                  </div>
-                  <div>
-
-                    <span title="Interconnect projection" style="font-weight: bold;">Interconnect projection</span>
-                    <input title="Interconnect projection" type="radio" name="interconnect_projection" id="interconnect_projection_conservative" value="conservative" checked oninput="(() => {cache_cfg.interconnect_projection.value = this.value})();"></input>
-                    <label title="Interconnect projection" for="interconnect_projection_conservative">conservative</label>
-                    <input title="Interconnect projection" type="radio" name="interconnect_projection" id="interconnect_projection_aggressive" value="aggressive" oninput="(() => {cache_cfg.interconnect_projection.value = this.value})();"></input>
-                    <label title="Interconnect projection" for="interconnect_projection_aggressive">aggressive</label>
-                  </div>
-                </div>
-
-                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div style="grid-column: 1 / 3;">
                     <h3>Design objectives UCA</h3>
@@ -429,7 +373,7 @@
 
                   </div>
 
-                  <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+                  <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
                     <div style="grid-column: 1 / 3;">
                       <h3>Design objectives NUCA</h3>
 
@@ -491,7 +435,61 @@
                     </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="text-align: center;">
+                    <h3 style="text-align: center;">Wires</h3>
+
+                  </div>
+                  <div>
+                    <span title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." style="font-weight: bold;">Wire signaling</span>
+                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global" value="Global" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type."  for="wire_signaling_global">global</label>
+                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global_5" value="Global_5" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_global_5">global 5</label>
+                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global_10" value="Global_10" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_global_10">global 10</label>
+                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global_20" value="Global_20" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_global_20">global 20</label>
+                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_global_30" value="Global_30" checked oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_global_30">global 30</label>
+                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_fullswing" value="fullswing" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_fullswing">fullswing</label>
+                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." type="radio" name="wire_signaling" id="wire_signaling_lowswing" value="lowswing" oninput="(() => {cache_cfg.wire_signaling.value = this.value;})();"></input>
+                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type." for="wire_signaling_lowswing">lowswing</label>
+                    
+                  </div>
+                  <div>
+                    <span title="Wire inside mat" style="font-weight: bold;">Wire inside mat</span>
+                    <input title="Wire inside mat" type="radio" name="wire_inside_mat" id="wire_inside_mat_global" value="global" oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
+                    <label title="Wire inside mat" for="wire_inside_mat_global">global</label>
+                    <input title="Wire inside mat" type="radio" name="wire_inside_mat" id="wire_inside_mat_semi-global" value="semi-global" checked oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
+                    <label title="Wire inside mat" for="wire_inside_mat_semi-global">semi-global</label>
+                    <input title="Wire inside mat" type="radio" name="wire_inside_mat" id="wire_inside_mat_local" value="local" oninput="(() => {cache_cfg.wire_inside_mat.value = this.value})();"></input>
+                    <label title="Wire inside mat" for="wire_inside_mat_local">local</label>
+                    
+                  </div>
+                  <div>
+                    
+                    <span title="Wire outside mat" style="font-weight: bold;">Wire outside mat</span>
+                    <input title="Wire outside mat" type="radio" name="wire_outside_mat" id="wire_outside_mat_global" value="global" oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
+                    <label title="Wire outside mat" for="wire_outside_mat_global">global</label>
+                    <input title="Wire outside mat" type="radio" name="wire_outside_mat" id="wire_outside_mat_semi-global" value="semi-global" checked oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
+                    <label title="Wire outside mat" for="wire_outside_mat_semi-global">semi-global</label>
+                    <input title="Wire outside mat" type="radio" name="wire_outside_mat" id="wire_outside_mat_local" value="local" oninput="(() => {cache_cfg.wire_outside_mat.value = this.value})();"></input>
+                    <label title="Wire outside mat" for="wire_outside_mat_local">local</label>
+                  </div>
+                  <div>
+
+                    <span title="Interconnect projection" style="font-weight: bold;">Interconnect projection</span>
+                    <input title="Interconnect projection" type="radio" name="interconnect_projection" id="interconnect_projection_conservative" value="conservative" checked oninput="(() => {cache_cfg.interconnect_projection.value = this.value})();"></input>
+                    <label title="Interconnect projection" for="interconnect_projection_conservative">conservative</label>
+                    <input title="Interconnect projection" type="radio" name="interconnect_projection" id="interconnect_projection_aggressive" value="aggressive" oninput="(() => {cache_cfg.interconnect_projection.value = this.value})();"></input>
+                    <label title="Interconnect projection" for="interconnect_projection_aggressive">aggressive</label>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div>
                     <h3 style="text-align: center;">Metrics design points</h3>
@@ -529,7 +527,7 @@
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div style="grid-column: 1 / 3;">
                     <h3 style="text-align: center;">Cache</h3>
@@ -598,7 +596,7 @@
                   
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div>
                     <h3 style="text-align: center;">Error correction</h3>
@@ -611,7 +609,7 @@
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
                   <div>
                     <h3 style="text-align: center;">Temperature</h3>
 
@@ -623,7 +621,7 @@
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div>
                     <h3 style="text-align: center;">Bus</h3>
@@ -638,9 +636,9 @@
                   
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
-                  <div>
+                  <div style="grid-column: 1 / 3;">
                     <h3 style="text-align: center;">Debug</h3>
 
                   </div>
@@ -657,13 +655,17 @@
 
                   </div>
                   <div>
+                    <input title="Debug detail" style="font-weight: bold;"  type="checkbox" id="print_option" value="true" oninput="(() => {this.checked ? cache_cfg.print_option.value = 'debug detail' : cache_cfg.print_option.value = 'F'})();"></input>
+                    <label title="Debug detail" style="font-weight: bold;" for="print_option">debug detail</label>
+                  </div>
+                  <div>
                     <input title="Verbose, if we want to see all channels/bobs/memory configurations explored"  type="checkbox" id="verbose" value="F" oninput="(() => {this.checked ? cache_cfg.verbose.value = 'T' : cache_cfg.verbose.value = 'F'})();"></input>
                     <label title="Verbose, if we want to see all channels/bobs/memory configurations explored" style="font-weight: bold;"  for="verbose">verbose</label>
 
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div style="grid-column: 1 / 3;">
                     <h3 style="text-align: center;">Force cache config</h3>
@@ -706,7 +708,7 @@
                   </div>
                 </div>
 
-                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center;">
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
 
                   <div style="grid-column: 1 / 3;">
                     <h3 style="text-align: center;">Off-chip</h3>
@@ -849,13 +851,8 @@
                   </div>
                   <div>
                     <input title="if channels of each bob have the same configurations" style="font-weight: bold;"  type="checkbox" id="mirror_in_bob" value="true" oninput="(() => {this.checked ? cache_cfg.mirror_in_bob.value = 'T' : cache_cfg.mirror_in_bob.value = 'F'})();"></input>
-                    <label title="if channels of each bob have the same configurations" for="mirror_in_bob">mirror_in_bob</label>
+                    <label title="if channels of each bob have the same configurations" style="font-weight: bold;" for="mirror_in_bob">mirror_in_bob</label>
 
-                  </div>
-
-                  <div>
-                    <input title="Debug detail" style="font-weight: bold;"  type="checkbox" id="print_option" value="true" oninput="(() => {this.checked ? cache_cfg.print_option.value = 'debug detail' : cache_cfg.print_option.value = 'F'})();"></input>
-                    <label title="Debug detail" for="mirror_in_bob">debug detail</label>
                   </div>
 
                   <div>
@@ -898,7 +895,7 @@
           </div>
 
         </form>
-        <textarea id="cachecfg" style="display: none; width: 90vw; height: 90vh;">
+        <textarea id="cachecfg" style="display: none; width: 900px; height: 900px;">
 //# Cache size
 //-size (bytes) 2048
 //-size (bytes) 4096
@@ -1225,10 +1222,10 @@
         </textarea>
         <button id="run_button" style="margin: 20px; font-weight: bold; font-size: large;" onclick="(run_cacti())">Run cacti</button>
         <h2>Output</h2>
-        <textarea id="output" style="width: 90vw; height: 90vh;"></textarea>
+        <textarea id="output" style="width: 900px; height: 900px;"></textarea>
         <h2>Graphs</h2>
       </div>
-    <div>
+    <div style="width: 900px; margin: auto;">
       <canvas id="acces_time_cache_size_chart"></canvas>
       <canvas id="acces_time_block_size_chart"></canvas>
       <canvas id="acces_time_associativity_chart"></canvas>
@@ -1237,7 +1234,7 @@
     </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3/dist/chart.umd.min.js"></script>
  
     <script type='text/javascript'>
       var spinnerElement = document.getElementById('spinner');
@@ -1890,8 +1887,6 @@ ${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
 
         callMain(arguments_);
 
-        sleep(5);
-
         parse_cacti_output();
 
         update_acces_time_cache_size_chart();
@@ -1904,6 +1899,8 @@ ${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
       var Module = {
         preRun: [],
         postRun: [],
+        noInitialRun: true,
+        arguments: ['-infile', 'cache.cfg'],
         print: (function() {
           var element = document.getElementById('output');
           if (element) element.value = ''; // clear browser cache

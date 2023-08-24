@@ -7,7 +7,6 @@ ifndef NTHREADS
   NTHREADS = 8
 endif
 
-
 LIBS = 
 INCS = -lm
 
@@ -38,7 +37,7 @@ INCLUDES       = -I /usr/include/python2.4 -I /usr/lib/python2.4/config
 all: obj_$(TAG)/$(TARGET)
 
 obj_$(TAG)/$(TARGET) : $(OBJS)
-	$(CXX) $(OBJS) -o $@.html $(INCS) $(CXXFLAGS) $(LIBS) -pthread --embed-file tech_params/ --pre-js pre_js.js --shell-file template.html -s ALLOW_MEMORY_GROWTH=1 -s PTHREAD_POOL_SIZE=8 -s STACK_SIZE=131072 -s PROXY_TO_PTHREAD
+	$(CXX) $(OBJS) -o $@.html $(INCS) $(CXXFLAGS) $(LIBS) -pthread --embed-file tech_params/ --shell-file template.html -s ALLOW_MEMORY_GROWTH=1 -s PTHREAD_POOL_SIZE=8 -s STACK_SIZE=131072
 
 #obj_$(TAG)/%.o : %.cc
 #	$(CXX) -c $(CXXFLAGS) $(INCS) -o $@ $<
