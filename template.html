@@ -60,7 +60,7 @@
         <form id="form_method">
           <h2 style="text-align: center;">Basic configuration</h2>
 
-          <div style="display: grid; grid-template-columns: auto auto auto auto; row-gap: 2vh; text-align: left; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+          <div style="display: grid; grid-template-columns: auto auto auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
             <div>
               <label title="Cache size in bytes" style="font-weight: bold;"  for="cache_size">Cache size (bytes)</label>
               <input title="Cache size in bytes" type="number" id="cache_size" value="131072" oninput="(() => {cache_cfg.cache_size.value = parseInt(this.value);})();">
@@ -74,7 +74,7 @@
               <input title="Associativity of the cache, to model a fully associative cache, set associativity to 0" type="number" id="associativity" value="2" oninput="(() => {cache_cfg.associativity.value = parseInt(this.value);})();">
             </div>
             <div>
-              <span title="Technology of integration in microns" style="font-weight: bold;">Technology (u)</span>
+              <span title="Technology of integration in microns" style="font-weight: bold;">Technology (u)</span><br>
               <input title="Technology of integration in microns" type="radio" name="technology" id="technology_0.022" value="0.022" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
             <label title="Technology of integration in microns" for="technology_0.022">0.022</label>
             <input title="Technology of integration in microns" type="radio" name="technology" id="technology_0.032" value="0.032" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);})();">
@@ -323,52 +323,52 @@
                   </div>
                   <div>
                     <label title="Weight delay UCA" style="font-weight: bold;"  for="design_objective_weight_delay">UCA weight delay</label>
-                    <input title="Weight delay UCA" type="number" id="design_objective_weight_delay" value="0" oninput="(() => {cache_cfg.design_objective.value[0] = parseInt(this.value);})();"></input>
+                    <input title="Weight delay UCA" type="number" id="design_objective_weight_delay" value="0" oninput="(() => {cache_cfg.design_objective_weight_delay.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Dynamic power UCA" style="font-weight: bold;"  for="design_objective_dynamic_power">UCA dynamic power</label>
-                    <input title="Dynamic power UCA" type="number" id="design_objective_dynamic_power" value="0" oninput="(() => {cache_cfg.design_objective.value[1] = parseInt(this.value);})();"></input>
+                    <input title="Dynamic power UCA" type="number" id="design_objective_dynamic_power" value="0" oninput="(() => {cache_cfg.design_objective_dynamic_power.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Leakage power UCA" style="font-weight: bold;"  for="design_objective_leakage_power">UCA leakage power</label>
-                    <input title="Leakage power UCA" type="number" id="design_objective_leakage_power" value="0" oninput="(() => {cache_cfg.design_objective.value[2] = parseInt(this.value);})();"></input>
+                    <input title="Leakage power UCA" type="number" id="design_objective_leakage_power" value="0" oninput="(() => {cache_cfg.design_objective_leakage_power.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Cycle time UCA" style="font-weight: bold;"  for="design_objective_cycle_time">UCA cycle time</label>
-                    <input title="Cycle time UCA" type="number" id="design_objective_cycle_time" value="100" oninput="(() => {cache_cfg.design_objective.value[3] = parseInt(this.value);})();"></input>
+                    <input title="Cycle time UCA" type="number" id="design_objective_cycle_time" value="100" oninput="(() => {cache_cfg.design_objective_cycle_time.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Area UCA" style="font-weight: bold;"  for="design_objective_area">UCA area</label>
-                    <input title="Area UCA" type="number" id="design_objective_area" value="0" oninput="(() => {cache_cfg.design_objective.value[4] = parseInt(this.value);})();"></input>
+                    <input title="Area UCA" type="number" id="design_objective_area" value="0" oninput="(() => {cache_cfg.design_objective_area.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Deviate weight delay UCA" style="font-weight: bold;"  for="deviate_weight_delay">UCA deviate weight delay</label>
-                    <input title="Deviate weight delay UCA" type="number" id="deviate_weight_delay" value="20" oninput="(() => {cache_cfg.deviate.value[0] = parseInt(this.value);})();"></input>
+                    <input title="Deviate weight delay UCA" type="number" id="deviate_weight_delay" value="20" oninput="(() => {cache_cfg.deviate_weight_delay.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Deviate dynamic power UCA" style="font-weight: bold;"  for="deviate_dynamic_power">UCA deviate dynamic power</label>
-                    <input title="Deviate dynamic power UCA" type="number" id="deviate_dynamic_power" value="100000" oninput="(() => {cache_cfg.deviate.value[1] = parseInt(this.value);})();"></input>
+                    <input title="Deviate dynamic power UCA" type="number" id="deviate_dynamic_power" value="100000" oninput="(() => {cache_cfg.deviate_dynamic_power.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Deviate leakage power UCA" style="font-weight: bold;"  for="deviate_leakage_power">UCA deviate leakage power</label>
-                    <input title="Deviate leakage power UCA" type="number" id="deviate_leakage_power" value="100000" oninput="(() => {cache_cfg.deviate.value[2] = parseInt(this.value);})();"></input>
+                    <input title="Deviate leakage power UCA" type="number" id="deviate_leakage_power" value="100000" oninput="(() => {cache_cfg.deviate_leakage_power.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Deviate cylce time UCA" style="font-weight: bold;"  for="deviate_cycle_time">UCA deviate cycle time</label>
-                    <input title="Deviate cylce time UCA" type="number" id="deviate_cycle_time" value="100000" oninput="(() => {cache_cfg.deviate.value[3] = parseInt(this.value);})();"></input>
+                    <input title="Deviate cylce time UCA" type="number" id="deviate_cycle_time" value="100000" oninput="(() => {cache_cfg.deviate_cycle_time.value = parseInt(this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Deviate area UCA" style="font-weight: bold;"  for="deviate_area">UCA deviate area</label>
-                    <input title="Deviate area UCA" type="number" id="deviate_area" value="100000" oninput="(() => {cache_cfg.deviate.value[4] = parseInt(this.value);})();"></input>
+                    <input title="Deviate area UCA" type="number" id="deviate_area" value="100000" oninput="(() => {cache_cfg.deviate_area.value = parseInt(this.value);})();"></input>
 
                   </div>
 
@@ -386,52 +386,52 @@
                     </div>
                     <div>
                       <label title="Weight delay NUCA" style="font-weight: bold;"  for="nucadesign_objective_weight_delay">NUCA weight delay</label>
-                      <input title="Weight delay NUCA" type="number" id="nucadesign_objective_weight_delay" value="100" oninput="(() => {cache_cfg.nucadesign_objective.value[0] = parseInt(this.value);})();"></input>
+                      <input title="Weight delay NUCA" type="number" id="nucadesign_objective_weight_delay" value="100" oninput="(() => {cache_cfg.nucadesign_objective_weight_delay.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Dynamic power NUCA" style="font-weight: bold;"  for="nucadesign_objective_dynamic_power">NUCA dynamic power</label>
-                      <input title="Dynamic power NUCA" type="number" id="nucadesign_objective_dynamic_power" value="100" oninput="(() => {cache_cfg.nucadesign_objective.value[1] = parseInt(this.value);})();"></input>
+                      <input title="Dynamic power NUCA" type="number" id="nucadesign_objective_dynamic_power" value="100" oninput="(() => {cache_cfg.nucadesign_objective_dynamic_power.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Leakage power NUCA" style="font-weight: bold;"  for="nucadesign_objective_leakage_power">NUCA leakage power</label>
-                      <input title="Leakage power NUCA" type="number" id="nucadesign_objective_leakage_power" value="0" oninput="(() => {cache_cfg.nucadesign_objective.value[2] = parseInt(this.value);})();"></input>
+                      <input title="Leakage power NUCA" type="number" id="nucadesign_objective_leakage_power" value="0" oninput="(() => {cache_cfg.nucadesign_objective_leakage_power.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Cycle time NUCA" style="font-weight: bold;"  for="nucadesign_objective_cycle_time">NUCA cycle time</label>
-                      <input title="Cycle time NUCA" type="number" id="nucadesign_objective_cycle_time" value="0" oninput="(() => {cache_cfg.nucadesign_objective.value[3] = parseInt(this.value);})();"></input>
+                      <input title="Cycle time NUCA" type="number" id="nucadesign_objective_cycle_time" value="0" oninput="(() => {cache_cfg.nucadesign_objective_cycle_time.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Area NUCA" style="font-weight: bold;"  for="nucadesign_objective_area">NUCA area</label>
-                      <input title="Area NUCA" type="number" id="nucadesign_objective_area" value="100" oninput="(() => {cache_cfg.nucadesign_objective.value[4] = parseInt(this.value);})();"></input>
+                      <input title="Area NUCA" type="number" id="nucadesign_objective_area" value="100" oninput="(() => {cache_cfg.nucadesign_objective_area.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Deviate weight delay NUCA" style="font-weight: bold;"  for="nucadeviate_weight_delay">NUCA deviate weight delay</label>
-                      <input title="Deviate weight delay NUCA type="number" id="nucadeviate_weight_delay" value="10" oninput="(() => {cache_cfg.nucadeviate.value[0] = parseInt(this.value);})();"></input>
+                      <input title="Deviate weight delay NUCA type="number" id="nucadeviate_weight_delay" value="10" oninput="(() => {cache_cfg.nucadeviate_weight_delay.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Deviate dynamic power NUCA" style="font-weight: bold;"  for="nucadeviate_dynamic_power">NUCA deviate dynamic power</label>
-                      <input title="Deviate dynamic power NUCA" type="number" id="nucadeviate_dynamic_power" value="10000" oninput="(() => {cache_cfg.nucadeviate.value[1] = parseInt(this.value);})();"></input>
+                      <input title="Deviate dynamic power NUCA" type="number" id="nucadeviate_dynamic_power" value="10000" oninput="(() => {cache_cfg.nucadeviate_dynamic_power.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Deviate leakage power NUCA" style="font-weight: bold;"  for="nucadeviate_leakage_power">NUCA deviate leakage power</label>
-                      <input title="Deviate leakage power NUCA" type="number" id="nucadeviate_leakage_power" value="10000" oninput="(() => {cache_cfg.nucadeviate.value[2] = parseInt(this.value);})();"></input>
+                      <input title="Deviate leakage power NUCA" type="number" id="nucadeviate_leakage_power" value="10000" oninput="(() => {cache_cfg.nucadeviate_leakage_power.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Deviate cylce time NUCA" style="font-weight: bold;"  for="nucadeviate_cycle_time">NUCA deviate cycle time</label>
-                      <input title="Deviate cylce time NUCA" type="number" id="nucadeviate_cycle_time" value="10000" oninput="(() => {cache_cfg.nucadeviate.value[3] = parseInt(this.value);})();"></input>
+                      <input title="Deviate cylce time NUCA" type="number" id="nucadeviate_cycle_time" value="10000" oninput="(() => {cache_cfg.nucadeviate_cycle_time.value = parseInt(this.value);})();"></input>
 
                     </div>
                     <div>
                       <label title="Deviate area NUCA" style="font-weight: bold;"  for="nucadeviate_area">NUCA deviate area</label>
-                      <input title="Deviate area NUCA" type="number" id="nucadeviate_area" value="10000" oninput="(() => {cache_cfg.nucadeviate.value[4] = parseInt(this.value);})();"></input>
+                      <input title="Deviate area NUCA" type="number" id="nucadeviate_area" value="10000" oninput="(() => {cache_cfg.nucadeviate_area.value = parseInt(this.value);})();"></input>
 
                     </div>
                 </div>
@@ -1225,8 +1225,14 @@
         <h2>Output</h2>
         <textarea id="output" style="width: 900px; height: 900px;"></textarea>
         <h2>Graphs</h2>
+
+        <form id="select_parameter_to_study">
+          <span title="Choose the parameter to study" style="font-weight: bold;">Choose the parameter to study</span>
+        </form>
+
       </div>
     <div style="width: 900px; margin: auto;">
+      <canvas id="chart"></canvas>
       <canvas id="acces_time_cache_size_chart"></canvas>
       <canvas id="acces_time_block_size_chart"></canvas>
       <canvas id="acces_time_associativity_chart"></canvas>
@@ -1240,6 +1246,7 @@
     <script type='text/javascript'>
       var spinnerElement = document.getElementById('spinner');
       var outputElement = document.getElementById('output');
+      var study_parameter_form = document.getElementById('select_parameter_to_study');
 
       // Default values of the cache configuration
       var cache_cfg = {
@@ -1271,10 +1278,26 @@
         cache_type: {parameter: '-cache type', value: "cache"},
         tag_size: {parameter: '-tag size (b)', value: "default"},
         access_mode: {parameter: '-access mode (normal, sequential, fast)', value: "normal"},
-        design_objective: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: [0,0,0,100,0]},
-        deviate: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: [20,100000,100000,100000,100000]},
-        nucadesign_objective: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: [100,100,0,0,100]},
-        nucadeviate: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: [10,10000,10000,10000,10000]},
+        design_objective_weight_delay: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        design_objective_dynamic_power: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        design_objective_leakage_power: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        design_objective_cycle_time: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 100},
+        design_objective_area: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        deviate_weight_delay: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 20},
+        deviate_dynamic_power: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 100000},
+        deviate_leakage_power: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 100000},
+        deviate_cycle_time: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 100000},
+        deviate_area: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 100000},
+        nucadesign_objective_weight_delay: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 100},
+        nucadesign_objective_dynamic_power: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 100},
+        nucadesign_objective_leakage_power: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        nucadesign_objective_cycle_time: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        nucadesign_objective_area: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 100},
+        nucadeviate_weight_delay: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10},
+        nucadeviate_dynamic_power: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10000},
+        nucadeviate_leakage_power: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10000},
+        nucadeviate_cycle_time: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10000},
+        nucadeviate_area: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10000},
         optimize_ed: {parameter: '-Optimize ED or ED^2 (ED, ED^2, NONE):', value: "ED^2"},
         cache_model: {parameter: '-Cache model (NUCA, UCA) ', value: "UCA"},
         nuca_bank_count: {parameter: '-NUCA bank count', value: 0},
@@ -1365,6 +1388,85 @@
         tag_side_comparator_delay: 0,
         tag_side_htree_output_delay: 0
       };
+
+      var simulations = [];
+      var simulations_outputs = [];
+      var simulation = 0;
+
+      var parameters_to_study = [];
+
+      function compare_simulations() {
+        if (simulation > 0) {
+            const previous = simulations[simulation - 1];
+            const current = simulations[simulation];
+            for (const key in previous) {
+              if (Object.hasOwnProperty.call(previous, key) && Object.hasOwnProperty.call(current, key)) {
+                const previous_element = previous[key];
+                const current_element = current[key];
+                if (previous_element.value != current_element.value) {
+                  if (!parameters_to_study.includes(key)) {
+                    parameters_to_study.push(key)
+            study_parameter_form.innerHTML += `
+            <input title="${key}" type="radio" name="parameter_to_study" id="${key}_parameter_to_study" value="${key}" oninput="(() => {update_chart(this.value);})();">
+            <label title="${key}" for="${key}_parameter_to_study">${key}</label>
+            `
+                  }
+                }
+              }
+            }
+        }
+      }
+
+      var chart = new Chart(document.getElementById('chart'), {
+          type: 'line',
+            data: {
+            labels: [],
+            datasets: [{
+                label: 'Acces time (ns)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Cycle time (ns)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Total dynamic read energy per access (nJ)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Total dynamic write energy per access (nJ)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+              label: 'Total leakage power of a bank (mW)',
+              data: [],
+              borderWidth: 1
+            },
+            {
+                label: 'Total gate leakage power of a bank (mW)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Cache area (mm^2)',
+                data: [],
+                borderWidth: 1
+            },]
+            },
+            options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Metrics by '
+      },
+    },
+    responsive: true
+  }
+        });
 
       var acces_time_cache_size_chart = new Chart(document.getElementById('acces_time_cache_size_chart'), {
           type: 'line',
@@ -1687,10 +1789,10 @@ ${cache_cfg.operating_temperature.parameter} ${cache_cfg.operating_temperature.v
 ${cache_cfg.cache_type.parameter} "${cache_cfg.cache_type.value}"
 ${cache_cfg.tag_size.parameter} "${cache_cfg.tag_size.value}"
 ${cache_cfg.access_mode.parameter} "${cache_cfg.access_mode.value}"
-${cache_cfg.design_objective.parameter} ${cache_cfg.design_objective.value[0]}:${cache_cfg.design_objective.value[1]}:${cache_cfg.design_objective.value[2]}:${cache_cfg.design_objective.value[3]}:${cache_cfg.design_objective.value[4]}
-${cache_cfg.deviate.parameter} ${cache_cfg.deviate.value[0]}:${cache_cfg.deviate.value[1]}:${cache_cfg.deviate.value[2]}:${cache_cfg.deviate.value[3]}:${cache_cfg.deviate.value[4]}
-${cache_cfg.nucadesign_objective.parameter} ${cache_cfg.nucadesign_objective.value[0]}:${cache_cfg.nucadesign_objective.value[1]}:${cache_cfg.nucadesign_objective.value[2]}:${cache_cfg.nucadesign_objective.value[3]}:${cache_cfg.nucadesign_objective.value[4]}
-${cache_cfg.nucadeviate.parameter} ${cache_cfg.nucadeviate.value[0]}:${cache_cfg.nucadeviate.value[1]}:${cache_cfg.nucadeviate.value[2]}:${cache_cfg.nucadeviate.value[3]}:${cache_cfg.nucadesign_objective.value[4]}
+${cache_cfg.design_objective_weight_delay.parameter} ${cache_cfg.design_objective_weight_delay.value}:${cache_cfg.design_objective_dynamic_power.value}:${cache_cfg.design_objective_leakage_power.value}:${cache_cfg.design_objective_cycle_time.value}:${cache_cfg.design_objective_area.value}
+${cache_cfg.deviate_weight_delay.parameter} ${cache_cfg.deviate_weight_delay.value}:${cache_cfg.deviate_dynamic_power.value}:${cache_cfg.deviate_leakage_power.value}:${cache_cfg.deviate_cycle_time.value}:${cache_cfg.deviate_area.value}
+${cache_cfg.nucadesign_objective_weight_delay.parameter} ${cache_cfg.nucadesign_objective_weight_delay.value}:${cache_cfg.nucadesign_objective_dynamic_power.value}:${cache_cfg.nucadesign_objective_leakage_power.value}:${cache_cfg.nucadesign_objective_cycle_time.value}:${cache_cfg.nucadesign_objective_area.value}
+${cache_cfg.nucadeviate_weight_delay.parameter} ${cache_cfg.nucadeviate_weight_delay.value}:${cache_cfg.nucadeviate_dynamic_power.value}:${cache_cfg.nucadeviate_leakage_power.value}:${cache_cfg.nucadeviate_cycle_time.value}:${cache_cfg.nucadesign_objective_area.value}
 ${cache_cfg.optimize_ed.parameter} "${cache_cfg.optimize_ed.value}"
 ${cache_cfg.cache_model.parameter} "${cache_cfg.cache_model.value}"
 ${cache_cfg.nuca_bank_count.parameter} ${cache_cfg.nuca_bank_count.value}
@@ -1797,8 +1899,30 @@ ${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
         parsed_cacti_output.tag_side_sense_amplifier_delay = parseFloat(tag_side_output_numbers[4]);
         parsed_cacti_output.tag_side_comparator_delay = parseFloat(tag_side_output_numbers[5]);
         parsed_cacti_output.tag_side_htree_output_delay = parseFloat(tag_side_output_numbers[6]);
-
       }
+
+      function update_chart(parameter_to_study) {
+
+chart.options.plugins.title.text = `Metrics by ${parameter_to_study}`;
+
+chart.data.labels = [];
+
+simulations.forEach(element => {
+  chart.data.labels.push(element[parameter_to_study].value);
+});
+
+simulations_outputs.forEach(element => {
+  chart.data.datasets[0].data.push(element.acces_time);
+        chart.data.datasets[1].data.push(element.cycle_time);
+        chart.data.datasets[2].data.push(element.total_dynamic_read_energy_per_access);
+        chart.data.datasets[3].data.push(element.total_dynamic_write_energy_per_access);
+        chart.data.datasets[4].data.push(element.total_leakage_power_of_a_bank);
+        chart.data.datasets[5].data.push(element.total_gate_leakage_power_of_a_bank);
+        chart.data.datasets[6].data.push(element.cache_area);
+});
+
+chart.update();
+}
 
       function update_acces_time_cache_size_chart() {
 
@@ -1889,7 +2013,14 @@ ${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
 
         callMain(arguments_);
 
+        simulations.push(structuredClone(cache_cfg));
+      compare_simulations();
+
         parse_cacti_output();
+        simulations_outputs.push(structuredClone(parsed_cacti_output));
+
+
+        simulation++;
 
         update_acces_time_cache_size_chart();
         update_acces_time_block_size_chart();
