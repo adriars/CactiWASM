@@ -55,13 +55,14 @@
         <input type="text" id="configuration_name" placeholder="Configuration name">
         <input type="button" value="Save current configuration" onclick="save_config(document.getElementById('configuration_name').value)">
       </form>
-      <div id="saved_configs">
+      <br>
+      <div id="saved_configs" style="align-items: center; justify-content: center; display: flex; flex-direction: row; width: 900px; margin: auto;">
       </div>
       <div id="cache_config_form">
         <form>
           <h2 style="text-align: center;">Basic configuration</h2>
 
-          <div style="display: grid; grid-template-columns: auto auto auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+          <div style="display: grid; grid-template-columns: auto auto auto auto; column-gap: 2vw; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
             <div>
               <label title="Cache size in bytes" style="font-weight: bold;"  for="cache_size">Cache size (bytes)</label>
               <input title="Cache size in bytes" type="number" id="cache_size" value="131072" oninput="(() => {cache_cfg.cache_size.value = parseInt(this.value); this.setAttribute('value', this.value);})();">
@@ -332,7 +333,7 @@
                     </div>
                     <div>
                       <label title="NUCA bank count, in order for CACTI to find the optimal NUCA bank value the following variable should be assigned 0." style="font-weight: bold;"  for="nuca_bank_count">NUCA bank count</label>
-                      <input title="NUCA bank count, in order for CACTI to find the optimal NUCA bank value the following variable should be assigned 0." type="number" id="nuca_bank_count" value="0" oninput="(() => {cache_cfg.nuca_bank_count.value = parseInt(this.value);})();"></input>
+                      <input title="NUCA bank count, in order for CACTI to find the optimal NUCA bank value the following variable should be assigned 0." type="number" id="nuca_bank_count" value="0" oninput="(() => {cache_cfg.nuca_bank_count.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                     </div>
                     <div>
@@ -535,7 +536,7 @@
                   </div>
                   <div>
                     <label title="Debug detail, the available values are F, debug detail" style="font-weight: bold;" for="print_option">debug detail</label>
-                    <input title="Debug detail, the available values are F, debug detail" style="font-weight: bold;" type="text" id="print_option" value="debug detail" oninput="(() => {cache_cfg.print_option.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                    <input title="Debug detail, the available values are F, debug detail" type="text" id="print_option" value="debug detail" oninput="(() => {cache_cfg.print_option.value = this.value; this.setAttribute('value', this.value);})();"></input>
                   </div>
                   <div>
                     <label title="Verbose, if we want to see all channels/bobs/memory configurations explored, the available values are T, F" style="font-weight: bold;"  for="verbose">verbose</label>
@@ -594,179 +595,154 @@
 
                   </div>
                   <div>
-                    <span title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" style="font-weight: bold;">dram_type</span>
-                    <input title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" type="radio" name="dram_type" id="dram_type_ddr3" value="DDR3" checked oninput="(() => {cache_cfg.dram_type.value = this.value})();"></input>
-                    <label title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" for="dram_type_ddr3">DDR3</label>
-                    <input title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" type="radio" name="dram_type" id="dram_type_ddr4" value="DDR4" oninput="(() => {cache_cfg.dram_type.value = this.value})();"></input>
-                    <label title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" for="dram_type_ddr4">DDR4</label>
-                    <input title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" type="radio" name="dram_type" id="dram_type_lpddr2" value="LPDDR2" oninput="(() => {cache_cfg.dram_type.value = this.value})();"></input>
-                    <label title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" for="dram_type_lpddr2">LPDDR2</label>
-                    <input title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" type="radio" name="dram_type" id="dram_type_wideio" value="WideIO" oninput="(() => {cache_cfg.dram_type.value = this.value})();"></input>
-                    <label title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" for="dram_type_wideio">WideIO</label>
-                    <input title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" type="radio" name="dram_type" id="dram_type_lowswingdiff" value="Low_Swing_Diff" oninput="(() => {cache_cfg.dram_type.value = this.value})();"></input>
-                    <label title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" for="dram_type_lowswingdiff">Low_Swing_Diff</label>
-                    <input title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" type="radio" name="dram_type" id="dram_type_serial" value="Serial" oninput="(() => {cache_cfg.dram_type.value = this.value})();"></input>
-                    <label title="DRAM type, Memory Type (D3=DDR3, D4=DDR4, L=LPDDR2, W=WideIO, S=Serial)" for="dram_type_serial">Serial</label>
+                    <label title="DRAM type, Memory Type, the available values are (DDR3, DDR4, LPDDR2, WideIO, Serial, Low_Swing_Diff)" style="font-weight: bold;">dram_type</label>
+                    <input title="DRAM type, Memory Type, the available values are (DDR3, DDR4, LPDDR2, WideIO, Serial, Low_Swing_Diff)" type="text" id="dram_type" value="DDR3" oninput="(() => {cache_cfg.dram_type.value = this.value; this.setAttribute('value', this.value);})();"></input>
 
                   </div>
 
                   <div>
-                    <span title="Memory state" style="font-weight: bold;">io state</span>
-                    <input title="Memory state" type="radio" name="io_state" id="io_state_write" value="WRITE" checked oninput="(() => {cache_cfg.io_state.value = this.value})();"></input>
-                    <label title="Memory state" for="io_state_write">WRITE</label>
-                    <input title="Memory state" type="radio" name="io_state" id="io_state_read" value="READ" oninput="(() => {cache_cfg.io_state.value = this.value})();"></input>
-                    <label title="Memory state" for="io_state_read">READ</label>
-                    <input title="Memory state" type="radio" name="io_state" id="io_state_idle" value="IDLE" oninput="(() => {cache_cfg.io_state.value = this.value})();"></input>
-                    <label title="Memory state" for="io_state_idle">IDLE</label>
-                    <input title="Memory state" type="radio" name="io_state" id="io_state_sleep" value="SLEEP" oninput="(() => {cache_cfg.io_state.value = this.value})();"></input>
-                    <label title="Memory state" for="io_state_sleep">SLEEP</label>
+                    <label title="Memory state, the available values are WRITE, READ, IDLE, SLEEP" style="font-weight: bold;">io state</label>
+                    <input title="Memory state, the available values are WRITE, READ, IDLE, SLEEP" type="text" id="io_state" value="WRITE" oninput="(() => {cache_cfg.io_state.value = this.value; this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                   <div>
                     <label title="Address bus timing. To alleviate the timing on the command and address bus due to high loading (shared across all memories on the channel), the interface allows for multi-cycle timing options" style="font-weight: bold;"  for="addr_timing">addr_timing</label>
-                    <input title="Address bus timing. To alleviate the timing on the command and address bus due to high loading (shared across all memories on the channel), the interface allows for multi-cycle timing options" type="number" id="addr_timing" value="1.0" oninput="(() => {cache_cfg.addr_timing.value = parseFloat(this.value);})();"></input>
+                    <input title="Address bus timing. To alleviate the timing on the command and address bus due to high loading (shared across all memories on the channel), the interface allows for multi-cycle timing options" type="number" id="addr_timing" value="1.0" oninput="(() => {cache_cfg.addr_timing.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
 
                   <div>
                     <label title="Memory density, (Gbit per memory/DRAM die)" style="font-weight: bold;"  for="mem_density">mem_density</label>
-                    <input title="Memory density, (Gbit per memory/DRAM die)" type="number" id="mem_density" value="4" oninput="(() => {cache_cfg.mem_density.value = parseFloat(this.value);})();"></input>
+                    <input title="Memory density, (Gbit per memory/DRAM die)" type="number" id="mem_density" value="4" oninput="(() => {cache_cfg.mem_density.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
 
                   <div>
                     <label style="font-weight: bold;"  for="bus_bw">bus_bw</label>
-                    <input type="number" id="bus_bw" value="0" oninput="(() => {cache_cfg.bus_bw.value = parseInt(this.value);})();"></input>
+                    <input type="number" id="bus_bw" value="0" oninput="(() => {cache_cfg.bus_bw.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                   <div>
                     <label title="Bus frequency, As of current memory standards (2013), valid range 0 to 1.5 GHz for DDR3, 0 to 533 MHz for LPDDR2, 0 - 800 MHz for WideIO and 0 - 3 GHz for Low-swing differential" style="font-weight: bold;"  for="bus_freq">bus_freq</label>
-                    <input title="Bus frequency, As of current memory standards (2013), valid range 0 to 1.5 GHz for DDR3, 0 to 533 MHz for LPDDR2, 0 - 800 MHz for WideIO and 0 - 3 GHz for Low-swing differential" type="number" id="bus_freq" value="800" oninput="(() => {cache_cfg.bus_freq.value = parseFloat(this.value);})();"></input>
+                    <input title="Bus frequency, As of current memory standards (2013), valid range 0 to 1.5 GHz for DDR3, 0 to 533 MHz for LPDDR2, 0 - 800 MHz for WideIO and 0 - 3 GHz for Low-swing differential" type="number" id="bus_freq" value="800" oninput="(() => {cache_cfg.bus_freq.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
 
                   <div>
                     <label title="Duty cicle" style="font-weight: bold;"  for="duty_cycle">duty_cycle</label>
-                    <input title="Duty cicle" type="number" id="duty_cycle" value="1.0" oninput="(() => {cache_cfg.duty_cycle.value = parseFloat(this.value);})();"></input>
+                    <input title="Duty cicle" type="number" id="duty_cycle" value="1.0" oninput="(() => {cache_cfg.duty_cycle.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
 
                   <div>
                     <label title="Activity factor for Data (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" style="font-weight: bold;"  for="activity_dq">activity_dq</label>
-                    <input title="Activity factor for Data (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" type="number" id="activity_dq" value="1.0" oninput="(() => {cache_cfg.activity_dq.value = parseFloat(this.value);})();"></input>
+                    <input title="Activity factor for Data (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" type="number" id="activity_dq" value="1.0" oninput="(() => {cache_cfg.activity_dq.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Activity factor for Control/Address (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" style="font-weight: bold;"  for="activity_ca">activity_ca</label>
-                    <input title="Activity factor for Control/Address (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" type="number" id="activity_ca" value="0.5" oninput="(() => {cache_cfg.activity_ca.value = parseFloat(this.value);})();"></input>
+                    <input title="Activity factor for Control/Address (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" type="number" id="activity_ca" value="0.5" oninput="(() => {cache_cfg.activity_ca.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Number of DQ pins. Includes ECC pins." style="font-weight: bold;"  for="num_dq">num_dq</label>
-                    <input title="Number of DQ pins. Includes ECC pins." type="number" id="num_dq" value="72" oninput="(() => {cache_cfg.num_dq.value = parseInt(this.value);})();"></input>
+                    <input title="Number of DQ pins. Includes ECC pins." type="number" id="num_dq" value="72" oninput="(() => {cache_cfg.num_dq.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Number of DQS pins. DQS is a data strobe that is sent along with a small number of data-lanes so the source synchronous timing is local to these DQ bits. Typically, 1 DQS per byte (8 DQ bits) is used. The DQS is also typucally differential, just like the CLK pin, Include ECC pins as well. Valid range 0 to 18. For x4 memories, could have 36 DQS pins" style="font-weight: bold;"  for="num_dqs">num_dqs</label>
-                    <input title="Number of DQS pins. DQS is a data strobe that is sent along with a small number of data-lanes so the source synchronous timing is local to these DQ bits. Typically, 1 DQS per byte (8 DQ bits) is used. The DQS is also typucally differential, just like the CLK pin, Include ECC pins as well. Valid range 0 to 18. For x4 memories, could have 36 DQS pins" type="number" id="num_dqs" value="18" oninput="(() => {cache_cfg.num_dqs.value = parseInt(this.value);})();"></input>
+                    <input title="Number of DQS pins. DQS is a data strobe that is sent along with a small number of data-lanes so the source synchronous timing is local to these DQ bits. Typically, 1 DQS per byte (8 DQ bits) is used. The DQS is also typucally differential, just like the CLK pin, Include ECC pins as well. Valid range 0 to 18. For x4 memories, could have 36 DQS pins" type="number" id="num_dqs" value="18" oninput="(() => {cache_cfg.num_dqs.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Number of CA pins " style="font-weight: bold;"  for="num_ca">num_ca</label>
-                    <input title="Number of CA pins " type="number" id="num_ca" value="25" oninput="(() => {cache_cfg.num_ca.value = parseInt(this.value);})();"></input>
+                    <input title="Number of CA pins " type="number" id="num_ca" value="25" oninput="(() => {cache_cfg.num_ca.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Number of CLK pins. CLK is typically a differential pair. In some cases additional CLK pairs may be used to limit the loading on the CLK pin." style="font-weight: bold;"  for="num_clk">num_clk</label>
-                    <input title="Number of CLK pins. CLK is typically a differential pair. In some cases additional CLK pairs may be used to limit the loading on the CLK pin." type="number" id="num_clk" value="2" oninput="(() => {cache_cfg.num_clk.value = parseInt(this.value);})();"></input>
+                    <input title="Number of CLK pins. CLK is typically a differential pair. In some cases additional CLK pairs may be used to limit the loading on the CLK pin." type="number" id="num_clk" value="2" oninput="(() => {cache_cfg.num_clk.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Number of ranks (loads on DQ and DQS) per buffer/register. If multiple LRDIMMs or buffer chips exist, the analysis for capacity and power is reported per buffer/register" style="font-weight: bold;"  for="num_mem_dq">num_mem_dq</label>
-                    <input title="Number of ranks (loads on DQ and DQS) per buffer/register. If multiple LRDIMMs or buffer chips exist, the analysis for capacity and power is reported per buffer/register" type="number" id="num_mem_dq" value="2" oninput="(() => {cache_cfg.num_mem_dq.value = parseInt(this.value);})();"></input>
+                    <input title="Number of ranks (loads on DQ and DQS) per buffer/register. If multiple LRDIMMs or buffer chips exist, the analysis for capacity and power is reported per buffer/register" type="number" id="num_mem_dq" value="2" oninput="(() => {cache_cfg.num_mem_dq.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Width of the Memory Data Bus" style="font-weight: bold;"  for="mem_data_width">mem_data_width</label>
-                    <input title="Width of the Memory Data Bus" type="number" id="mem_data_width" value="8" oninput="(() => {cache_cfg.mem_data_width.value = parseInt(this.value);})();"></input>
+                    <input title="Width of the Memory Data Bus" type="number" id="mem_data_width" value="8" oninput="(() => {cache_cfg.mem_data_width.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="RTT Termination Resistance" style="font-weight: bold;"  for="rtt_value">rtt_value</label>
-                    <input title="RTT Termination Resistance" type="number" id="rtt_value" value="10000" oninput="(() => {cache_cfg.rtt_value.value = parseInt(this.value);})();"></input>
+                    <input title="RTT Termination Resistance" type="number" id="rtt_value" value="10000" oninput="(() => {cache_cfg.rtt_value.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="RON Termination Resistance" style="font-weight: bold;"  for="ron_value">ron_value</label>
-                    <input title="RON Termination Resistance" type="number" id="ron_value" value="34" oninput="(() => {cache_cfg.ron_value.value = parseInt(this.value);})();"></input>
+                    <input title="RON Termination Resistance" type="number" id="ron_value" value="34" oninput="(() => {cache_cfg.ron_value.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Number of BoBs" style="font-weight: bold;"  for="num_bobs">num_bobs</label>
-                    <input title="Number of BoBs" type="number" id="num_bobs" value="1" oninput="(() => {cache_cfg.num_bobs.value = parseInt(this.value);})();"></input>
+                    <input title="Number of BoBs" type="number" id="num_bobs" value="1" oninput="(() => {cache_cfg.num_bobs.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Memory System Capacity in GB" style="font-weight: bold;"  for="capacity">capacity</label>
-                    <input title="Memory System Capacity in GB" type="number" id="capacity" value="80" oninput="(() => {cache_cfg.capacity.value = parseInt(this.value);})();"></input>
+                    <input title="Memory System Capacity in GB" type="number" id="capacity" value="80" oninput="(() => {cache_cfg.capacity.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
                     <label title="Number of Channel per BoB" style="font-weight: bold;"  for="num_channels_per_bob">num_channels_per_bob</label>
-                    <input title="Number of Channel per BoB" type="number" id="num_channels_per_bob" value="1" oninput="(() => {cache_cfg.num_channels_per_bob.value = parseInt(this.value);})();"></input>
+                    <input title="Number of Channel per BoB" type="number" id="num_channels_per_bob" value="1" oninput="(() => {cache_cfg.num_channels_per_bob.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
-                    <span title="Possible DIMM option to consider" style="font-weight: bold;">DIMM model</span>
-                    <input title="Possible DIMM option to consider" type="radio" name="dimm_model" id="dimm_model_all" value="ALL" checked oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
-                    <label title="Possible DIMM option to consider" for="dimm_model_all">ALL</label>
-                    <input title="Possible DIMM option to consider" type="radio" name="dimm_model" id="dimm_model_udimm" value="JUST_UDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
-                    <label title="Possible DIMM option to consider" for="dimm_model_udimm">JUST_UDIMM</label>
-                    <input title="Possible DIMM option to consider" type="radio" name="dimm_model" id="dimm_model_rdimm" value="JUST_RDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
-                    <label title="Possible DIMM option to consider" for="dimm_model_rdimm">JUST_RDIMM</label>
-                    <input title="Possible DIMM option to consider" type="radio" name="dimm_model" id="dimm_model_lrdimm" value="JUST_LRDIMM" oninput="(() => {cache_cfg.dimm_model.value = this.value})();"></input>
-                    <label title="Possible DIMM option to consider" for="dimm_model_lrdimm">JUST_LRDIMM</label>
+                    <label title="Possible DIMM option to consider, the available values are ALL, JUST_UDIMM, JUST_RDIMM, JUST_LRDIMM" style="font-weight: bold;" for="dimm_model">DIMM model</label>
+                    <input title="Possible DIMM option to consider, the available values are ALL, JUST_UDIMM, JUST_RDIMM, JUST_LRDIMM" type="text" id="dimm_model" value="ALL" oninput="(() => {cache_cfg.dimm_model.value = this.value; this.setAttribute('value', this.value);})();"></input>
 
                   </div>
                   <div>
-                    <input title="if channels of each bob have the same configurations" style="font-weight: bold;"  type="checkbox" id="mirror_in_bob" value="true" oninput="(() => {this.checked ? cache_cfg.mirror_in_bob.value = 'T' : cache_cfg.mirror_in_bob.value = 'F'})();"></input>
-                    <label title="if channels of each bob have the same configurations" style="font-weight: bold;" for="mirror_in_bob">mirror_in_bob</label>
+                    <label title="if channels of each bob have the same configurations, this can be T or F" style="font-weight: bold;" for="mirror_in_bob">mirror_in_bob</label>
+                    <input title="if channels of each bob have the same configurations, this can be T or F" style="font-weight: bold;"  type="text" id="mirror_in_bob" value="T" oninput="(() => {cache_cfg.mirror_in_bob.value = this.value; this.setAttribute('value', this.value);})();"></input>
 
                   </div>
 
                   <div>
                     <label style="font-weight: bold;"  for="search_port">search port</label>
-                    <input type="number" id="search_port" value="0" oninput="(() => {cache_cfg.search_port.value = parseInt(this.value);})();"></input>
+                    <input type="number" id="search_port" value="0" oninput="(() => {cache_cfg.search_port.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                   <div>
-                    <input type="checkbox" id="Low_Power_Permitted" value="true" oninput="(() => {this.checked ? cache_cfg.Low_Power_Permitted.value = 'T' : cache_cfg.Low_Power_Permitted.value = 'F'})();"></input>
                     <label style="font-weight: bold;"  for="Low_Power_Permitted">CLDriver vertical</label>
+                    <input type="text" id="Low_Power_Permitted" value="T" oninput="(() => {cache_cfg.Low_Power_Permitted.value = this.value; this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                   <div>
                     <label title="Load, between 0 and 1" style="font-weight: bold;"  for="load">load</label>
-                    <input title="Load, between 0 and 1" type="number" id="load" value="0" oninput="(() => {cache_cfg.load.value = parseInt(this.value);})();"></input>
+                    <input title="Load, between 0 and 1" type="number" id="load" value="0" oninput="(() => {cache_cfg.load.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                   <div>
                     <label title="Row buffer hit rate" style="font-weight: bold;"  for="row_buffer_hit_rate">row_buffer_hit_rate</label>
-                    <input title="Row buffer hit rate" type="number" id="row_buffer_hit_rate" value="0" oninput="(() => {cache_cfg.row_buffer_hit_rate.value = parseInt(this.value);})();"></input>
+                    <input title="Row buffer hit rate" type="number" id="row_buffer_hit_rate" value="0" oninput="(() => {cache_cfg.row_buffer_hit_rate.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                   <div>
                     <label style="font-weight: bold;"  for="rd_2_wr_ratio">rd_2_wr_ratio</label>
-                    <input type="number" id="rd_2_wr_ratio" value="0" oninput="(() => {cache_cfg.rd_2_wr_ratio.value = parseInt(this.value);})();"></input>
+                    <input type="number" id="rd_2_wr_ratio" value="0" oninput="(() => {cache_cfg.rd_2_wr_ratio.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                   <div>
-                    <input title="Same bandwith in all BoB channels" type="checkbox" id="same_bw_in_bob" value="true" oninput="(() => {this.checked ? cache_cfg.same_bw_in_bob.value = 'T' : cache_cfg.same_bw_in_bob.value = 'F'})();"></input>
-                    <label title="Same bandwith in all BoB channels" style="font-weight: bold;"  for="same_bw_in_bob">same_bw_in_bob</label>
+                    <label title="Same bandwith in all BoB channels, this can be T or F" style="font-weight: bold;"  for="same_bw_in_bob">same_bw_in_bob</label>
+                    <input title="Same bandwith in all BoB channels, this can be T or F" type="text" id="same_bw_in_bob" value="T" oninput="(() => {cache_cfg.same_bw_in_bob.value = this.value; this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                   <div>
-                    <input title="Total power" type="checkbox" id="total_power" value="true" oninput="(() => {this.checked ? cache_cfg.total_power.value = 'T' : cache_cfg.total_power.value = 'F'})();"></input>
-                    <label title="Total power" style="font-weight: bold;"  for="total_power">total_power</label>
+                    <label title="Total power, this can be T or F" style="font-weight: bold;"  for="total_power">total_power</label>
+                    <input title="Total power, this can be T or F" type="text" id="total_power" value="T" oninput="(() => {cache_cfg.total_power.value = this.value; this.setAttribute('value', this.value);})();"></input>
                   </div>
 
                 </div>
@@ -976,9 +952,7 @@
           cache_cfg: cache_cfg,
           form: document.getElementById('cache_config_form').innerHTML
         }
-
-        console.log(config_and_form.form);
-
+        
         window.localStorage.setItem(name, JSON.stringify(config_and_form));
         update_saved_configs();
       }
@@ -994,8 +968,10 @@
         saved_configs.innerHTML = '';
         for (let index = 0; index < localStorage.length; index++) {
           saved_configs.innerHTML += `
+          <div style="border: 1px; border-color: black; border-style: solid; padding: 10px;">
           <input type="button" value="${localStorage.key(index)}" onclick="load_config('${localStorage.key(index)}')">
           <input type="button" title="Delete ${localStorage.key(index)}" value="X" onclick="localStorage.removeItem('${localStorage.key(index)}');update_saved_configs();">
+          </div>
           `
         }
       }
