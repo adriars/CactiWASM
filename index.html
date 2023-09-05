@@ -1,0 +1,1516 @@
+<!doctype html>
+<html lang="en-us">
+  <!-- Web application interface for the ease of using the CACTI 7.0 simulator tool,
+       the code was compiled from C++ to WASAM using the emscripten framework in order
+       to be able to run it on a web browser enviorment -->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>CACTI 7.0</title>
+    <style>
+      body {
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      .spinner {
+        height: 50px;
+        width: 50px;
+        margin: 0px auto;
+        -webkit-animation: rotation .8s linear infinite;
+        -moz-animation: rotation .8s linear infinite;
+        -o-animation: rotation .8s linear infinite;
+        animation: rotation 0.8s linear infinite;
+        border-left: 10px solid rgb(0, 0, 0);
+        border-right: 10px solid rgb(0, 0, 0);
+        border-bottom: 10px solid rgb(0, 0, 0);
+        border-top: 10px solid rgb(255, 255, 255);
+        border-radius: 100%;
+        background-color: rgb(255, 255, 255);
+      }
+      @-webkit-keyframes rotation {
+        from {-webkit-transform: rotate(0deg);}
+        to {-webkit-transform: rotate(360deg);}
+      }
+      @-moz-keyframes rotation {
+        from {-moz-transform: rotate(0deg);}
+        to {-moz-transform: rotate(360deg);}
+      }
+      @-o-keyframes rotation {
+        from {-o-transform: rotate(0deg);}
+        to {-o-transform: rotate(360deg);}
+      }
+      @keyframes rotation {
+        from {transform: rotate(0deg);}
+        to {transform: rotate(360deg);}
+      }
+
+    </style>
+  </head>
+  <body>
+    <figure style="overflow:visible;" id="spinner"><div class="spinner"></div><center style="margin-top:0.5em"><h1>LOADING CACTI 7.0</h1></center></figure>
+    <div id="cacti_app" hidden>
+    <div style="align-items: center; justify-content: center; display: flex; flex-direction: column; width: 900px; margin: auto;">
+      <h1>CACTI 7.0</h1>
+      <form>
+        <h2 style="text-align: center;">Saved configurations</h2>
+        <input type="text" id="configuration_name" placeholder="Configuration name">
+        <input type="button" value="Save current configuration" onclick="save_config(document.getElementById('configuration_name').value)">
+      </form>
+      <br>
+      <div id="saved_configs" style="align-items: center; justify-content: center; display: flex; flex-direction: row; width: 900px; margin: auto;">
+      </div>
+      <div id="cache_config_form">
+        <form>
+          <h2 style="text-align: center;">Basic configuration</h2>
+
+          <div style="display: grid; grid-template-columns: auto auto auto auto; column-gap: 2vw; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+            <div>
+              <label title="Cache size in bytes" style="font-weight: bold;"  for="cache_size">Cache size (bytes)</label>
+              <input title="Cache size in bytes" type="number" id="cache_size" value="131072" oninput="(() => {cache_cfg.cache_size.value = parseInt(this.value); this.setAttribute('value', this.value);})();">
+            </div>
+            <div>
+              <label title="Block size in bytes" style="font-weight: bold;"  for="block_size">Block size (bytes)</label>
+              <input title="Block size in bytes" type="number" id="block_size" value="64" oninput="(() => {cache_cfg.block_size.value = parseInt(this.value); this.setAttribute('value', this.value);})();">
+            </div>
+            <div>
+              <label title="Associativity of the cache, to model a fully associative cache, set associativity to 0" style="font-weight: bold;"  for="associativity">Associativity</label>
+              <input title="Associativity of the cache, to model a fully associative cache, set associativity to 0" type="number" id="associativity" value="2" oninput="(() => {cache_cfg.associativity.value = parseInt(this.value); this.setAttribute('value', this.value);})();">
+            </div>
+            <div>
+              
+              <label title="Technology of integration in microns the available values are 0.022, 0.032, 0.045, 0.065, 0.090" style="font-weight: bold;" for="">Technology (u)</label>
+              <input title="Technology of integration in microns the available values are 0.022, 0.032, 0.045, 0.065, 0.090" type="number" id="technology" value="0.090" oninput="(() => {cache_cfg.technology.value = parseFloat(this.value);  this.setAttribute('value', this.value);})();">
+          </div>
+          </div>
+
+            <h2 style="text-align: center;">Advanced configuration</h2>
+            
+            <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; column-gap: 2vw; text-align: center;">
+
+              <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+                <div style="grid-column: 1 / 3;">
+                  <h3 style="text-align: center;">Leakage power reduction</h3>
+                  
+                </div>
+                <div>
+                  <label title="Technic that enables the capacity of disable or disconnect some parts of the cache memory to reduce the leakage of power and power consumption, it can be true o false" style="font-weight: bold;"  for="array_power_gating">Array Power Gating</label>
+                  <input title="Technic that enables the capacity of disable or disconnect some parts of the cache memory to reduce the leakage of power and power consumption, it can be true o false" type="text" id="array_power_gating" value="false" oninput="(() => {cache_cfg.array_power_gating.value = this.value;  this.setAttribute('value', this.value);})();"></input>
+                  
+                </div>
+                <div>
+                  <label title="Word line power gating, if true, it disables the entire cache line when array power gating is enabled to reduce the leakage of power and power consumption, it can be true o false" style="font-weight: bold;"  for="wl_power_gating">WL Power Gating</label>
+                  <input title="Word line power gating, if true, it disables the entire cache line when array power gating is enabled to reduce the leakage of power and power consumption, it can be true o false" type="text" id="wl_power_gating" value="false" oninput="(() => {cache_cfg.wl_power_gating.value = this.value;  this.setAttribute('value', this.value);})();"></input>
+                  
+                </div>
+                <div>
+                  <label title="Cloumn line power gating, if true, it diables the entire cache column when array power gating is enabled to reduce the leakage of power and power consumption, it can be true o false" style="font-weight: bold;"  for="cl_power_gating">CL Power Gating</label>
+                  <input title="Cloumn line power gating, if true, it diables the entire cache column when array power gating is enabled to reduce the leakage of power and power consumption, it can be true o false" type="text" id="cl_power_gating" value="false" oninput="(() => {cache_cfg.cl_power_gating.value = this.value;  this.setAttribute('value', this.value);})();"></input>
+                  
+                </div>
+                <div>
+                  <label title="Bitline floating enables a technic which permits the value of a bit to not be forced to zero, instead the value can 'float' between small values which equals to zero, this reduces the leakage power, it can be true or false" style="font-weight: bold;"  for="bitline_floating">Bitline floating</label>
+                  <input title="Bitline floating enables a technic which permits the value of a bit to not be forced to zero, instead the value can 'float' between small values which equals to zero, this reduces the leakage power, it can be true or false" type="text" id="bitline_floating" value="false" oninput="(() => {cache_cfg.bitline_floating.value = this.value;  this.setAttribute('value', this.value);})();"></input>
+                  
+                </div>
+                <div>
+                  <label title="Interconnect power gating consists on a technic which makes possible to disable some interconnections with the objective to reduce the leakage power, it can be true or false" style="font-weight: bold;"  for="interconnect_power_gating">Interconnect Power Gating</label>
+                  <input title="Interconnect power gating consists on a technic which makes possible to disable some interconnections with the objective to reduce the leakage power, it can be true or false" type="text" id="interconnect_power_gating" value="false" oninput="(() => {cache_cfg.interconnect_power_gating.value = this.value;  this.setAttribute('value', this.value);})();"></input>
+                  
+                </div>
+                <div>
+                  <label title="This value indicates how much performace is lost when some or all of the above power reduction technics are enabled, it should be a value between 0 and 100" style="font-weight: bold;"  for="power_gating_performance_loss">Power Gating Performance Loss</label>
+                  <input title="This value indicates how much performace is lost when some or all of the above power reduction technics are enabled, it should be a value between 0 and 100" type="number" id="power_gating_performance_loss" value="0.01" oninput="(() => {cache_cfg.power_gating_performance_loss.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Read-write ports</h3>
+                  </div>
+                  <div>
+                    <label title="Number of read/write ports" style="font-weight: bold;"  for="read_write_port">Read-write port</label>
+                    <input title="Number of read/write ports" type="number" id="read_write_port" value="1" oninput="(() => {cache_cfg.read_write_port.value = parseInt(this.value);this.setAttribute('value', this.value);})();">
+
+                  </div>
+                  <div>
+                    <label title="Number of exclusive read ports" style="font-weight: bold;"  for="exclusive_read_port">Exclusive read port</label>
+                    <input title="Number of exclusive read ports" type="number" id="exclusive_read_port" value="0" oninput="(() => {cache_cfg.exclusive_read_port.value = parseInt(this.value);this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number of exclusive write ports" style="font-weight: bold;"  for="exclusive_write_port">Exclusive write port</label>
+                    <input title="Number of exclusive write ports" type="number" id="exclusive_write_port" value="0" oninput="(() => {cache_cfg.exclusive_write_port.value = parseInt(this.value);this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number single ended read ports" style="font-weight: bold;"  for="single_ended_read_ports">Single ended read ports</label>
+                    <input title="Number single ended read ports" type="number" id="single_ended_read_ports" value="0" oninput="(() => {cache_cfg.single_ended_read_ports.value = parseInt(this.value);this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+
+                    <h3 style="text-align: center;">Main memories</h3>
+                  </div>
+
+                  <div>
+                    <label title="Page size in bits, this parameter is only meaningful for main memories" style="font-weight: bold;"  for="page_size">page size (bits)</label>
+                    <input title="Page size in bits, this parameter is only meaningful for main memories" type="number" id="page_size" value="8192" oninput="(() => {cache_cfg.page_size.value = parseInt(this.value);this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label title="Burst length, this parameter is only meaningful for main memories" style="font-weight: bold;"  for="burst_length">burst length</label>
+                    <input title="Burst length, this parameter is only meaningful for main memories" type="number" id="burst_length" value="8" oninput="(() => {cache_cfg.burst_length.value = parseInt(this.value);this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Internal prefetch width, this parameter is only meaningful for main memories" style="font-weight: bold;"  for="internal_prefetch_width">internal prefetch width</label>
+                    <input title="Internal prefetch width, this parameter is only meaningful for main memories" type="number" id="internal_prefetch_width" value="8" oninput="(() => {cache_cfg.internal_prefetch_width.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label title="DRAM DIMM, the available values are UDIMM, RDIMM, LRDIMM" style="font-weight: bold;" for="dram_dimm">dram dimm</label>
+                    <input title="DRAM DIMM, the available values are UDIMM, RDIMM, LRDIMM" type="text" id="dram_dimm" value="UDIMM" oninput="(() => {cache_cfg.dram_dimm.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label title="DRAM Error Correction Code, the available values are NO_ECC, SECDED, CHIP_KILL" style="font-weight: bold;" for="dram_ecc">dram ecc</label>
+                    <input title="DRAM Error Correction Code, the available values are NO_ECC, SECDED, CHIP_KILL" type="text" id="dram_ecc" value="NO_ECC" oninput="(() => {cache_cfg.dram_ecc.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+
+                    <h3 style="text-align: center;">3D DRAM</h3>
+                  </div>
+
+                  <div>
+                    <label title="Burst depth" style="font-weight: bold;"  for="burst_depth">burst depth</label>
+                    <input title="Burst depth" type="number" id="burst_depth" value="0" oninput="(() => {cache_cfg.burst_depth.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="IO width" style="font-weight: bold;"  for="IO_width">IO width</label>
+                    <input title="IO width" type="number" id="IO_width" value="0" oninput="(() => {cache_cfg.IO_width.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="System frequency in MHz" style="font-weight: bold;"  for="system_frequency">system frequency</label>
+                    <input title="System frequency in MHz" type="number" id="system_frequency" value="0" oninput="(() => {cache_cfg.system_frequency.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="Stacked die count" style="font-weight: bold;"  for="stacked_die">stacked die count</label>
+                    <input title="Stacked die count" type="number" id="stacked_die" value="0" oninput="(() => {cache_cfg.stacked_die.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="Partitioning granularity, 0 coarse-grained rank-level, 1 fine-grained rank-level" style="font-weight: bold;"  for="partitioning_granularity">partitioning granularity</label>
+                    <input title="Partitioning granularity, 0 coarse-grained rank-level, 1 fine-grained rank-level" type="number" id="partitioning_granularity" value="0" oninput="(() => {cache_cfg.stacked_die.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="TSV projection, 0 ITRS aggressive, 1 industrial conservative" style="font-weight: bold;"  for="TSV_projection">TSV projection</label>
+                    <input title="TSV projection, 0 ITRS aggressive, 1 industrial conservative" type="number" id="TSV_projection" value="0" oninput="(() => {cache_cfg.stacked_die.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Data</h3>
+
+                  </div>
+                  <div>
+                    <label title="Data array cell type, can have one of five values (itrs-hp, itrs-lstp, itrs-lop, lp-dram, comm-dram)" style="font-weight: bold;" for="data_array_cell_type">Data array cell type</label>
+                    <input title="Data array cell type, can have one of five values (itrs-hp, itrs-lstp, itrs-lop, lp-dram, comm-dram)" type="text" id="data_array_cell_type" value="itrs-hp" oninput="(() => {cache_cfg.data_array_cell_type.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Data array peripheral type, can have one of three values (itrs-hp, itrs-lstp, itrs-lop)" style="font-weight: bold;" for="data_array_peripheral_type">Data array peripheral type</label>
+                    <input title="Data array peripheral type, can have one of three values (itrs-hp, itrs-lstp, itrs-lop)" type="text" id="data_array_peripheral_type" value="itrs-hp" oninput="(() => {cache_cfg.data_array_peripheral_type.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Tag</h3>
+
+                  </div>
+                  <div>
+                    <label title="Tag array cell type, can have one of five values (itrs-hp, itrs-lstp, itrs-lop, lp-dram, comm-dram)" style="font-weight: bold;" for="tag_array_cell_type">Tag array cell type</label>
+                    <input title="Tag array cell type, can have one of five values (itrs-hp, itrs-lstp, itrs-lop, lp-dram, comm-dram)" type="text" id="tag_array_cell_type_itrs-hp" value="itrs-hp" oninput="(() => {cache_cfg.tag_array_cell_type.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  <div>
+                    <label title="Tag array peripheral type, can have one of three values (itrs-hp, itrs-lstp, itrs-lop)" style="font-weight: bold;" for="tag_array_peripheral_type">comm-dram</label>
+                    <input title="Tag array peripheral type, can have one of three values (itrs-hp, itrs-lstp, itrs-lop)" type="text" id="tag_array_peripheral_type" value="itrs-hp" oninput="(() => {cache_cfg.tag_array_peripheral_type.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  <div>
+                    <label title="Tag size, to model special structure like branch target buffers, directory, etc. change the tag size parameter if you want cacti to calculate the tagbits, set the tag size to 0" style="font-weight: bold;"  for="tag_size">tag size (b)</label>
+                    <input title="Tag size, to model special structure like branch target buffers, directory, etc. change the tag size parameter if you want cacti to calculate the tagbits, set the tag size to 0" type="number" id="tag_size" value="0" oninput="(() => {this.value == 0 ? cache_cfg.tag_size.value = 'default' : cache_cfg.tag_size.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3>Design objectives UCA</h3>
+                  </div>
+                  <div>
+                    <label title="UCA bank count" style="font-weight: bold;"  for="uca_bank_count">UCA bank count</label>
+                    <input title="UCA bank count" type="number" id="uca_bank_count" value="1" oninput="(() => {cache_cfg.uca_bank_count.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Weight delay UCA" style="font-weight: bold;"  for="design_objective_weight_delay">UCA weight delay</label>
+                    <input title="Weight delay UCA" type="number" id="design_objective_weight_delay" value="0" oninput="(() => {cache_cfg.design_objective_weight_delay.value = parseInt(this.value);})(); this.setAttribute('value', this.value);"></input>
+
+                  </div>
+                  <div>
+                    <label title="Dynamic power UCA" style="font-weight: bold;"  for="design_objective_dynamic_power">UCA dynamic power</label>
+                    <input title="Dynamic power UCA" type="number" id="design_objective_dynamic_power" value="0" oninput="(() => {cache_cfg.design_objective_dynamic_power.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Leakage power UCA" style="font-weight: bold;"  for="design_objective_leakage_power">UCA leakage power</label>
+                    <input title="Leakage power UCA" type="number" id="design_objective_leakage_power" value="0" oninput="(() => {cache_cfg.design_objective_leakage_power.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Cycle time UCA" style="font-weight: bold;"  for="design_objective_cycle_time">UCA cycle time</label>
+                    <input title="Cycle time UCA" type="number" id="design_objective_cycle_time" value="100" oninput="(() => {cache_cfg.design_objective_cycle_time.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Area UCA" style="font-weight: bold;"  for="design_objective_area">UCA area</label>
+                    <input title="Area UCA" type="number" id="design_objective_area" value="0" oninput="(() => {cache_cfg.design_objective_area.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Deviate weight delay UCA" style="font-weight: bold;"  for="deviate_weight_delay">UCA deviate weight delay</label>
+                    <input title="Deviate weight delay UCA" type="number" id="deviate_weight_delay" value="20" oninput="(() => {cache_cfg.deviate_weight_delay.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Deviate dynamic power UCA" style="font-weight: bold;"  for="deviate_dynamic_power">UCA deviate dynamic power</label>
+                    <input title="Deviate dynamic power UCA" type="number" id="deviate_dynamic_power" value="100000" oninput="(() => {cache_cfg.deviate_dynamic_power.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Deviate leakage power UCA" style="font-weight: bold;"  for="deviate_leakage_power">UCA deviate leakage power</label>
+                    <input title="Deviate leakage power UCA" type="number" id="deviate_leakage_power" value="100000" oninput="(() => {cache_cfg.deviate_leakage_power.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Deviate cylce time UCA" style="font-weight: bold;"  for="deviate_cycle_time">UCA deviate cycle time</label>
+                    <input title="Deviate cylce time UCA" type="number" id="deviate_cycle_time" value="100000" oninput="(() => {cache_cfg.deviate_cycle_time.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Deviate area UCA" style="font-weight: bold;"  for="deviate_area">UCA deviate area</label>
+                    <input title="Deviate area UCA" type="number" id="deviate_area" value="100000" oninput="(() => {cache_cfg.deviate_area.value = parseInt(this.value);})(); this.setAttribute('value', this.value);"></input>
+
+                  </div>
+
+                  </div>
+
+                  <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+                    <div style="grid-column: 1 / 3;">
+                      <h3>Design objectives NUCA</h3>
+
+                    </div>
+                    <div>
+                      <label title="NUCA bank count, in order for CACTI to find the optimal NUCA bank value the following variable should be assigned 0." style="font-weight: bold;"  for="nuca_bank_count">NUCA bank count</label>
+                      <input title="NUCA bank count, in order for CACTI to find the optimal NUCA bank value the following variable should be assigned 0." type="number" id="nuca_bank_count" value="0" oninput="(() => {cache_cfg.nuca_bank_count.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Weight delay NUCA" style="font-weight: bold;"  for="nucadesign_objective_weight_delay">NUCA weight delay</label>
+                      <input title="Weight delay NUCA" type="number" id="nucadesign_objective_weight_delay" value="100" oninput="(() => {cache_cfg.nucadesign_objective_weight_delay.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Dynamic power NUCA" style="font-weight: bold;"  for="nucadesign_objective_dynamic_power">NUCA dynamic power</label>
+                      <input title="Dynamic power NUCA" type="number" id="nucadesign_objective_dynamic_power" value="100" oninput="(() => {cache_cfg.nucadesign_objective_dynamic_power.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Leakage power NUCA" style="font-weight: bold;"  for="nucadesign_objective_leakage_power">NUCA leakage power</label>
+                      <input title="Leakage power NUCA" type="number" id="nucadesign_objective_leakage_power" value="0" oninput="(() => {cache_cfg.nucadesign_objective_leakage_power.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Cycle time NUCA" style="font-weight: bold;"  for="nucadesign_objective_cycle_time">NUCA cycle time</label>
+                      <input title="Cycle time NUCA" type="number" id="nucadesign_objective_cycle_time" value="0" oninput="(() => {cache_cfg.nucadesign_objective_cycle_time.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Area NUCA" style="font-weight: bold;"  for="nucadesign_objective_area">NUCA area</label>
+                      <input title="Area NUCA" type="number" id="nucadesign_objective_area" value="100" oninput="(() => {cache_cfg.nucadesign_objective_area.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Deviate weight delay NUCA" style="font-weight: bold;"  for="nucadeviate_weight_delay">NUCA deviate weight delay</label>
+                      <input title="Deviate weight delay NUCA type="number" id="nucadeviate_weight_delay" value="10" oninput="(() => {cache_cfg.nucadeviate_weight_delay.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Deviate dynamic power NUCA" style="font-weight: bold;"  for="nucadeviate_dynamic_power">NUCA deviate dynamic power</label>
+                      <input title="Deviate dynamic power NUCA" type="number" id="nucadeviate_dynamic_power" value="10000" oninput="(() => {cache_cfg.nucadeviate_dynamic_power.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Deviate leakage power NUCA" style="font-weight: bold;"  for="nucadeviate_leakage_power">NUCA deviate leakage power</label>
+                      <input title="Deviate leakage power NUCA" type="number" id="nucadeviate_leakage_power" value="10000" oninput="(() => {cache_cfg.nucadeviate_leakage_power.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Deviate cylce time NUCA" style="font-weight: bold;"  for="nucadeviate_cycle_time">NUCA deviate cycle time</label>
+                      <input title="Deviate cylce time NUCA" type="number" id="nucadeviate_cycle_time" value="10000" oninput="(() => {cache_cfg.nucadeviate_cycle_time.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                    <div>
+                      <label title="Deviate area NUCA" style="font-weight: bold;"  for="nucadeviate_area">NUCA deviate area</label>
+                      <input title="Deviate area NUCA" type="number" id="nucadeviate_area" value="10000" oninput="(() => {cache_cfg.nucadeviate_area.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                    </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Wires</h3>
+
+                  </div>
+                  <div>
+                    <label title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type, the available values are Global, Global_5, Global_10, Global_20, Global_30, fullswing, lowswing." style="font-weight: bold;" for="wire_signaling">Wire signaling</label>
+                    <input title="Wire signaling, By default CACTI considers both full-swing and low-swing wires to find an optimal configuration. However, it is possible to  restrict the search space by changing the signaling from 'default' to 'fullswing' or 'lowswing' type, the available values are Global, Global_5, Global_10, Global_20, Global_30, fullswing, lowswing." type="text" id="wire_signaling" value="Global_30" oninput="(() => {cache_cfg.wire_signaling.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                    
+                  </div>
+                  <div>
+                    <label title="Wire inside mat, the available values are global, semi-global, local" style="font-weight: bold;" for="wire_inside_mat">Wire inside mat</label>
+                    <input title="Wire inside mat, the available values are global, semi-global, local" type="text" id="wire_inside_mat" value="semi-global" oninput="(() => {cache_cfg.wire_inside_mat.value = this.value;  this.setAttribute('value', this.value);})();"></input>
+                    
+                  </div>
+                  <div>
+                    
+                    <label title="Wire outside mat, the available values are global, semi-global, local" style="font-weight: bold;" for="wire_outside_mat">Wire outside mat</label>
+                    <input title="Wire outside mat, the available values are global, semi-global, local" type="text" id="wire_outside_mat" value="semi-global" oninput="(() => {cache_cfg.wire_outside_mat.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  <div>
+
+                    <label title="Interconnect projection, the available values are conservative, aggressive" style="font-weight: bold;">Interconnect projection</label>
+                    <input title="Interconnect projection, the available values are conservative, aggressive" type="text" id="interconnect_projection" value="conservative" oninput="(() => {cache_cfg.interconnect_projection.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Metrics design points</h3>
+
+                  </div>
+                  <div>
+                    <label title="First Metric for ordering different design points, the available values are Cost, Bandwidth, Energy" style="font-weight: bold;" for="first_metrics_design_points">first metric</label>
+                    <input title="First Metric for ordering different design points, the available values are Cost, Bandwidth, Energy" type="text" id="first_metrics_design_points" value="Cost" oninput="(() => {cache_cfg.first_metric.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                    
+                  </div>
+                  <div>
+
+                    <label title="Second Metric for ordering different design points, the available values are Cost, Bandwidth, Energy" style="font-weight: bold;" for="second_metrics_design_points">second metric</label>
+                    <input title="Second Metric for ordering different design points, the available values are Cost, Bandwidth, Energy" type="text" id="second_metrics_design_points" value="Bandwidth" oninput="(() => {cache_cfg.second_metric.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  <div>
+
+                    <label title="Third Metric for ordering different design points, the available values are Cost, Bandwidth, Energy" style="font-weight: bold;" for="third_metrics_design_points">third metric</label>
+                    <input title="Third Metric for ordering different design points, the available values are Cost, Bandwidth, Energy" type="text" id="third_metrics_design_points" value="Energy" oninput="(() => {cache_cfg.third_metric.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Cache</h3>
+
+                  </div>
+                  <div>
+                    <label title="Type of memory cache (with a tag array) or ram (scratch ram similar to a register file) or main memory (no tag array and every access will happen at a page granularity), the available values are cache, main memory, 3D memory or 2D main memory, ram, cam" style="font-weight: bold;" for="cache_type">cache type</label>
+                    <input title="Type of memory cache (with a tag array) or ram (scratch ram similar to a register file) or main memory (no tag array and every access will happen at a page granularity), the available values are cache, main memory, 3D memory or 2D main memory, ram, cam" type="text" id="cache_type" value="cache" oninput="(() => {cache_cfg.cache_type.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Access mode, fast - data and tag access happen in parallel, sequential - data array is accessed after accessing the tag array, normal - data array lookup and tag access happen in parallel final data block is broadcasted in data array h-tree after getting the signal from the tag array, the available values are normal, sequential, fast" style="font-weight: bold;" for="access_mode">access mode</label>
+                    <input title="Access mode, fast - data and tag access happen in parallel, sequential - data array is accessed after accessing the tag array, normal - data array lookup and tag access happen in parallel final data block is broadcasted in data array h-tree after getting the signal from the tag array, the available values are normal, sequential, fast" type="text" id="access_mode" value="normal" oninput="(() => {cache_cfg.access_mode.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+
+                    <label title="Set optimize tag to ED or ED^2 to obtain a cache configuration optimized for energy-delay or energy-delay sq. product Note: Optimize tag will disable weight or deviate values mentioned above Set it to NONE to let weight and deviate values determine the appropriate cache configuration, the available values are ED, ED^2, NONE" style="font-weight: bold;" for="optimize_ed">Optimize ED or ED^2</label>
+                    <input title="Set optimize tag to ED or ED^2 to obtain a cache configuration optimized for energy-delay or energy-delay sq. product Note: Optimize tag will disable weight or deviate values mentioned above Set it to NONE to let weight and deviate values determine the appropriate cache configuration" type="text" id="optimize_ed" value="ED^2" oninput="(() => {cache_cfg.optimize_ed.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  <div>
+                    <label title="Type of cache architecture Uniform Acces Architecture or Non Uniform Acces Architecture, the available values are UCA, NUCA" style="font-weight: bold;" for="cache_model">Cache model</label>
+                    <input title="Type of cache architecture Uniform Acces Architecture or Non Uniform Acces Architecture, the available values are UCA, NUCA" type="text" id="cache_model" value="UCA" oninput="(() => {cache_cfg.cache_model.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                    
+                  </div>
+                  <div>
+                    <label title="Cache level, the available values are L2, L3" style="font-weight: bold;" for="cache_level">Cache level</label>
+                    <input title="Cache level, the available values are L2, L3" type="text" id="cache_level" value="L3" oninput="(() => {cache_cfg.cache_level.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Core count, the available values are 4, 8, 16" style="font-weight: bold;" for="core_count">Core count</label>
+                    <input title="Core count, the available values are 4, 8, 16" type="text" id="core_count" value="4" oninput="(() => {cache_cfg.core_count.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div>
+                    <h3 style="text-align: center;">Error correction</h3>
+                    
+                  </div>
+                  <div>
+                    <label title="Error correction code, this can be true or false" style="font-weight: bold;"  for="add_ecc">Add ECC</label>
+                    <input title="Error correction code, this can be true or false" type="text" id="add_ecc" value="true" oninput="(() => {cache_cfg.add_ecc.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+                  <div>
+                    <h3 style="text-align: center;">Temperature</h3>
+
+                  </div>
+                  <div>
+                    <label title="Operating temperature in kelvins, 300-400 in steps of 10" style="font-weight: bold;"  id="operating_temperature_label" for="operating_temperature">operating temperature</label>
+                    <input title="Operating temperature in kelvins, 300-400 in steps of 10" type="text" id="operating_temperature" value="360" step="10" oninput="(() => {cache_cfg.operating_temperature.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div>
+                    <h3 style="text-align: center;">Bus</h3>
+
+                  </div>
+                  <div>
+                    <label title="Output / input buss width, include data bits and address bits required by the decoder" style="font-weight: bold;"  for="output_input_bus_width">output/input bus width</label>
+                    <input title="Output / input buss width, include data bits and address bits required by the decoder" type="number" id="output_input_bus_width" value="512" oninput="(() => {cache_cfg.output_input_bus_width.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  
+                  
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Debug</h3>
+
+                  </div>
+                  <div>
+                    <label title="Print level mode, the available values are DETAILED, CONCISE" style="font-weight: bold;" for="print_level">Print level</label>
+                    <input title="Print level mode, the available values are DETAILED, CONCISE" type="text" id="print_level" value="DETAILED" oninput="(() => {cache_cfg.print_level.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  <div>
+                    <label title="Print input parameters, this can be true or false" style="font-weight: bold;"  for="print_input_parameters">Print input parameters</label>
+                    <input title="Print input parameters, this can be true or false" type="text" id="print_input_parameters" value="true" oninput="(() => {cache_cfg.print_input_parameters.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Debug detail, the available values are F, debug detail" style="font-weight: bold;" for="print_option">debug detail</label>
+                    <input title="Debug detail, the available values are F, debug detail" type="text" id="print_option" value="debug detail" oninput="(() => {cache_cfg.print_option.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+                  <div>
+                    <label title="Verbose, if we want to see all channels/bobs/memory configurations explored, the available values are T, F" style="font-weight: bold;"  for="verbose">verbose</label>
+                    <input title="Verbose, if we want to see all channels/bobs/memory configurations explored, the available values are T, F"  type="text" id="verbose" value="F" oninput="(() => {cache_cfg.verbose.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Force cache config</h3>
+
+                  </div>
+                  <div>
+                    <label title="force CACTI to model the cache with the following Ndbl, Ndwl, Nspd, Ndsam, and Ndcm values, this can be true or false" style="font-weight: bold;"  for="force_cache_config">Force cache config</label>
+                    <input title="force CACTI to model the cache with the following Ndbl, Ndwl, Nspd, Ndsam, and Ndcm values, this can be true or false" type="text" id="force_cache_config" value="false" oninput="(() => {cache_cfg.force_cache_config.value  = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Ndwl, Number of horizontal partitions in a tag or data array i.e., the number of segments that a single wordline is partitioned into." style="font-weight: bold;"  for="ndwl">Ndwl</label>
+                    <input title="Ndwl, Number of horizontal partitions in a tag or data array i.e., the number of segments that a single wordline is partitioned into." type="number" id="ndwl" value="1" oninput="(() => {cache_cfg.ndwl.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Ndbl, Number of vertical partitions in a tag or data array i.e., the number of segments that a single bitline is partitioned into." style="font-weight: bold;"  for="ndbl">Ndbl</label>
+                    <input title="Ndbl, Number of vertical partitions in a tag or data array i.e., the number of segments that a single bitline is partitioned into." type="number" id="ndbl" value="1" oninput="(() => {cache_cfg.ndbl.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Nspd, Number of sets stored in each row of a sub-array. For a given Ndwl and Ndbl values, Nspd decides the aspect ratio of the sub-array" style="font-weight: bold;"  for="nspd">Nspd</label>
+                    <input title="Nspd, Number of sets stored in each row of a sub-array. For a given Ndwl and Ndbl values, Nspd decides the aspect ratio of the sub-array" type="number" id="nspd" value="0" oninput="(() => {cache_cfg.nspd.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Ndcm, Degree of bitline multiplexing." style="font-weight: bold;"  for="ndcm">Ndcm</label>
+                    <input title="Ndcm, Degree of bitline multiplexing." type="number" id="ndcm" value="1" oninput="(() => {cache_cfg.ndcm.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Ndsam1, Degree of sense-amplifier multiplexing." style="font-weight: bold;"  for="ndsam1">Ndsam1</label>
+                    <input title="Ndsam1, Degree of sense-amplifier multiplexing." type="number" id="ndsam1" value="0" oninput="(() => {cache_cfg.ndsam1.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Ndsam2k, Degree of sense-amplifier multiplexing." style="font-weight: bold;"  for="ndsam2">Ndsam2</label>
+                    <input title="Ndsam2, Degree of sense-amplifier multiplexing." type="number" id="ndsam2" value="0" oninput="(() => {cache_cfg.ndsam2.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                </div>
+
+                <div style="display: grid; grid-template-columns: auto auto; row-gap: 2vh; text-align: center; border: 1px; border-color: black; border-style: solid; padding: 10px;">
+
+                  <div style="grid-column: 1 / 3;">
+                    <h3 style="text-align: center;">Off-chip</h3>
+
+                  </div>
+                  <div>
+                    <label title="DRAM type, Memory Type, the available values are (DDR3, DDR4, LPDDR2, WideIO, Serial, Low_Swing_Diff)" style="font-weight: bold;">dram_type</label>
+                    <input title="DRAM type, Memory Type, the available values are (DDR3, DDR4, LPDDR2, WideIO, Serial, Low_Swing_Diff)" type="text" id="dram_type" value="DDR3" oninput="(() => {cache_cfg.dram_type.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label title="Memory state, the available values are WRITE, READ, IDLE, SLEEP" style="font-weight: bold;">io state</label>
+                    <input title="Memory state, the available values are WRITE, READ, IDLE, SLEEP" type="text" id="io_state" value="WRITE" oninput="(() => {cache_cfg.io_state.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="Address bus timing. To alleviate the timing on the command and address bus due to high loading (shared across all memories on the channel), the interface allows for multi-cycle timing options" style="font-weight: bold;"  for="addr_timing">addr_timing</label>
+                    <input title="Address bus timing. To alleviate the timing on the command and address bus due to high loading (shared across all memories on the channel), the interface allows for multi-cycle timing options" type="number" id="addr_timing" value="1.0" oninput="(() => {cache_cfg.addr_timing.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label title="Memory density, (Gbit per memory/DRAM die)" style="font-weight: bold;"  for="mem_density">mem_density</label>
+                    <input title="Memory density, (Gbit per memory/DRAM die)" type="number" id="mem_density" value="4" oninput="(() => {cache_cfg.mem_density.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label style="font-weight: bold;"  for="bus_bw">bus_bw</label>
+                    <input type="number" id="bus_bw" value="0" oninput="(() => {cache_cfg.bus_bw.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="Bus frequency, As of current memory standards (2013), valid range 0 to 1.5 GHz for DDR3, 0 to 533 MHz for LPDDR2, 0 - 800 MHz for WideIO and 0 - 3 GHz for Low-swing differential" style="font-weight: bold;"  for="bus_freq">bus_freq</label>
+                    <input title="Bus frequency, As of current memory standards (2013), valid range 0 to 1.5 GHz for DDR3, 0 to 533 MHz for LPDDR2, 0 - 800 MHz for WideIO and 0 - 3 GHz for Low-swing differential" type="number" id="bus_freq" value="800" oninput="(() => {cache_cfg.bus_freq.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label title="Duty cicle" style="font-weight: bold;"  for="duty_cycle">duty_cycle</label>
+                    <input title="Duty cicle" type="number" id="duty_cycle" value="1.0" oninput="(() => {cache_cfg.duty_cycle.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label title="Activity factor for Data (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" style="font-weight: bold;"  for="activity_dq">activity_dq</label>
+                    <input title="Activity factor for Data (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" type="number" id="activity_dq" value="1.0" oninput="(() => {cache_cfg.activity_dq.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Activity factor for Control/Address (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" style="font-weight: bold;"  for="activity_ca">activity_ca</label>
+                    <input title="Activity factor for Control/Address (0->1 transitions) per cycle (for DDR, need to account for the higher activity in this parameter. E.g. max. activity factor for DDR is 1.0, for SDR is 0.5)" type="number" id="activity_ca" value="0.5" oninput="(() => {cache_cfg.activity_ca.value = parseFloat(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number of DQ pins. Includes ECC pins." style="font-weight: bold;"  for="num_dq">num_dq</label>
+                    <input title="Number of DQ pins. Includes ECC pins." type="number" id="num_dq" value="72" oninput="(() => {cache_cfg.num_dq.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number of DQS pins. DQS is a data strobe that is sent along with a small number of data-lanes so the source synchronous timing is local to these DQ bits. Typically, 1 DQS per byte (8 DQ bits) is used. The DQS is also typucally differential, just like the CLK pin, Include ECC pins as well. Valid range 0 to 18. For x4 memories, could have 36 DQS pins" style="font-weight: bold;"  for="num_dqs">num_dqs</label>
+                    <input title="Number of DQS pins. DQS is a data strobe that is sent along with a small number of data-lanes so the source synchronous timing is local to these DQ bits. Typically, 1 DQS per byte (8 DQ bits) is used. The DQS is also typucally differential, just like the CLK pin, Include ECC pins as well. Valid range 0 to 18. For x4 memories, could have 36 DQS pins" type="number" id="num_dqs" value="18" oninput="(() => {cache_cfg.num_dqs.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number of CA pins " style="font-weight: bold;"  for="num_ca">num_ca</label>
+                    <input title="Number of CA pins " type="number" id="num_ca" value="25" oninput="(() => {cache_cfg.num_ca.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number of CLK pins. CLK is typically a differential pair. In some cases additional CLK pairs may be used to limit the loading on the CLK pin." style="font-weight: bold;"  for="num_clk">num_clk</label>
+                    <input title="Number of CLK pins. CLK is typically a differential pair. In some cases additional CLK pairs may be used to limit the loading on the CLK pin." type="number" id="num_clk" value="2" oninput="(() => {cache_cfg.num_clk.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number of ranks (loads on DQ and DQS) per buffer/register. If multiple LRDIMMs or buffer chips exist, the analysis for capacity and power is reported per buffer/register" style="font-weight: bold;"  for="num_mem_dq">num_mem_dq</label>
+                    <input title="Number of ranks (loads on DQ and DQS) per buffer/register. If multiple LRDIMMs or buffer chips exist, the analysis for capacity and power is reported per buffer/register" type="number" id="num_mem_dq" value="2" oninput="(() => {cache_cfg.num_mem_dq.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Width of the Memory Data Bus" style="font-weight: bold;"  for="mem_data_width">mem_data_width</label>
+                    <input title="Width of the Memory Data Bus" type="number" id="mem_data_width" value="8" oninput="(() => {cache_cfg.mem_data_width.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="RTT Termination Resistance" style="font-weight: bold;"  for="rtt_value">rtt_value</label>
+                    <input title="RTT Termination Resistance" type="number" id="rtt_value" value="10000" oninput="(() => {cache_cfg.rtt_value.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="RON Termination Resistance" style="font-weight: bold;"  for="ron_value">ron_value</label>
+                    <input title="RON Termination Resistance" type="number" id="ron_value" value="34" oninput="(() => {cache_cfg.ron_value.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number of BoBs" style="font-weight: bold;"  for="num_bobs">num_bobs</label>
+                    <input title="Number of BoBs" type="number" id="num_bobs" value="1" oninput="(() => {cache_cfg.num_bobs.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Memory System Capacity in GB" style="font-weight: bold;"  for="capacity">capacity</label>
+                    <input title="Memory System Capacity in GB" type="number" id="capacity" value="80" oninput="(() => {cache_cfg.capacity.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Number of Channel per BoB" style="font-weight: bold;"  for="num_channels_per_bob">num_channels_per_bob</label>
+                    <input title="Number of Channel per BoB" type="number" id="num_channels_per_bob" value="1" oninput="(() => {cache_cfg.num_channels_per_bob.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="Possible DIMM option to consider, the available values are ALL, JUST_UDIMM, JUST_RDIMM, JUST_LRDIMM" style="font-weight: bold;" for="dimm_model">DIMM model</label>
+                    <input title="Possible DIMM option to consider, the available values are ALL, JUST_UDIMM, JUST_RDIMM, JUST_LRDIMM" type="text" id="dimm_model" value="ALL" oninput="(() => {cache_cfg.dimm_model.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+                  <div>
+                    <label title="if channels of each bob have the same configurations, this can be T or F" style="font-weight: bold;" for="mirror_in_bob">mirror_in_bob</label>
+                    <input title="if channels of each bob have the same configurations, this can be T or F" style="font-weight: bold;"  type="text" id="mirror_in_bob" value="T" oninput="(() => {cache_cfg.mirror_in_bob.value = this.value; this.setAttribute('value', this.value);})();"></input>
+
+                  </div>
+
+                  <div>
+                    <label style="font-weight: bold;"  for="search_port">search port</label>
+                    <input type="number" id="search_port" value="0" oninput="(() => {cache_cfg.search_port.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label style="font-weight: bold;"  for="Low_Power_Permitted">CLDriver vertical</label>
+                    <input type="text" id="Low_Power_Permitted" value="T" oninput="(() => {cache_cfg.Low_Power_Permitted.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="Load, between 0 and 1" style="font-weight: bold;"  for="load">load</label>
+                    <input title="Load, between 0 and 1" type="number" id="load" value="0" oninput="(() => {cache_cfg.load.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="Row buffer hit rate" style="font-weight: bold;"  for="row_buffer_hit_rate">row_buffer_hit_rate</label>
+                    <input title="Row buffer hit rate" type="number" id="row_buffer_hit_rate" value="0" oninput="(() => {cache_cfg.row_buffer_hit_rate.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label style="font-weight: bold;"  for="rd_2_wr_ratio">rd_2_wr_ratio</label>
+                    <input type="number" id="rd_2_wr_ratio" value="0" oninput="(() => {cache_cfg.rd_2_wr_ratio.value = parseInt(this.value); this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="Same bandwith in all BoB channels, this can be T or F" style="font-weight: bold;"  for="same_bw_in_bob">same_bw_in_bob</label>
+                    <input title="Same bandwith in all BoB channels, this can be T or F" type="text" id="same_bw_in_bob" value="T" oninput="(() => {cache_cfg.same_bw_in_bob.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                  <div>
+                    <label title="Total power, this can be T or F" style="font-weight: bold;"  for="total_power">total_power</label>
+                    <input title="Total power, this can be T or F" type="text" id="total_power" value="T" oninput="(() => {cache_cfg.total_power.value = this.value; this.setAttribute('value', this.value);})();"></input>
+                  </div>
+
+                </div>
+
+          </div>
+
+        </form>
+
+        </div>
+
+        <button id="run_button" style="margin: 20px; font-weight: bold; font-size: large;" onclick="(run_cacti())">Run cacti</button>
+        <h2>Graphs</h2>
+
+        <form id="select_parameter_to_study">
+          <span title="Choose the parameter to study" style="font-weight: bold;">Choose the parameter to study</span>
+        </form>
+
+    <div style="width: 900px; margin: auto;">
+      <canvas id="chart"></canvas>
+      <canvas id="chart2"></canvas>
+      <canvas id="data_tag_delay_chart"></canvas>
+    </div>
+
+    <h2>Output</h2>
+        <textarea id="output" style="width: 900px; height: 900px;"></textarea>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.3/dist/chart.umd.min.js"></script>
+ 
+    <script type='text/javascript'>
+      var spinnerElement = document.getElementById('spinner');
+      var outputElement = document.getElementById('output');
+      var study_parameter_form = document.getElementById('select_parameter_to_study');
+
+      // Default values of the cache configuration
+      var cache_cfg = {
+
+        cache_size: {parameter: '-size (bytes)', value: 131072},
+        array_power_gating: {parameter: '-Array Power Gating', value: "false"},
+        wl_power_gating: {parameter: '-WL Power Gating', value: "false"},
+        cl_power_gating: {parameter: '-CL Power Gating', value: "false"},
+        bitline_floating: {parameter: '-Bitline floating', value: "false"},
+        interconnect_power_gating: {parameter: '-Interconnect Power Gating', value: "false"},
+        power_gating_performance_loss: {parameter: '-Power Gating Performance Loss', value: 0.01},
+        block_size: {parameter: '-block size (bytes)', value: 64},
+        associativity: {parameter: '-associativity', value: 2},
+        read_write_port: {parameter: '-read-write port', value: 1},
+        exclusive_read_port: {parameter: '-exclusive read port', value: 0},
+        exclusive_write_port: {parameter: '-exclusive write port', value: 0},
+        single_ended_read_ports: {parameter: '-single ended read ports', value: 0},
+        uca_bank_count: {parameter: '-UCA bank count', value: 1},
+        technology: {parameter: '-technology (u)', value: 0.090},
+        page_size: {parameter: '-page size (bits)', value: 8192},
+        burst_length: {parameter: '-burst length', value: 8},
+        internal_prefetch_width: {parameter: '-internal prefetch width', value: 8},
+        data_array_cell_type: {parameter: '-Data array cell type -', value: "itrs-hp"},
+        data_array_peripheral_type: {parameter: '-Data array peripheral type -', value: "itrs-hp"},
+        tag_array_cell_type: {parameter: '-Tag array cell type -', value: "itrs-hp"},
+        tag_array_peripheral_type: {parameter: '-Tag array peripheral type -', value: "itrs-hp"},
+        output_input_bus_width: {parameter: '-output/input bus width', value: 512},
+        operating_temperature: {parameter: '-operating temperature (K)', value: 360},
+        cache_type: {parameter: '-cache type', value: "cache"},
+        tag_size: {parameter: '-tag size (b)', value: "default"},
+        access_mode: {parameter: '-access mode (normal, sequential, fast)', value: "normal"},
+        design_objective_weight_delay: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        design_objective_dynamic_power: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        design_objective_leakage_power: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        design_objective_cycle_time: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 100},
+        design_objective_area: {parameter: '-design objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        deviate_weight_delay: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 20},
+        deviate_dynamic_power: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 100000},
+        deviate_leakage_power: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 100000},
+        deviate_cycle_time: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 100000},
+        deviate_area: {parameter: '-deviate (delay, dynamic power, leakage power, cycle time, area)', value: 100000},
+        nucadesign_objective_weight_delay: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 100},
+        nucadesign_objective_dynamic_power: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 100},
+        nucadesign_objective_leakage_power: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        nucadesign_objective_cycle_time: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 0},
+        nucadesign_objective_area: {parameter: '-NUCAdesign objective (weight delay, dynamic power, leakage power, cycle time, area)', value: 100},
+        nucadeviate_weight_delay: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10},
+        nucadeviate_dynamic_power: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10000},
+        nucadeviate_leakage_power: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10000},
+        nucadeviate_cycle_time: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10000},
+        nucadeviate_area: {parameter: '-NUCAdeviate (delay, dynamic power, leakage power, cycle time, area)', value: 10000},
+        optimize_ed: {parameter: '-Optimize ED or ED^2 (ED, ED^2, NONE):', value: "ED^2"},
+        cache_model: {parameter: '-Cache model (NUCA, UCA) ', value: "UCA"},
+        nuca_bank_count: {parameter: '-NUCA bank count', value: 0},
+        wire_signaling: {parameter: '-Wire signaling (fullswing, lowswing, default)', value: "Global_30"},
+        wire_inside_mat: {parameter: '-Wire inside mat', value: "semi-global"},
+        wire_outside_mat: {parameter: '-Wire outside mat', value: "semi-global"},
+        interconnect_projection: {parameter: '-Interconnect projection', value: "conservative"},
+        core_count: {parameter: '-Core count', value: 8},
+        cache_level: {parameter: '-Cache level (L2/L3)', value: "L3"},
+        add_ecc: {parameter: '-Add ECC', value: "true"},
+        print_level: {parameter: '-Print level (DETAILED, CONCISE)', value: "DETAILED"},
+        print_input_parameters: {parameter: '-Print input parameters', value: "true"},
+        force_cache_config: {parameter: '-Force cache config', value: "false"},
+        ndwl: {parameter: '-Ndwl', value: 1},
+        ndbl: {parameter: '-Ndbl', value: 1},
+        nspd: {parameter: '-Nspd', value: 0},
+        ndcm: {parameter: '-Ndcm', value: 1},
+        ndsam1: {parameter: '-Ndsam1', value: 0},
+        ndsam2: {parameter: '-Ndsam2', value: 0},
+        dram_type: {parameter: '-dram_type', value: "DDR3"},
+        io_state: {parameter: '-io state', value: "WRITE"},
+        addr_timing: {parameter: '-addr_timing', value: 1.0},
+        mem_density: {parameter: '-mem_density', value: 4},
+        bus_freq: {parameter: '-bus_freq', value: 800},
+        duty_cycle: {parameter: '-duty_cycle', value: 1.0},
+        activity_dq: {parameter: '-activity_dq', value: 1.0},
+        activity_ca: {parameter: '-activity_ca', value: 0.5},
+        num_dq: {parameter: '-num_dq', value: 72},
+        num_dqs: {parameter: '-num_dqs', value: 18},
+        num_ca: {parameter: '-num_ca', value: 25},
+        num_clk: {parameter: '-num_clk', value: 2},
+        num_mem_dq: {parameter: '-num_mem_dq', value: 2},
+        mem_data_width: {parameter: '-mem_data_width', value: 8},
+        rtt_value: {parameter: '-rtt_value', value: 10000},
+        ron_value: {parameter: '-ron_value', value: 34},
+        num_bobs: {parameter: '-num_bobs', value: 1},
+        capacity: {parameter: '-capacity', value: 80	},
+        num_channels_per_bob: {parameter: '-num_channels_per_bob', value: 1	},
+        first_metric: {parameter: '-first metric', value: "Cost"},
+        second_metric: {parameter: '-second metric', value: "Bandwidth"},
+        third_metric: {parameter: '-third metric', value: "Energy"	},
+        dimm_model: {parameter: '-DIMM model', value: "ALL"},
+        mirror_in_bob: {parameter: '-mirror_in_bob', value: "F"},
+        verbose: {parameter: '-verbose', value: "F"},
+        search_port: {parameter: '-search port', value: 0},
+        print_option: {parameter: '-print option', value: "false"},
+        burst_depth: {parameter: '-burst depth', value: 0},
+        IO_width: {parameter: '-IO width', value: 0},
+        system_frequency: {parameter: '-system frequency', value: 0},
+        stacked_die: {parameter: '-stacked die', value: 0},
+        partitioning_granularity: {parameter: '-partitioning granularity', value: 0},
+        TSV_projection: {parameter: '-TSV projection', value: 0},
+        CLDriver_vertical: {parameter: '-CLDriver vertical', value: "false"},
+        dram_ecc: {parameter: '-dram ecc', value: "NO_ECC"},
+        dram_dimm: {parameter: '-dram dimm', value: "UDIMM"},
+        bus_bw: {parameter: '-bus_bw', value: 0},
+        Low_Power_Permitted: {parameter: '-Low Power Permitted', value: "F"},
+        load: {parameter: '-load', value: 0},
+        row_buffer_hit_rate: {parameter: '-row_buffer_hit_rate', value: 0},
+        rd_2_wr_ratio: {parameter: '-rd_2_wr_ratio', value: 0},
+        same_bw_in_bob: {parameter: '-same_bw_in_bob', value: "F"},
+        total_power: {parameter: '-total_power', value: "F"}
+      };
+
+      var parsed_cacti_output = {
+        cache_size: 0,
+        block_size: 0,
+        associativity: 0,
+        technology: 0,
+        acces_time: 0,
+        cycle_time: 0,
+        total_dynamic_read_energy_per_access: 0,
+        total_dynamic_write_energy_per_access: 0,
+        total_leakage_power_of_a_bank: 0,
+        total_gate_leakage_power_of_a_bank: 0,
+        cache_area: 0,
+        data_side_htree_input_delay: 0,
+        data_side_decoder_wordline_delay: 0,
+        data_side_bitline_delay: 0,
+        data_side_sense_amplifier_delay: 0,
+        data_side_htree_output_delay: 0,
+        tag_side_htree_input_delay: 0,
+        tag_side_decoder_wordline_delay: 0,
+        tag_side_bitline_delay: 0,
+        tag_side_sense_amplifier_delay: 0,
+        tag_side_comparator_delay: 0,
+        tag_side_htree_output_delay: 0
+      };
+
+      var simulations = [];
+      var simulations_outputs = [];
+      var simulation = 0;
+
+      var parameters_to_study = [];
+
+      function compare_simulations() {
+        if (simulation > 0) {
+            const previous = simulations[simulation - 1];
+            const current = simulations[simulation];
+            for (const key in previous) {
+              if (Object.hasOwnProperty.call(previous, key) && Object.hasOwnProperty.call(current, key)) {
+                const previous_element = previous[key];
+                const current_element = current[key];
+                if (previous_element.value != current_element.value) {
+                  if (!parameters_to_study.includes(key)) {
+                    parameters_to_study.push(key)
+            study_parameter_form.innerHTML += `
+            <input title="${key}" type="radio" name="parameter_to_study" id="${key}_parameter_to_study" value="${key}" oninput="(() => {update_chart(this.value);update_chart2(this.value);})();">
+            <label title="${key}" for="${key}_parameter_to_study">${key}</label>
+            `
+                  }
+                }
+              }
+            }
+        }
+      }
+
+      function save_config(name) {
+
+        var config_and_form = {
+          cache_cfg: cache_cfg,
+          form: document.getElementById('cache_config_form').innerHTML
+        }
+        
+        window.localStorage.setItem(name, JSON.stringify(config_and_form));
+        update_saved_configs();
+      }
+
+      function load_config(name) {
+        var config_and_form = JSON.parse(window.localStorage.getItem(name));
+        cache_cfg = config_and_form.cache_cfg;
+        document.getElementById('cache_config_form').innerHTML = config_and_form.form;
+      }
+
+      function update_saved_configs() {
+        var saved_configs = document.getElementById('saved_configs');
+        saved_configs.innerHTML = '';
+        for (let index = 0; index < localStorage.length; index++) {
+          saved_configs.innerHTML += `
+          <div style="border: 1px; border-color: black; border-style: solid; padding: 10px;">
+          <input type="button" value="${localStorage.key(index)}" onclick="load_config('${localStorage.key(index)}')">
+          <input type="button" title="Delete ${localStorage.key(index)}" value="X" onclick="localStorage.removeItem('${localStorage.key(index)}');update_saved_configs();">
+          </div>
+          `
+        }
+      }
+
+      var chart = new Chart(document.getElementById('chart'), {
+          type: 'line',
+            data: {
+            labels: [],
+            datasets: [{
+                label: 'Acces time (ns)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Cycle time (ns)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Total dynamic read energy per access (nJ)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Total dynamic write energy per access (nJ)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+              label: 'Total leakage power of a bank (mW)',
+              data: [],
+              borderWidth: 1
+            },
+            {
+                label: 'Total gate leakage power of a bank (mW)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Cache area (mm^2)',
+                data: [],
+                borderWidth: 1
+            },]
+            },
+            options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Metrics by '
+      },
+    },
+    responsive: true
+  }
+        });
+
+        var chart2 = new Chart(document.getElementById('chart2'), {
+          type: 'bar',
+            data: {
+            labels: [],
+            datasets: [{
+                label: 'Acces time (ns)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Cycle time (ns)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Total dynamic read energy per access (nJ)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Total dynamic write energy per access (nJ)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+              label: 'Total leakage power of a bank (mW)',
+              data: [],
+              borderWidth: 1
+            },
+            {
+                label: 'Total gate leakage power of a bank (mW)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Cache area (mm^2)',
+                data: [],
+                borderWidth: 1
+            },]
+            },
+            options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Metrics by '
+      },
+    },
+    responsive: true
+  }
+        });
+
+      var data_tag_delay_chart = new Chart(document.getElementById('data_tag_delay_chart'), {
+  type: 'bar',
+  data: {
+            labels: ['Data side delay', 'Tag side delay'],
+            datasets: [{
+                label: 'htree input',
+                data: [],
+                borderWidth: 1,
+            },
+            {
+                label: 'decoder',
+                data: [],
+                borderWidth: 1,
+            },{
+                label: 'bitline',
+                data: [],
+                borderWidth: 1,
+            },{
+                label: 'amplifier',
+                data: [],
+                borderWidth: 1,
+            },{
+                label: 'comparator',
+                data: [],
+                borderWidth: 1,
+            },{
+                label: 'htree output',
+                data: [],
+                borderWidth: 1,
+            },]
+            },
+  options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Data side delay vs tag side delay'
+      },
+    },
+    responsive: true,
+    scales: {
+      x: {
+        stacked: true,
+      },
+      y: {
+        stacked: true,
+        title: {
+          display: true,
+          text: 'Delay (ns)'
+        }
+      }
+    }
+  }
+});
+
+function update_chart(parameter_to_study) {
+
+if (parameters_to_study.length == 0) {
+  chart.options.plugins.title.text = `Initial values`;
+
+chart.data.labels = [];
+chart.data.datasets[0].data = [];
+chart.data.datasets[1].data = [];
+chart.data.datasets[2].data = [];
+chart.data.datasets[3].data = [];
+chart.data.datasets[4].data = [];
+chart.data.datasets[5].data = [];
+chart.data.datasets[6].data = [];
+
+  chart.data.labels.push('Initial values');
+
+simulations_outputs.forEach(element => {
+  chart.data.datasets[0].data.push(element.acces_time);
+        chart.data.datasets[1].data.push(element.cycle_time);
+        chart.data.datasets[2].data.push(element.total_dynamic_read_energy_per_access);
+        chart.data.datasets[3].data.push(element.total_dynamic_write_energy_per_access);
+        chart.data.datasets[4].data.push(element.total_leakage_power_of_a_bank);
+        chart.data.datasets[5].data.push(element.total_gate_leakage_power_of_a_bank);
+        chart.data.datasets[6].data.push(element.cache_area);
+});
+
+chart.update();
+}else {
+  chart.options.plugins.title.text = `Metrics by ${parameter_to_study}`;
+
+chart.data.labels = [];
+chart.data.datasets[0].data = [];
+chart.data.datasets[1].data = [];
+chart.data.datasets[2].data = [];
+chart.data.datasets[3].data = [];
+chart.data.datasets[4].data = [];
+chart.data.datasets[5].data = [];
+chart.data.datasets[6].data = [];
+
+simulations.forEach(element => {
+  chart.data.labels.push(element[parameter_to_study].value);
+});
+
+simulations_outputs.forEach(element => {
+  chart.data.datasets[0].data.push(element.acces_time);
+        chart.data.datasets[1].data.push(element.cycle_time);
+        chart.data.datasets[2].data.push(element.total_dynamic_read_energy_per_access);
+        chart.data.datasets[3].data.push(element.total_dynamic_write_energy_per_access);
+        chart.data.datasets[4].data.push(element.total_leakage_power_of_a_bank);
+        chart.data.datasets[5].data.push(element.total_gate_leakage_power_of_a_bank);
+        chart.data.datasets[6].data.push(element.cache_area);
+});
+
+chart.update();
+}
+}
+
+function update_chart2(parameter_to_study) {
+
+if (parameters_to_study.length == 0) {
+  chart2.options.plugins.title.text = `Initial values`;
+
+chart2.data.labels = [];
+chart2.data.datasets[0].data = [];
+chart2.data.datasets[1].data = [];
+chart2.data.datasets[2].data = [];
+chart2.data.datasets[3].data = [];
+chart2.data.datasets[4].data = [];
+chart2.data.datasets[5].data = [];
+chart2.data.datasets[6].data = [];
+
+  chart2.data.labels.push('Initial values');
+
+simulations_outputs.forEach(element => {
+  chart2.data.datasets[0].data.push(element.acces_time);
+        chart2.data.datasets[1].data.push(element.cycle_time);
+        chart2.data.datasets[2].data.push(element.total_dynamic_read_energy_per_access);
+        chart2.data.datasets[3].data.push(element.total_dynamic_write_energy_per_access);
+        chart2.data.datasets[4].data.push(element.total_leakage_power_of_a_bank);
+        chart2.data.datasets[5].data.push(element.total_gate_leakage_power_of_a_bank);
+        chart2.data.datasets[6].data.push(element.cache_area);
+});
+
+chart2.update();
+}else {
+  chart2.options.plugins.title.text = `Metrics by ${parameter_to_study}`;
+
+chart2.data.labels = [];
+chart2.data.datasets[0].data = [];
+chart2.data.datasets[1].data = [];
+chart2.data.datasets[2].data = [];
+chart2.data.datasets[3].data = [];
+chart2.data.datasets[4].data = [];
+chart2.data.datasets[5].data = [];
+chart2.data.datasets[6].data = [];
+
+simulations.forEach(element => {
+  chart2.data.labels.push(element[parameter_to_study].value);
+});
+
+simulations_outputs.forEach(element => {
+  chart2.data.datasets[0].data.push(element.acces_time);
+        chart2.data.datasets[1].data.push(element.cycle_time);
+        chart2.data.datasets[2].data.push(element.total_dynamic_read_energy_per_access);
+        chart2.data.datasets[3].data.push(element.total_dynamic_write_energy_per_access);
+        chart2.data.datasets[4].data.push(element.total_leakage_power_of_a_bank);
+        chart2.data.datasets[5].data.push(element.total_gate_leakage_power_of_a_bank);
+        chart2.data.datasets[6].data.push(element.cache_area);
+});
+
+chart2.update();
+}
+}
+
+      function create_config_file_from_form() {
+
+        return `${cache_cfg.cache_size.parameter} ${cache_cfg.cache_size.value}
+${cache_cfg.array_power_gating.parameter} "${cache_cfg.array_power_gating.value}"
+${cache_cfg.wl_power_gating.parameter} "${cache_cfg.wl_power_gating.value}"
+${cache_cfg.cl_power_gating.parameter} "${cache_cfg.cl_power_gating.value}"
+${cache_cfg.bitline_floating.parameter} "${cache_cfg.bitline_floating.value}"
+${cache_cfg.interconnect_power_gating.parameter} "${cache_cfg.interconnect_power_gating.value}"
+${cache_cfg.power_gating_performance_loss.parameter} ${cache_cfg.power_gating_performance_loss.value}
+${cache_cfg.block_size.parameter} ${cache_cfg.block_size.value}
+${cache_cfg.associativity.parameter} ${cache_cfg.associativity.value}
+${cache_cfg.read_write_port.parameter} ${cache_cfg.read_write_port.value}
+${cache_cfg.exclusive_read_port.parameter} ${cache_cfg.exclusive_read_port.value}
+${cache_cfg.exclusive_write_port.parameter} ${cache_cfg.exclusive_write_port.value}
+${cache_cfg.single_ended_read_ports.parameter} ${cache_cfg.single_ended_read_ports.value}
+${cache_cfg.uca_bank_count.parameter} ${cache_cfg.uca_bank_count.value}
+${cache_cfg.technology.parameter} ${cache_cfg.technology.value}
+${cache_cfg.page_size.parameter} ${cache_cfg.page_size.value}
+${cache_cfg.burst_length.parameter} ${cache_cfg.burst_length.value}
+${cache_cfg.internal_prefetch_width.parameter} ${cache_cfg.internal_prefetch_width.value}
+${cache_cfg.data_array_cell_type.parameter} "${cache_cfg.data_array_cell_type.value}"
+${cache_cfg.data_array_peripheral_type.parameter} "${cache_cfg.data_array_peripheral_type.value}"
+${cache_cfg.tag_array_cell_type.parameter} "${cache_cfg.tag_array_cell_type.value}"
+${cache_cfg.tag_array_peripheral_type.parameter} "${cache_cfg.tag_array_peripheral_type.value}"
+${cache_cfg.output_input_bus_width.parameter} ${cache_cfg.output_input_bus_width.value}
+${cache_cfg.operating_temperature.parameter} ${cache_cfg.operating_temperature.value}
+${cache_cfg.cache_type.parameter} "${cache_cfg.cache_type.value}"
+${cache_cfg.tag_size.parameter} "${cache_cfg.tag_size.value}"
+${cache_cfg.access_mode.parameter} "${cache_cfg.access_mode.value}"
+${cache_cfg.design_objective_weight_delay.parameter} ${cache_cfg.design_objective_weight_delay.value}:${cache_cfg.design_objective_dynamic_power.value}:${cache_cfg.design_objective_leakage_power.value}:${cache_cfg.design_objective_cycle_time.value}:${cache_cfg.design_objective_area.value}
+${cache_cfg.deviate_weight_delay.parameter} ${cache_cfg.deviate_weight_delay.value}:${cache_cfg.deviate_dynamic_power.value}:${cache_cfg.deviate_leakage_power.value}:${cache_cfg.deviate_cycle_time.value}:${cache_cfg.deviate_area.value}
+${cache_cfg.nucadesign_objective_weight_delay.parameter} ${cache_cfg.nucadesign_objective_weight_delay.value}:${cache_cfg.nucadesign_objective_dynamic_power.value}:${cache_cfg.nucadesign_objective_leakage_power.value}:${cache_cfg.nucadesign_objective_cycle_time.value}:${cache_cfg.nucadesign_objective_area.value}
+${cache_cfg.nucadeviate_weight_delay.parameter} ${cache_cfg.nucadeviate_weight_delay.value}:${cache_cfg.nucadeviate_dynamic_power.value}:${cache_cfg.nucadeviate_leakage_power.value}:${cache_cfg.nucadeviate_cycle_time.value}:${cache_cfg.nucadesign_objective_area.value}
+${cache_cfg.optimize_ed.parameter} "${cache_cfg.optimize_ed.value}"
+${cache_cfg.cache_model.parameter} "${cache_cfg.cache_model.value}"
+${cache_cfg.nuca_bank_count.parameter} ${cache_cfg.nuca_bank_count.value}
+${cache_cfg.wire_signaling.parameter} "${cache_cfg.wire_signaling.value}"
+${cache_cfg.wire_inside_mat.parameter} "${cache_cfg.wire_inside_mat.value}"
+${cache_cfg.wire_outside_mat.parameter} "${cache_cfg.wire_outside_mat.value}"
+${cache_cfg.interconnect_projection.parameter} "${cache_cfg.interconnect_projection.value}"
+${cache_cfg.core_count.parameter} ${cache_cfg.core_count.value}
+${cache_cfg.cache_level.parameter} "${cache_cfg.cache_level.value}"
+${cache_cfg.add_ecc.parameter} "${cache_cfg.add_ecc.value}"
+${cache_cfg.print_level.parameter} "${cache_cfg.print_level.value}"
+${cache_cfg.print_input_parameters.parameter} "${cache_cfg.print_input_parameters.value}"
+${cache_cfg.force_cache_config.parameter} "${cache_cfg.force_cache_config.value}"
+${cache_cfg.ndwl.parameter} ${cache_cfg.ndwl.value}
+${cache_cfg.ndbl.parameter} ${cache_cfg.ndbl.value}
+${cache_cfg.nspd.parameter} ${cache_cfg.nspd.value}
+${cache_cfg.ndcm.parameter} ${cache_cfg.ndcm.value}
+${cache_cfg.ndsam1.parameter} ${cache_cfg.ndsam1.value}
+${cache_cfg.ndsam2.parameter} ${cache_cfg.ndsam2.value}
+${cache_cfg.dram_type.parameter} "${cache_cfg.dram_type.value}"
+${cache_cfg.io_state.parameter} "${cache_cfg.io_state.value}"
+${cache_cfg.addr_timing.parameter} ${cache_cfg.addr_timing.value}
+${cache_cfg.mem_density.parameter} ${cache_cfg.mem_density.value}
+${cache_cfg.bus_freq.parameter} ${cache_cfg.bus_freq.value}
+${cache_cfg.duty_cycle.parameter} ${cache_cfg.duty_cycle.value}
+${cache_cfg.activity_dq.parameter} ${cache_cfg.activity_dq.value}
+${cache_cfg.activity_ca.parameter} ${cache_cfg.activity_ca.value}
+${cache_cfg.num_dq.parameter} ${cache_cfg.num_dq.value}
+${cache_cfg.num_dqs.parameter} ${cache_cfg.num_dqs.value}
+${cache_cfg.num_ca.parameter} ${cache_cfg.num_ca.value}
+${cache_cfg.num_clk.parameter} ${cache_cfg.num_clk.value}
+${cache_cfg.num_mem_dq.parameter} ${cache_cfg.num_mem_dq.value}
+${cache_cfg.mem_data_width.parameter} ${cache_cfg.mem_data_width.value}
+${cache_cfg.rtt_value.parameter} ${cache_cfg.rtt_value.value}
+${cache_cfg.ron_value.parameter} ${cache_cfg.ron_value.value}
+${cache_cfg.num_bobs.parameter} ${cache_cfg.num_bobs.value}
+${cache_cfg.capacity.parameter} ${cache_cfg.capacity.value}
+${cache_cfg.num_channels_per_bob.parameter} ${cache_cfg.num_channels_per_bob.value}
+${cache_cfg.first_metric.parameter} "${cache_cfg.first_metric.value}"
+${cache_cfg.second_metric.parameter} "${cache_cfg.second_metric.value}"
+${cache_cfg.third_metric.parameter} "${cache_cfg.third_metric.value}"
+${cache_cfg.dimm_model.parameter} "${cache_cfg.dimm_model.value}"
+${cache_cfg.mirror_in_bob.parameter} "${cache_cfg.mirror_in_bob.value}"
+${cache_cfg.verbose.parameter} "${cache_cfg.verbose.value}"
+${cache_cfg.search_port.parameter} ${cache_cfg.search_port.value}
+${cache_cfg.print_option.parameter} "${cache_cfg.print_option.value}"
+${cache_cfg.burst_depth.parameter} ${cache_cfg.burst_depth.value}
+${cache_cfg.IO_width.parameter} ${cache_cfg.IO_width.value}
+${cache_cfg.system_frequency.parameter} ${cache_cfg.system_frequency.value}
+${cache_cfg.stacked_die.parameter} ${cache_cfg.stacked_die.value}
+${cache_cfg.partitioning_granularity.parameter} ${cache_cfg.partitioning_granularity.value}
+${cache_cfg.TSV_projection.parameter} ${cache_cfg.TSV_projection.value}
+${cache_cfg.CLDriver_vertical.parameter} "${cache_cfg.CLDriver_vertical.value}"
+${cache_cfg.dram_ecc.parameter} "${cache_cfg.dram_ecc.value}"
+${cache_cfg.dram_dimm.parameter} "${cache_cfg.dram_dimm.value}"
+${cache_cfg.bus_bw.parameter} ${cache_cfg.bus_bw.value}
+${cache_cfg.Low_Power_Permitted.parameter} "${cache_cfg.Low_Power_Permitted.value}"
+${cache_cfg.load.parameter} ${cache_cfg.load.value}
+${cache_cfg.row_buffer_hit_rate.parameter} ${cache_cfg.row_buffer_hit_rate.value}
+${cache_cfg.rd_2_wr_ratio.parameter} ${cache_cfg.rd_2_wr_ratio.value}
+${cache_cfg.same_bw_in_bob.parameter} "${cache_cfg.same_bw_in_bob.value}"
+${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
+
+      }
+
+      function parse_cacti_output() {
+
+        const cacti_output = document.getElementById('output');
+
+        parsed_cacti_output.cache_size = parseInt(cacti_output.value.match(/(Cache size.+ )(\d+)/)[2]);
+        parsed_cacti_output.block_size = parseInt(cacti_output.value.match(/(Block size.+ )(\d+)/)[2]);
+        parsed_cacti_output.associativity = parseFloat(cacti_output.value.match(/(Associativity.+ )(\d+)/)[2]);
+        parsed_cacti_output.technology = parseFloat(cacti_output.value.match(/(Technology size.+ )(\d+)/)[2]);
+
+        parsed_cacti_output.acces_time = parseFloat(cacti_output.value.match(/(Access time.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.cycle_time = parseFloat(cacti_output.value.match(/(Cycle time.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.total_dynamic_read_energy_per_access = parseFloat(cacti_output.value.match(/(Total dynamic read energy per access.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.total_dynamic_write_energy_per_access = parseFloat(cacti_output.value.match(/(Total dynamic write energy per access.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.total_leakage_power_of_a_bank = parseFloat(cacti_output.value.match(/(Total leakage power of a bank.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.total_gate_leakage_power_of_a_bank = parseFloat(cacti_output.value.match(/(Total gate leakage power of a bank.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.cache_area = parseFloat(cacti_output.value.match(/(Cache height x width.+ )(\d+\.\d+)( x )(\d+\.\d+)/)[2]) * parseFloat(cacti_output.value.match(/(Cache height x width.+ )(\d+\.\d+)( x )(\d+\.\d+)/)[4]);
+
+        const data_side_output = cacti_output.value.match(/Data side .+\n.+\n.+\n.+\n.+\n.+/)[0];
+        const data_side_output_numbers = data_side_output.match(/(\d+\.\d+)|(\d+)/g);
+
+        parsed_cacti_output.data_side_htree_input_delay = parseFloat(data_side_output_numbers[1]);
+        parsed_cacti_output.data_side_decoder_wordline_delay = parseFloat(data_side_output_numbers[2]);
+        parsed_cacti_output.data_side_bitline_delay = parseFloat(data_side_output_numbers[3]);
+        parsed_cacti_output.data_side_sense_amplifier_delay = parseFloat(data_side_output_numbers[4]);
+        parsed_cacti_output.data_side_htree_output_delay = parseFloat(data_side_output_numbers[5]);
+
+        data_tag_delay_chart.data.datasets[0].data = [];
+        data_tag_delay_chart.data.datasets[1].data = [];
+        data_tag_delay_chart.data.datasets[2].data = [];
+        data_tag_delay_chart.data.datasets[3].data = [];
+        data_tag_delay_chart.data.datasets[4].data = [];
+        data_tag_delay_chart.data.datasets[5].data = [];
+
+        data_tag_delay_chart.data.datasets[0].data.push(parsed_cacti_output.data_side_htree_input_delay);
+        data_tag_delay_chart.data.datasets[1].data.push(parsed_cacti_output.data_side_decoder_wordline_delay);
+        data_tag_delay_chart.data.datasets[2].data.push(parsed_cacti_output.data_side_bitline_delay);
+        data_tag_delay_chart.data.datasets[3].data.push(parsed_cacti_output.data_side_sense_amplifier_delay);
+        data_tag_delay_chart.data.datasets[4].data.push(0);
+        data_tag_delay_chart.data.datasets[5].data.push(parsed_cacti_output.data_side_htree_output_delay);
+
+        if (cacti_output.value.match(/Tag side .+\n.+\n.+\n.+\n.+\n.+\n.+/)) {
+
+const tag_side_output = cacti_output.value.match(/Tag side .+\n.+\n.+\n.+\n.+\n.+\n.+/)[0];
+const tag_side_output_numbers = tag_side_output.match(/(\d+\.\d+)|(\d+)/g);
+
+parsed_cacti_output.tag_side_htree_input_delay = parseFloat(tag_side_output_numbers[1]);
+parsed_cacti_output.tag_side_decoder_wordline_delay = parseFloat(tag_side_output_numbers[2]);
+parsed_cacti_output.tag_side_bitline_delay = parseFloat(tag_side_output_numbers[3]);
+parsed_cacti_output.tag_side_sense_amplifier_delay = parseFloat(tag_side_output_numbers[4]);
+parsed_cacti_output.tag_side_comparator_delay = parseFloat(tag_side_output_numbers[5]);
+parsed_cacti_output.tag_side_htree_output_delay = parseFloat(tag_side_output_numbers[6]); 
+
+data_tag_delay_chart.data.datasets[0].data.push(parsed_cacti_output.tag_side_htree_input_delay);
+data_tag_delay_chart.data.datasets[1].data.push(parsed_cacti_output.tag_side_decoder_wordline_delay);
+data_tag_delay_chart.data.datasets[2].data.push(parsed_cacti_output.tag_side_bitline_delay);
+data_tag_delay_chart.data.datasets[3].data.push(parsed_cacti_output.tag_side_sense_amplifier_delay);
+data_tag_delay_chart.data.datasets[4].data.push(parsed_cacti_output.tag_side_comparator_delay);
+data_tag_delay_chart.data.datasets[5].data.push(parsed_cacti_output.tag_side_htree_output_delay);
+
+}
+
+        data_tag_delay_chart.update();
+
+      }
+
+    function run_cacti() {
+
+      var element = document.getElementById('output');
+      element.value = "";
+
+        FS.writeFile('cache.cfg', create_config_file_from_form(), {flags: 'w+'});
+
+        callMain(arguments_);
+
+        simulations.push(structuredClone(cache_cfg));
+      compare_simulations();
+
+        parse_cacti_output();
+
+        simulations_outputs.push(structuredClone(parsed_cacti_output));
+
+        
+        if (parameters_to_study.length == 0) {
+          update_chart();
+          update_chart2();
+        } else {
+          update_chart(parameters_to_study[0]);
+          update_chart2(parameters_to_study[0]);
+        }
+        
+        simulation++;
+
+    }
+
+      var Module = {
+        preRun: [],
+        postRun: [],
+        noInitialRun: true,
+        arguments: ['-infile', 'cache.cfg'],
+        print: (function() {
+          var element = document.getElementById('output');
+          if (element) element.value = ''; // clear browser cache
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            // These replacements are necessary if you render to raw HTML
+            //text = text.replace(/&/g, "&amp;");
+            //text = text.replace(/</g, "&lt;");
+            //text = text.replace(/>/g, "&gt;");
+            //text = text.replace('\n', '<br>', 'g');
+            //console.log(text);
+            if (element) {
+              element.value += text + "\n";
+              //element.scrollTop = element.scrollHeight; // focus on bottom
+            }
+          };
+        })(),
+        printErr: (function() {
+          var element = document.getElementById('output');
+          if (element) element.value = ''; // clear browser cache
+          return function(text) {
+            if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+            // These replacements are necessary if you render to raw HTML
+            //text = text.replace(/&/g, "&amp;");
+            //text = text.replace(/</g, "&lt;");
+            //text = text.replace(/>/g, "&gt;");
+            //text = text.replace('\n', '<br>', 'g');
+            //console.log(text);
+            if (element) {
+              element.value += "Error: " + text + "\n";
+              //element.scrollTop = element.scrollHeight; // focus on bottom
+            }
+          };
+        })(),
+        setStatus: function(text) {
+          if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+          if (text === Module.setStatus.last.text) return;
+          var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+          var now = Date.now();
+          if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
+          Module.setStatus.last.time = now;
+          Module.setStatus.last.text = text;
+          if (m) {
+            text = m[1];
+            spinnerElement.hidden = false;
+          } else {
+            if (!text) spinnerElement.hidden = true;
+          }
+        },
+        totalDependencies: 0,
+        monitorRunDependencies: function(left) {
+          this.totalDependencies = Math.max(this.totalDependencies, left);
+          Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+        },
+        onRuntimeInitialized: function () {
+          document.getElementById("cacti_app").removeAttribute("hidden");
+          update_saved_configs();
+        }
+      };
+      Module.setStatus('Downloading...');
+      window.onerror = function() {
+        Module.setStatus('Exception thrown, see JavaScript console');
+        spinnerElement.style.display = 'none';
+        Module.setStatus = function(text) {
+          if (text) console.error('[post-exception status] ' + text);
+          if (text) document.getElementById('output').value = '[post-exception status] ' + text;
+        };
+      };
+    </script>
+    <script async type="text/javascript" src="cacti.js"></script>
+  </body>
+</html>
