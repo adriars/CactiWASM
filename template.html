@@ -763,6 +763,7 @@
 
     <div style="width: 900px; margin: auto;">
       <canvas id="chart"></canvas>
+      <canvas id="chart2"></canvas>
       <canvas id="data_tag_delay_chart"></canvas>
     </div>
 
@@ -876,8 +877,6 @@
         print_option: {parameter: '-print option', value: "false"},
         burst_depth: {parameter: '-burst depth', value: 0},
         IO_width: {parameter: '-IO width', value: 0},
-        
-
         system_frequency: {parameter: '-system frequency', value: 0},
         stacked_die: {parameter: '-stacked die', value: 0},
         partitioning_granularity: {parameter: '-partitioning granularity', value: 0},
@@ -937,7 +936,7 @@
                   if (!parameters_to_study.includes(key)) {
                     parameters_to_study.push(key)
             study_parameter_form.innerHTML += `
-            <input title="${key}" type="radio" name="parameter_to_study" id="${key}_parameter_to_study" value="${key}" oninput="(() => {update_chart(this.value);})();">
+            <input title="${key}" type="radio" name="parameter_to_study" id="${key}_parameter_to_study" value="${key}" oninput="(() => {update_chart(this.value);update_chart2(this.value);})();">
             <label title="${key}" for="${key}_parameter_to_study">${key}</label>
             `
                   }
@@ -979,6 +978,57 @@
 
       var chart = new Chart(document.getElementById('chart'), {
           type: 'line',
+            data: {
+            labels: [],
+            datasets: [{
+                label: 'Acces time (ns)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Cycle time (ns)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Total dynamic read energy per access (nJ)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Total dynamic write energy per access (nJ)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+              label: 'Total leakage power of a bank (mW)',
+              data: [],
+              borderWidth: 1
+            },
+            {
+                label: 'Total gate leakage power of a bank (mW)',
+                data: [],
+                borderWidth: 1
+            },
+            {
+                label: 'Cache area (mm^2)',
+                data: [],
+                borderWidth: 1
+            },]
+            },
+            options: {
+    plugins: {
+      title: {
+        display: true,
+        text: 'Metrics by '
+      },
+    },
+    responsive: true
+  }
+        });
+
+        var chart2 = new Chart(document.getElementById('chart2'), {
+          type: 'bar',
             data: {
             labels: [],
             datasets: [{
@@ -1084,9 +1134,44 @@
 
 function update_chart(parameter_to_study) {
 
-chart.options.plugins.title.text = `Metrics by ${parameter_to_study}`;
+if (parameters_to_study.length == 0) {
+  chart.options.plugins.title.text = `Initial values`;
 
 chart.data.labels = [];
+chart.data.datasets[0].data = [];
+chart.data.datasets[1].data = [];
+chart.data.datasets[2].data = [];
+chart.data.datasets[3].data = [];
+chart.data.datasets[4].data = [];
+chart.data.datasets[5].data = [];
+chart.data.datasets[6].data = [];
+
+
+  chart.data.labels.push('Initial values');
+
+
+simulations_outputs.forEach(element => {
+  chart.data.datasets[0].data.push(element.acces_time);
+        chart.data.datasets[1].data.push(element.cycle_time);
+        chart.data.datasets[2].data.push(element.total_dynamic_read_energy_per_access);
+        chart.data.datasets[3].data.push(element.total_dynamic_write_energy_per_access);
+        chart.data.datasets[4].data.push(element.total_leakage_power_of_a_bank);
+        chart.data.datasets[5].data.push(element.total_gate_leakage_power_of_a_bank);
+        chart.data.datasets[6].data.push(element.cache_area);
+});
+
+chart.update();
+}else {
+  chart.options.plugins.title.text = `Metrics by ${parameter_to_study}`;
+
+chart.data.labels = [];
+chart.data.datasets[0].data = [];
+chart.data.datasets[1].data = [];
+chart.data.datasets[2].data = [];
+chart.data.datasets[3].data = [];
+chart.data.datasets[4].data = [];
+chart.data.datasets[5].data = [];
+chart.data.datasets[6].data = [];
 
 simulations.forEach(element => {
   chart.data.labels.push(element[parameter_to_study].value);
@@ -1104,24 +1189,66 @@ simulations_outputs.forEach(element => {
 
 chart.update();
 }
+}
 
-      function update_data_tag_delay_chart() {
+function update_chart2(parameter_to_study) {
 
-        data_tag_delay_chart.data.datasets[0].data.push(parsed_cacti_output.data_side_htree_input_delay);
-        data_tag_delay_chart.data.datasets[0].data.push(parsed_cacti_output.tag_side_htree_input_delay);
-        data_tag_delay_chart.data.datasets[1].data.push(parsed_cacti_output.data_side_decoder_wordline_delay);
-        data_tag_delay_chart.data.datasets[1].data.push(parsed_cacti_output.tag_side_decoder_wordline_delay);
-        data_tag_delay_chart.data.datasets[2].data.push(parsed_cacti_output.data_side_bitline_delay);
-        data_tag_delay_chart.data.datasets[2].data.push(parsed_cacti_output.tag_side_bitline_delay);
-        data_tag_delay_chart.data.datasets[3].data.push(parsed_cacti_output.data_side_sense_amplifier_delay);
-        data_tag_delay_chart.data.datasets[3].data.push(parsed_cacti_output.tag_side_sense_amplifier_delay);
-        data_tag_delay_chart.data.datasets[4].data.push(0);
-        data_tag_delay_chart.data.datasets[4].data.push(parsed_cacti_output.tag_side_comparator_delay);
-        data_tag_delay_chart.data.datasets[5].data.push(parsed_cacti_output.data_side_htree_output_delay);
-        data_tag_delay_chart.data.datasets[5].data.push(parsed_cacti_output.tag_side_htree_output_delay);
+if (parameters_to_study.length == 0) {
+  chart2.options.plugins.title.text = `Initial values`;
 
-        data_tag_delay_chart.update();
-      }
+chart2.data.labels = [];
+chart2.data.datasets[0].data = [];
+chart2.data.datasets[1].data = [];
+chart2.data.datasets[2].data = [];
+chart2.data.datasets[3].data = [];
+chart2.data.datasets[4].data = [];
+chart2.data.datasets[5].data = [];
+chart2.data.datasets[6].data = [];
+
+
+  chart2.data.labels.push('Initial values');
+
+
+simulations_outputs.forEach(element => {
+  chart2.data.datasets[0].data.push(element.acces_time);
+        chart2.data.datasets[1].data.push(element.cycle_time);
+        chart2.data.datasets[2].data.push(element.total_dynamic_read_energy_per_access);
+        chart2.data.datasets[3].data.push(element.total_dynamic_write_energy_per_access);
+        chart2.data.datasets[4].data.push(element.total_leakage_power_of_a_bank);
+        chart2.data.datasets[5].data.push(element.total_gate_leakage_power_of_a_bank);
+        chart2.data.datasets[6].data.push(element.cache_area);
+});
+
+chart2.update();
+}else {
+  chart2.options.plugins.title.text = `Metrics by ${parameter_to_study}`;
+
+chart2.data.labels = [];
+chart2.data.datasets[0].data = [];
+chart2.data.datasets[1].data = [];
+chart2.data.datasets[2].data = [];
+chart2.data.datasets[3].data = [];
+chart2.data.datasets[4].data = [];
+chart2.data.datasets[5].data = [];
+chart2.data.datasets[6].data = [];
+
+simulations.forEach(element => {
+  chart2.data.labels.push(element[parameter_to_study].value);
+});
+
+simulations_outputs.forEach(element => {
+  chart2.data.datasets[0].data.push(element.acces_time);
+        chart2.data.datasets[1].data.push(element.cycle_time);
+        chart2.data.datasets[2].data.push(element.total_dynamic_read_energy_per_access);
+        chart2.data.datasets[3].data.push(element.total_dynamic_write_energy_per_access);
+        chart2.data.datasets[4].data.push(element.total_leakage_power_of_a_bank);
+        chart2.data.datasets[5].data.push(element.total_gate_leakage_power_of_a_bank);
+        chart2.data.datasets[6].data.push(element.cache_area);
+});
+
+chart2.update();
+}
+}
 
       function create_config_file_from_form() {
 
@@ -1225,30 +1352,21 @@ ${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
 
         const cacti_output = document.getElementById('output');
 
-        const input_parameters_cache_size = cacti_output.value.match(/Cache size.+\n/)[0].match(/(\d+\.\d+)|(\d+)/)[0];
-        const input_parameters_block_size = cacti_output.value.match(/Block size.+\n/)[0].match(/(\d+\.\d+)|(\d+)/)[0];
-        const input_parameters_associativity = cacti_output.value.match(/Associativity.+\n/)[0].match(/(\d+\.\d+)|(\d+)/)[0];
-        const input_parameters_technology = cacti_output.value.match(/Technology.+\n/)[0].match(/(\d+\.\d+)|(\d+)/)[0];
+        parsed_cacti_output.cache_size = parseInt(cacti_output.value.match(/(Cache size.+ )(\d+)/)[2]);
+        parsed_cacti_output.block_size = parseInt(cacti_output.value.match(/(Block size.+ )(\d+)/)[2]);
+        parsed_cacti_output.associativity = parseFloat(cacti_output.value.match(/(Associativity.+ )(\d+)/)[2]);
+        parsed_cacti_output.technology = parseFloat(cacti_output.value.match(/(Technology size.+ )(\d+)/)[2]);
 
-        const basic_output = cacti_output.value.match(/Access time.+\n.+\n.+\n.+\n.+\n.+\n.+/)[0];
-        const basic_output_numbers = basic_output.match(/(\d+\.\d+)|(\d+)/g);
+        parsed_cacti_output.acces_time = parseFloat(cacti_output.value.match(/(Access time.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.cycle_time = parseFloat(cacti_output.value.match(/(Cycle time.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.total_dynamic_read_energy_per_access = parseFloat(cacti_output.value.match(/(Total dynamic read energy per access.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.total_dynamic_write_energy_per_access = parseFloat(cacti_output.value.match(/(Total dynamic write energy per access.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.total_leakage_power_of_a_bank = parseFloat(cacti_output.value.match(/(Total leakage power of a bank.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.total_gate_leakage_power_of_a_bank = parseFloat(cacti_output.value.match(/(Total gate leakage power of a bank.+ )(\d+\.\d+)/)[2]);
+        parsed_cacti_output.cache_area = parseFloat(cacti_output.value.match(/(Cache height x width.+ )(\d+\.\d+)( x )(\d+\.\d+)/)[2]) * parseFloat(cacti_output.value.match(/(Cache height x width.+ )(\d+\.\d+)( x )(\d+\.\d+)/)[4]);
+
         const data_side_output = cacti_output.value.match(/Data side .+\n.+\n.+\n.+\n.+\n.+/)[0];
         const data_side_output_numbers = data_side_output.match(/(\d+\.\d+)|(\d+)/g);
-        const tag_side_output = cacti_output.value.match(/Tag side .+\n.+\n.+\n.+\n.+\n.+\n.+/)[0];
-        const tag_side_output_numbers = tag_side_output.match(/(\d+\.\d+)|(\d+)/g);
-
-        parsed_cacti_output.cache_size = parseInt(input_parameters_cache_size);
-        parsed_cacti_output.block_size = parseInt(input_parameters_block_size);
-        parsed_cacti_output.associativity = parseFloat(input_parameters_associativity);
-        parsed_cacti_output.technology = parseFloat(input_parameters_technology);
-
-        parsed_cacti_output.acces_time = parseFloat(basic_output_numbers[0]);
-        parsed_cacti_output.cycle_time = parseFloat(basic_output_numbers[1]);
-        parsed_cacti_output.total_dynamic_read_energy_per_access = parseFloat(basic_output_numbers[2]);
-        parsed_cacti_output.total_dynamic_write_energy_per_access = parseFloat(basic_output_numbers[3]);
-        parsed_cacti_output.total_leakage_power_of_a_bank = parseFloat(basic_output_numbers[4]);
-        parsed_cacti_output.total_gate_leakage_power_of_a_bank = parseFloat(basic_output_numbers[5]);
-        parsed_cacti_output.cache_area = parseFloat(basic_output_numbers[6]) * parseFloat(basic_output_numbers[7]);
 
         parsed_cacti_output.data_side_htree_input_delay = parseFloat(data_side_output_numbers[1]);
         parsed_cacti_output.data_side_decoder_wordline_delay = parseFloat(data_side_output_numbers[2]);
@@ -1256,12 +1374,43 @@ ${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
         parsed_cacti_output.data_side_sense_amplifier_delay = parseFloat(data_side_output_numbers[4]);
         parsed_cacti_output.data_side_htree_output_delay = parseFloat(data_side_output_numbers[5]);
 
-        parsed_cacti_output.tag_side_htree_input_delay = parseFloat(tag_side_output_numbers[1]);
-        parsed_cacti_output.tag_side_decoder_wordline_delay = parseFloat(tag_side_output_numbers[2]);
-        parsed_cacti_output.tag_side_bitline_delay = parseFloat(tag_side_output_numbers[3]);
-        parsed_cacti_output.tag_side_sense_amplifier_delay = parseFloat(tag_side_output_numbers[4]);
-        parsed_cacti_output.tag_side_comparator_delay = parseFloat(tag_side_output_numbers[5]);
-        parsed_cacti_output.tag_side_htree_output_delay = parseFloat(tag_side_output_numbers[6]);
+        data_tag_delay_chart.data.datasets[0].data = [];
+        data_tag_delay_chart.data.datasets[1].data = [];
+        data_tag_delay_chart.data.datasets[2].data = [];
+        data_tag_delay_chart.data.datasets[3].data = [];
+        data_tag_delay_chart.data.datasets[4].data = [];
+        data_tag_delay_chart.data.datasets[5].data = [];
+
+        data_tag_delay_chart.data.datasets[0].data.push(parsed_cacti_output.data_side_htree_input_delay);
+        data_tag_delay_chart.data.datasets[1].data.push(parsed_cacti_output.data_side_decoder_wordline_delay);
+        data_tag_delay_chart.data.datasets[2].data.push(parsed_cacti_output.data_side_bitline_delay);
+        data_tag_delay_chart.data.datasets[3].data.push(parsed_cacti_output.data_side_sense_amplifier_delay);
+        data_tag_delay_chart.data.datasets[4].data.push(0);
+        data_tag_delay_chart.data.datasets[5].data.push(parsed_cacti_output.data_side_htree_output_delay);
+
+        if (cacti_output.value.match(/Tag side .+\n.+\n.+\n.+\n.+\n.+\n.+/)) {
+
+const tag_side_output = cacti_output.value.match(/Tag side .+\n.+\n.+\n.+\n.+\n.+\n.+/)[0];
+const tag_side_output_numbers = tag_side_output.match(/(\d+\.\d+)|(\d+)/g);
+
+parsed_cacti_output.tag_side_htree_input_delay = parseFloat(tag_side_output_numbers[1]);
+parsed_cacti_output.tag_side_decoder_wordline_delay = parseFloat(tag_side_output_numbers[2]);
+parsed_cacti_output.tag_side_bitline_delay = parseFloat(tag_side_output_numbers[3]);
+parsed_cacti_output.tag_side_sense_amplifier_delay = parseFloat(tag_side_output_numbers[4]);
+parsed_cacti_output.tag_side_comparator_delay = parseFloat(tag_side_output_numbers[5]);
+parsed_cacti_output.tag_side_htree_output_delay = parseFloat(tag_side_output_numbers[6]); 
+
+data_tag_delay_chart.data.datasets[0].data.push(parsed_cacti_output.tag_side_htree_input_delay);
+data_tag_delay_chart.data.datasets[1].data.push(parsed_cacti_output.tag_side_decoder_wordline_delay);
+data_tag_delay_chart.data.datasets[2].data.push(parsed_cacti_output.tag_side_bitline_delay);
+data_tag_delay_chart.data.datasets[3].data.push(parsed_cacti_output.tag_side_sense_amplifier_delay);
+data_tag_delay_chart.data.datasets[4].data.push(parsed_cacti_output.tag_side_comparator_delay);
+data_tag_delay_chart.data.datasets[5].data.push(parsed_cacti_output.tag_side_htree_output_delay);
+
+}
+
+        data_tag_delay_chart.update();
+
       }
 
     function run_cacti() {
@@ -1277,12 +1426,20 @@ ${cache_cfg.total_power.parameter} "${cache_cfg.total_power.value}"`;
       compare_simulations();
 
         parse_cacti_output();
+
         simulations_outputs.push(structuredClone(parsed_cacti_output));
 
-
+        
+        if (parameters_to_study.length == 0) {
+          update_chart();
+          update_chart2();
+        } else {
+          update_chart(parameters_to_study[0]);
+          update_chart2(parameters_to_study[0]);
+        }
+        
         simulation++;
 
-        update_data_tag_delay_chart();
     }
 
       var Module = {
